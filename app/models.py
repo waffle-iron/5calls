@@ -22,6 +22,9 @@ class Issue(Base):
 	def __repr__(self):
 		return '<Issue %r>' % self.name
 
+	def as_dict(self):
+		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 class Callee(Base):
 	__tablename__ = 'callees'
 	id = Column(Integer, primary_key=True)
