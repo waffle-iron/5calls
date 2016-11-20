@@ -90,5 +90,6 @@ ENV/
 
 # Node modules and other frontend settings
 node_modules/
+app/static/
 
 .DS_Store

@@ -29,3 +29,7 @@ $ python
 # get some basic issues into the database
 >>> fake_data()
 ```
+
+## front-end setup / "why doesn't the css work?"
+
+Static files are compiled and bundled by Gulp, and compiled files are not included in the repo.  Run `gulp` to compile static files to `app/static/` and watch for further changes.

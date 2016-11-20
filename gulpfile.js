@@ -4,11 +4,11 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 
 var SRC = {
-  scss: './scss'
+  scss: './static/scss'
 };
 
 var DEST = {
-  css: './css'
+  css: './app/static/css'
 };
 
 // Compile Sass into CSS
