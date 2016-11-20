@@ -13,6 +13,6 @@ $ . venv/bin/activate
 Now, do this:
 
 ```
-$ pip install
+$ pip install -r requirements.txt
 $ python run.py
 ```
