@@ -23,7 +23,13 @@ class Issue(Base):
 		return '<Issue %r>' % self.name
 
 	def as_dict(self):
-		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+		export_columns = []
+
+		for col in self.__table__.columns:
+			if col.name != "id":
+				export_columns.append(col)
+
+		return {c.name: getattr(self, c.name) for c in export_columns}
 
 class Callee(Base):
 	__tablename__ = 'callees'
