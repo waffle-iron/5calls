@@ -16,9 +16,9 @@ def init_db():
 def fake_data():
 	from app.models import Callee, Issue
 
-	callee1 = Callee("Paul Ryan")
-	callee2 = Callee("Kamala Harris")
-	callee3 = Callee("Gavin Newsome")
+	callee1 = Callee("Paul Ryan", "666-666-6666")
+	callee2 = Callee("Kamala Harris", "555-555-1212")
+	callee3 = Callee("Gavin Newsome", "555-555-1212")
 
 	issue1 = Issue("call x because of y", "Hello my name is ____ and I'm calling you today")
 	issue1.callees = [callee1, callee2]
