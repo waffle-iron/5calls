@@ -88,4 +88,7 @@ ENV/
 # Rope project settings
 .ropeproject
 
+# Node modules and other frontend settings
+node_modules/
+
 .DS_Store

@@ -4,8 +4,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>{% block title %}5Calls{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block css %}{% endblock %}
-    {% block more_head %}{% endblock %}
+
+    {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% endblock %}
+
+    {% block more_head %}
+    {% endblock %}
 
   </head>
   <body {% block body_class %}{% endblock %}>
