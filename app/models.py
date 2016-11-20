@@ -2,9 +2,10 @@ from sqlalchemy import Column, Integer, String, Text, Table, ForeignKey
 from sqlalchemy.orm import relationship
 from app.database import Base
 
+# many-many for issues and callees needs to be modeled like this :(
 issue_callees = Table('issue_callees', Base.metadata,
-	Column('issue_id', ForeignKey('issue.id'), primary_key=True),
-	Column('callee_id', ForeignKey('callee.id'), primary_key=True)
+	Column('issue_id', ForeignKey('issues.id'), primary_key=True),
+	Column('callee_id', ForeignKey('callees.id'), primary_key=True)
 )
 
 class Issue(Base):
@@ -14,8 +15,9 @@ class Issue(Base):
 	script = Column(Text)
 	callees = relationship('Callee', secondary=issue_callees, back_populates='issues')
 
-	def __init__(self, name):
+	def __init__(self, name, script):
 		self.name = name
+		self.script = script
 
 	def __repr__(self):
 		return '<Issue %r>' % self.name

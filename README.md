@@ -16,3 +16,16 @@ Now, do this:
 $ pip install -r requirements.txt
 $ python run.py
 ```
+
+## dev database setup
+
+Initialize a new developer database in the python interpreter:
+
+```
+$ python
+>>> from app.database import init_db, fake_data
+# do this *once* to create a new sqlite db in /tmp, or delete and rerun when the schema changes
+>>> init_db()
+# get some basic issues into the database
+>>> fake_data()
+```
