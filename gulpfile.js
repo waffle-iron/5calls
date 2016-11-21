@@ -1,7 +1,9 @@
 'use strict';
 
-var gulp = require('gulp');
-var sass = require('gulp-sass');
+var gulp = require('gulp')
+  , sass = require('gulp-sass')
+  , autoprefixer = require('gulp-autoprefixer')
+  ;
 
 var SRC = {
   scss: './static/scss'
@@ -17,6 +19,7 @@ gulp.task('sass', function() {
     .pipe(sass({
       outputStyle: 'compressed'
     }).on('error', sass.logError))
+    .pipe(autoprefixer('last 2 version'))
     .pipe(gulp.dest(DEST.css));
 });
 gulp.task('sass:watch', function() {
