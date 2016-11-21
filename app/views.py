@@ -4,12 +4,12 @@ from app import app, settings
 
 @app.route('/')
 def index():
-	return render_template('index.html.j2')
+	return render_template('static/index.html')
 
 @app.route('/api/issues', strict_slashes=False, methods=['GET'])
 @app.route('/api/issues/<int:zip>', strict_slashes=False, methods=['GET'])
 def issues(zip=None):
-	from app.models import Issue 
+	from app.models import Issue
 
 	all_issues = Issue.query.all()
 
