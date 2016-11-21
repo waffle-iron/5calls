@@ -1,7 +1,7 @@
 package main
 
 import (
-	"database/sql"
+	// "database/sql"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -12,12 +12,12 @@ import (
 	"text/template"
 
 	"github.com/gorilla/mux"
-	_ "github.com/mattn/go-sqlite3"
+	// "github.com/mattn/go-sqlite3"
 )
 
 var (
-	addr   = flag.String("addr", ":8080", "[ip]:port to listen on")
-	dbfile = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
+	addr = flag.String("addr", ":8080", "[ip]:port to listen on")
+	// dbfile = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
 )
 
 var pagetemplate *template.Template
@@ -31,13 +31,13 @@ func main() {
 	}
 	pagetemplate = p
 
-	db, err := sql.Open("sqlite3", fmt.Sprintf("./%s", *dbfile))
-	if err != nil {
-		log.Printf("can't open databse: %s", err)
-		return
-	}
-	// cachedb = db
-	defer db.Close()
+	// db, err := sql.Open("sqlite3", fmt.Sprintf("./%s", *dbfile))
+	// if err != nil {
+	// 	log.Printf("can't open databse: %s", err)
+	// 	return
+	// }
+	// // cachedb = db
+	// defer db.Close()
 
 	r := mux.NewRouter()
 	r.HandleFunc("/issues/{zip}", pageHandler)
