@@ -8,47 +8,49 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
   <body>
-    <div class="issues">
-      <header>
-        <h1><a href="/">5 Calls</a></h1>
-        <p>You’re at 12345. <a href="#">Change?</a></p>
-      </header>
-      <ul class="issues-list">
-        <li class="issues-list__item">
-          <p>This is the short description of the issue.</p>
-        </li>
-        <li class="issues-list__item is-active">
-          <p>This is the short description of the issue.</p>
-        </li>
-        <li class="issues-list__item is-complete">
-          <p>This is the short description of the issue.</p>
-        </li>
-        <li class="issues-list__item">
-          <p>This is the short description of the issue.</p>
-        </li>
-        <li class="issues-list__item">
-          <p>This is the short description of the issue.</p>
-        </li>
-      </ul>
-    </div>
+    <main class="content">
+      <div class="issues">
+        <header class="issues__header">
+          <h1 class="issues__title"><a href="/">5 Calls</a></h1>
+          <p class="issues__subtitle">You’re at 12345. <a href="#">Change?</a></p>
+        </header>
+        <ul class="issues-list">
+          <li class="issues-list__item">
+            <p>This is the short description of the issue.</p>
+          </li>
+          <li class="issues-list__item is-active">
+            <p>This is the short description of the issue.</p>
+          </li>
+          <li class="issues-list__item is-complete">
+            <p>This is the short description of the issue.</p>
+          </li>
+          <li class="issues-list__item">
+            <p>This is the short description of the issue.</p>
+          </li>
+          <li class="issues-list__item">
+            <p>This is the short description of the issue.</p>
+          </li>
+        </ul>
+      </div>
 
-    <div class="site-info">
-      <header>
-        <h2>Let’s Save Democracy</h2>
-        <p>Set up the premise here. What are we doing. Why are we doing it. Yadda, yadda, blah, blah. Set up the premise here. What are we doing.</p>
-        <p>You only need you to make five calls. today.</p>
-      </header>
-      <ul class="site-info__stats">
-      <li class="site-info__stat">
-        <strong class="site-info__stat-value">5,301,000</strong>
-        <label  class="site-info__stat-label">calls to date</label>
-      </li>
-      <li class="site-info__stat">
-        <strong class="site-info__stat-value">54,291</strong>
-        <label  class="site-info__stat-label">calls today</label>
-      </li>
-      </ul>
-    </div>
+      <div class="hypothesis">
+        <header class="hypothesis__header">
+          <h2 class="hypothesis__title">Let’s Save Democracy</h2>
+          <p>Set up the premise here. What are we doing. Why are we doing it. Yadda, yadda, blah, blah. Set up the premise here. What are we doing.</p>
+          <p>You only need you to make five calls. today.</p>
+        </header>
+        <ul class="hypothesis__stats">
+        <li class="hypothesis__stat">
+          <strong class="hypothesis__stat-value">5,301,000</strong>
+          <label  class="hypothesis__stat-label">calls to date</label>
+        </li>
+        <li class="hypothesis__stat">
+          <strong class="hypothesis__stat-value">54,291</strong>
+          <label  class="hypothesis__stat-label">calls today</label>
+        </li>
+        </ul>
+      </div>
+    </main>
 
     <footer>
     </footer>
