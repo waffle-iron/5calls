@@ -1,0 +1,46 @@
+.hypothesis {
+  width: calc(100% - 1rem);
+  margin: .5rem;
+  color: #fff;
+
+  @media (min-width: $bp-medium) {
+    margin: 0;
+    width: 7/12 * 100%;
+  }
+
+  &__header {
+    margin-bottom: 2rem;
+
+    p {
+      font-size: 2rem;
+      line-height: 1.25;
+    }
+  }
+
+  &__title {
+    font-size: 3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  &__stats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__stat {
+    display: flex;
+
+    > * {
+      display: block;
+      width: 50%;
+      padding: .25rem;
+      font-size: 3rem;
+    }
+  }
+
+  &__stat-value {
+    text-align: right;
+  }
+}

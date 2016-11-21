@@ -1,0 +1,33 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: $color-text;
+  font-family: $font-sans;
+  background-color: $blue-darker;
+  background-image: url(/static/img/5calls_bgd.jpg);
+  background-size: cover;
+  background-position: 50% 50%;
+  min-height: 100vh;
+}
+
+main {
+  max-width: $bp-large;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: $bp-medium) {
+    flex-direction: row;
+    margin: 3rem 1rem;
+  }
+
+  @media (min-width: $bp-large) {
+    margin: 5rem auto;
+  }
+}
+
+p {
+  margin: 0 0 1rem;
+}
