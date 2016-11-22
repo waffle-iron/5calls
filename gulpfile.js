@@ -61,7 +61,7 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest(DEST.js));
 });
 gulp.task('scripts:watch', function() {
-  gulp.watch(`${DEST.js}/**/*.js`, ['scripts']);
+  gulp.watch(`${SRC.js}/**/*.js`, ['scripts']);
 });
 
 gulp.task('default', ['sass', 'sass:watch', 'copy-images', 'copy-images:watch', 'scripts', 'scripts:watch']);

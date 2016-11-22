@@ -17,16 +17,8 @@ app.model({
   }
 });
 
-const initialView = (state, prev, send) => {
-  return html`
-    <div id="root" class="layout">
-      <p>(choo has taken over rendering)</p>
-    </div>
-  `;
-}
-
 app.router((route) => [
-  route('/', initialView)
+  route('/', require('./pages/mainView.js'))
 ]);
 
-// const tree = app.start('#root');
+const tree = app.start('#root');
