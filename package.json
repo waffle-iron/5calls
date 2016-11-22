@@ -13,9 +13,16 @@
   "author": "",
   "license": "UNLICENSED",
   "devDependencies": {
+    "browserify": "^13.1.1",
+    "es2040": "^1.2.4",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-imagemin": "^3.1.1",
-    "gulp-sass": "^2.3.2"
+    "gulp-sass": "^2.3.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "choo": "^3.3.0"
   }
 }
