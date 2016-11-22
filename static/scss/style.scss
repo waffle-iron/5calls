@@ -1,8 +1,9 @@
-@import 'vendor/normalize.scss';
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700');
-@import '_variables-and-mixins';
-@import '_elements';
+
+@import 'vendor/normalize';
+@import 'variables-and-mixins';
+@import 'elements';
 
 // Components
-@import '_issues';
-@import '_hypothesis';
+@import 'issues';
+@import 'hypothesis';

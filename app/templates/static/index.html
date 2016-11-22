@@ -8,13 +8,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
   <body>
-    <main class="content">
+    <main role="main" class="content">
       <div class="issues">
-        <header class="issues__header">
+        <header class="issues__header" role="banner">
           <h1 class="issues__title"><a href="/">5 Calls</a></h1>
-          <p class="issues__subtitle">You’re at 12345. <a href="#">Change?</a></p>
+          <p class="issues__subtitle">
+            You’re at <strong class="issues__zip-code">12345</strong>. 
+            <a href="#">Change?</a>
+          </p>
         </header>
-        <ul class="issues-list">
+        <ul class="issues-list" role="navigation">
           <li class="issues-list__item">
             <p>This is the short description of the issue.</p>
           </li>
@@ -39,16 +42,16 @@
           <p>Set up the premise here. What are we doing. Why are we doing it. Yadda, yadda, blah, blah. Set up the premise here. What are we doing.</p>
           <p>You only need you to make five calls. today.</p>
         </header>
-        <ul class="hypothesis__stats">
-        <li class="hypothesis__stat">
-          <strong class="hypothesis__stat-value">5,301,000</strong>
-          <label  class="hypothesis__stat-label">calls to date</label>
-        </li>
-        <li class="hypothesis__stat">
-          <strong class="hypothesis__stat-value">54,291</strong>
-          <label  class="hypothesis__stat-label">calls today</label>
-        </li>
-        </ul>
+        <dl class="hypothesis__stats">
+          <li class="hypothesis__stat">
+            <dt class="hypothesis__stat-value">5,301,000</dt>
+            <dd class="hypothesis__stat-dd">calls to date</dd>
+          </li>
+          <li class="hypothesis__stat">
+            <dt class="hypothesis__stat-value">54,291</dt>
+            <dd class="hypothesis__stat-dd">calls today</dd>
+          </li>
+        </dl>
       </div>
     </main>
 

@@ -31,3 +31,18 @@ main {
 p {
   margin: 0 0 1rem;
 }
+
+a {
+  color: $blue;
+  text-decoration: none;
+
+  transition-property: color, background-color, border;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+
+  &:hover,
+  &:focus {
+    // TODO: better, nicer link styles
+    text-decoration: underline;
+  }
+}
