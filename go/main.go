@@ -43,7 +43,8 @@ func main() {
 	// defer db.Close()
 
 	// load the current csv files
-	loadIssuesCSV()
+	issues := loadIssuesCSV()
+	log.Print("issues %v", issues)
 
 	r := mux.NewRouter()
 	r.HandleFunc("/issues/{zip}", pageHandler)
@@ -55,7 +56,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(*addr, nil))
 }
 
-func loadIssuesCSV() {
+func loadIssuesCSV() []Issue {
 	issuesCSV, err := os.Open("issues.csv")
 	if err != nil {
 		log.Fatal(err)
@@ -63,6 +64,7 @@ func loadIssuesCSV() {
 
 	r := csv.NewReader(issuesCSV)
 
+	issues := []Issue{}
 	for {
 		record, err := r.Read()
 		if err == io.EOF {
@@ -73,7 +75,11 @@ func loadIssuesCSV() {
 		}
 
 		fmt.Println(record)
+		newIssue := Issue{Name: record[0], Script: record[5]}
+		issues = append(issues, newIssue)
 	}
+
+	return issues
 }
 
 func pageHandler(w http.ResponseWriter, r *http.Request) {
@@ -133,8 +139,10 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 
 // Issue is a thing to care about and call on
 type Issue struct {
-	Name string
-	Reps []Contact
+	Name     string
+	Script   string
+	Inactive bool
+	Reps     []Contact
 }
 
 // Contact is a single point of contact related to an issue
