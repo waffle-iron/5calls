@@ -2,12 +2,15 @@ package main
 
 import (
 	// "database/sql"
+	"encoding/csv"
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"text/template"
 
@@ -16,7 +19,7 @@ import (
 )
 
 var (
-	addr = flag.String("addr", ":8080", "[ip]:port to listen on")
+	addr = flag.String("addr", ":8090", "[ip]:port to listen on")
 	// dbfile = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
 )
 
@@ -39,6 +42,9 @@ func main() {
 	// // cachedb = db
 	// defer db.Close()
 
+	// load the current csv files
+	loadIssuesCSV()
+
 	r := mux.NewRouter()
 	r.HandleFunc("/issues/{zip}", pageHandler)
 	r.HandleFunc("/", pageHandler)
@@ -47,6 +53,27 @@ func main() {
 	log.Printf("running fivecalls-web on port %v", *addr)
 
 	log.Fatal(http.ListenAndServe(*addr, nil))
+}
+
+func loadIssuesCSV() {
+	issuesCSV, err := os.Open("issues.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	r := csv.NewReader(issuesCSV)
+
+	for {
+		record, err := r.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println(record)
+	}
 }
 
 func pageHandler(w http.ResponseWriter, r *http.Request) {
