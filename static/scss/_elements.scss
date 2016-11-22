@@ -12,22 +12,6 @@ body {
   min-height: 100vh;
 }
 
-main {
-  max-width: $bp-large;
-  margin: 2rem auto;
-  display: flex;
-  flex-direction: column;
-
-  @media (min-width: $bp-medium) {
-    flex-direction: row;
-    margin: 3rem 1rem;
-  }
-
-  @media (min-width: $bp-large) {
-    margin: 5rem auto;
-  }
-}
-
 p {
   margin: 0 0 1rem;
 }

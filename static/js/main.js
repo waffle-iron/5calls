@@ -5,9 +5,9 @@ const app = choo();
 
 app.model({
   state: {
-    zip: '00501',
+    zip: false,
     activeIssue: false,
-    issues: []
+    issues: [],
   },
   reducers: {
 
@@ -19,9 +19,9 @@ app.model({
 
 const initialView = (state, prev, send) => {
   return html`
-    <main role="main">
+    <div id="root" class="layout">
       <p>(choo has taken over rendering)</p>
-    </main>
+    </div>
   `;
 }
 
@@ -29,4 +29,4 @@ app.router((route) => [
   route('/', initialView)
 ]);
 
-const tree = app.start('#root');
+// const tree = app.start('#root');
