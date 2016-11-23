@@ -11,16 +11,14 @@ app.model({
     zip: false,
     activeIssue: false
   }),
+
   reducers: {
     changeActiveIssue: (issueId, state) => {
       return extend(state, { activeIssue: issueId });
     }
   },
-  effects: {
-    selectIssue: (issueId, state, send, done) => {
-      send('changeActiveIssue', issueId, done);
-    }
-  }
+
+  effects: {}
 });
 
 app.router((route) => [

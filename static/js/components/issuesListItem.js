@@ -8,15 +8,13 @@ module.exports = (issue, state, prev, send) => {
 
     let classes = [BASE_CLASS];
 
-    if(state.activeIssue === issue.id) {
-      classes.push(ACTIVE_CLASS);
-    }
+    state.activeIssue === issue.id && classes.push(ACTIVE_CLASS);
 
     return classes.join(' ');
   }
 
   function handleClick(e) {
-    send('selectIssue', issue.id);
+    send('changeActiveIssue', issue.id);
   }
 
   return html`
