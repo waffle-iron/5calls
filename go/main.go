@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -21,6 +20,7 @@ import (
 var (
 	addr = flag.String("addr", ":8090", "[ip]:port to listen on")
 	// dbfile = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
+	loadedIssues = []Issue{}
 )
 
 var pagetemplate *template.Template
@@ -43,8 +43,8 @@ func main() {
 	// defer db.Close()
 
 	// load the current csv files
-	issues := loadIssuesCSV()
-	log.Print("issues %v", issues)
+	loadedIssues = loadCSVs()
+	// log.Print("issues %v", loadedIssues)
 
 	r := mux.NewRouter()
 	r.HandleFunc("/issues/{zip}", pageHandler)
@@ -56,27 +56,71 @@ func main() {
 	log.Fatal(http.ListenAndServe(*addr, nil))
 }
 
-func loadIssuesCSV() []Issue {
+func loadCSVs() []Issue {
 	issuesCSV, err := os.Open("issues.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	r := csv.NewReader(issuesCSV)
+	contactsCSV, err := os.Open("contacts.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ir := csv.NewReader(issuesCSV)
+	cr := csv.NewReader(contactsCSV)
+
+	csvIssues := []CSVIssue{}
+	records, err := ir.ReadAll()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for i, record := range records {
+		// header record is first
+		if i == 0 {
+			continue
+		}
+
+		// fmt.Println(record)
+		newIssue := CSVIssue{Name: record[0], Script: record[5], Contacts: record[10]}
+		csvIssues = append(csvIssues, newIssue)
+	}
+
+	csvContacts := []CSVContact{}
+	records, err = cr.ReadAll()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for i, record := range records {
+		// header record is first
+		if i == 0 {
+			continue
+		}
+
+		// fmt.Println(record)
+		newContact := CSVContact{Name: record[0], Phone: record[1]}
+		csvContacts = append(csvContacts, newContact)
+	}
 
 	issues := []Issue{}
-	for {
-		record, err := r.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Fatal(err)
-		}
+	// now match names from issues to contacts
+	for _, csvIssue := range csvIssues {
+		if csvIssue.Inactive != true {
+			newIssue := csvIssue.issue()
+			names := strings.Split(csvIssue.Contacts, ",")
 
-		fmt.Println(record)
-		newIssue := Issue{Name: record[0], Script: record[5]}
-		issues = append(issues, newIssue)
+			for _, name := range names {
+				for _, csvContact := range csvContacts {
+					if name == csvContact.Name {
+						newIssue.Contacts = append(newIssue.Contacts, csvContact.contact())
+					}
+				}
+			}
+
+			issues = append(issues, newIssue)
+		}
 	}
 
 	return issues
@@ -86,7 +130,7 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	zip := vars["zip"]
 
-	contacts := []Contact{}
+	localContacts := []Contact{}
 
 	if len(zip) == 5 && zip != "" {
 		log.Printf("zip %s", zip)
@@ -122,13 +166,26 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 		for _, rep := range validOfficials {
 			contact := Contact{Name: rep.Name, Phone: rep.Phones[0], PhotoURL: rep.PhotoURL, Area: rep.Area}
 
-			contacts = append(contacts, contact)
+			localContacts = append(localContacts, contact)
 		}
 	} else {
 		log.Printf("no zip")
 	}
 
-	jsonData, err := json.Marshal(contacts)
+	// add local reps where necessary
+	customizedIssues := []Issue{}
+	for _, issue := range loadedIssues {
+		for i, contact := range issue.Contacts {
+			if contact.Name == "LOCAL REP" {
+				issue.Contacts = append(issue.Contacts[:i], issue.Contacts[i+1:]...)
+				issue.Contacts = append(issue.Contacts, localContacts...)
+			}
+		}
+
+		customizedIssues = append(customizedIssues, issue)
+	}
+
+	jsonData, err := json.Marshal(customizedIssues)
 	if err != nil {
 		panic(err)
 	}
@@ -139,18 +196,45 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 
 // Issue is a thing to care about and call on
 type Issue struct {
+	Name     string    `json:"name"`
+	Script   string    `json:"script"`
+	Contacts []Contact `json:"contacts"`
+}
+
+// CSVIssue is an issue loaded from csv
+type CSVIssue struct {
 	Name     string
 	Script   string
 	Inactive bool
-	Reps     []Contact
+	Contacts string
+}
+
+func (i CSVIssue) issue() Issue {
+	issue := Issue{Name: i.Name, Script: i.Script}
+
+	return issue
 }
 
 // Contact is a single point of contact related to an issue
 type Contact struct {
-	Name     string //`json:"name"`
+	Name     string `json:"name"`
+	Phone    string `json:"phone"`
+	PhotoURL string `json:"photoURL"`
+	Area     string `json:"area"`
+}
+
+// CSVContact is a contact loaded from csv
+type CSVContact struct {
+	Name     string
 	Phone    string
 	PhotoURL string
 	Area     string
+}
+
+func (c CSVContact) contact() Contact {
+	contact := Contact{Name: c.Name, Phone: c.Phone, PhotoURL: c.PhotoURL, Area: c.Area}
+
+	return contact
 }
 
 func getReps(zip string) (*GoogleRepResponse, error) {
