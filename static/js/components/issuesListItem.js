@@ -1,14 +1,26 @@
 const html = require('choo/html');
 
 module.exports = (issue, state, prev, send) => {
-  const ACTIVE_CLASS = 'is-active';
-  const COMPLETE_CLASS = 'is-complete';
+  function classString(state) {
+    const BASE_CLASS = 'issues-list__item';
+    const ACTIVE_CLASS = 'is-active';
+    const COMPLETE_CLASS = 'is-complete';
 
-  // TODO: if issue id is the same as `state.activeIssue` apply ACTIVE_CLASS
-  // TODO: if issue has `complete` flag, apply COMPLETE_CLASS
+    let classes = [BASE_CLASS];
+
+    if(state.activeIssue === issue.id) {
+      classes.push(ACTIVE_CLASS);
+    }
+
+    return classes.join(' ');
+  }
+
+  function handleClick(e) {
+    send('selectIssue', issue.id);
+  }
 
   return html`
-    <li class="issues-list__item">
+    <li class="${classString(state)}" onclick=${handleClick}>
       <p>${issue.name}</p>
     </li>
   `;

@@ -1,19 +1,25 @@
 const choo = require('choo');
 const html = require('choo/html');
+const extend = require('xtend');
+const { getIssues } = require('./data.js');
 
 const app = choo();
 
 app.model({
-  state: {
+  // extremely hackily shoving sample data into state
+  state: extend(getIssues(), {
     zip: false,
-    activeIssue: false,
-    issues: [],
-  },
+    activeIssue: false
+  }),
   reducers: {
-
+    changeActiveIssue: (issueId, state) => {
+      return extend(state, { activeIssue: issueId });
+    }
   },
   effects: {
-
+    selectIssue: (issueId, state, send, done) => {
+      send('changeActiveIssue', issueId, done);
+    }
   }
 });
 

@@ -23,6 +23,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "choo": "^3.3.0"
+    "choo": "^3.3.0",
+    "xtend": "^4.0.1"
   }
 }
