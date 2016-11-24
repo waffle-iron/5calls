@@ -93,3 +93,7 @@ node_modules/
 app/static/
 
 .DS_Store
+
+# go
+# ignore binary
+go/fivecalls
