@@ -11,16 +11,27 @@ var gulp = require('gulp')
   ;
 
 var SRC = {
+  html: './static/html',
   scss: './static/scss',
   img:  './static/img',
   js:   './static/js'
 };
 
 var DEST = {
+  html:'./app/static',
   css: './app/static/css',
   img: './app/static',
   js:  './app/static/js'
 };
+
+gulp.task('html', function() {
+  gulp.src(SRC.html + '/*.html')
+    .pipe(gulp.dest(DEST.html));
+});
+
+gulp.task('html:watch', function() {
+  gulp.watch(`${SRC.html}/*.html`, ['html']);
+});
 
 // Compile Sass into CSS
 gulp.task('sass', function() {
@@ -64,5 +75,5 @@ gulp.task('scripts:watch', function() {
   gulp.watch(`${SRC.js}/**/*.js`, ['scripts']);
 });
 
-gulp.task('default', ['sass', 'sass:watch', 'copy-images', 'copy-images:watch', 'scripts', 'scripts:watch']);
-gulp.task('deploy', ['sass, scripts, copy-images']);
+gulp.task('default', ['html', 'html:watch', 'sass', 'sass:watch', 'copy-images', 'copy-images:watch', 'scripts', 'scripts:watch']);
+gulp.task('deploy', ['html', 'sass', 'scripts', 'copy-images']);

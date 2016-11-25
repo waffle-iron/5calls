@@ -2,34 +2,26 @@
 
 ## Setup for Dev
 
-This app runs on Flask and Python 2.7.x. I recommend running the app in a [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/). You can do that by `cd`-ing to the directory and running:
+### frontend
 
-```
-$ pip install virtualenv
-$ virtualenv venv
-$ . venv/bin/activate
-```
+Install the requirements with:
+`npm install`
 
-Now, do this:
+Then you can just use gulp to generate the site and watch for changes:
+`gulp`
 
-```
-$ pip install -r requirements.txt
-$ python run.py
-```
+In a new terminal, use any web server to serve the compiled source locally, like python:
+`cd app/static && python -m SimpleHTTPServer`
 
-## dev database setup
+A development site should be available at http://localhost:8000
 
-Initialize a new developer database in the python interpreter:
+### go
 
-```
-$ python
->>> from app.database import init_db, fake_data
-# do this *once* to create a new sqlite db in /tmp, or delete and rerun when the schema changes
->>> init_db()
-# get some basic issues into the database
->>> fake_data()
-```
+In the go directory, use the go tool to run the code:
+`go run main.go`
 
-## front-end setup / "why doesn't the css work?"
+## Deployment
 
-Static files are compiled and bundled by Gulp, and compiled files are not included in the repo.  Run `gulp` to compile static files to `app/static/` and watch for further changes.
+Use the makefile in the go folder. You can `make deploy` to update the go server or `make deploy_static` to update the site.
+
+After updating the go server, remember to log in, connect to the screen instance (`screen -r`) and restart the go process.
