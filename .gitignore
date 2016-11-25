@@ -97,3 +97,4 @@ app/static/
 # go
 # ignore binary
 go/fivecalls
+go/fivecalls-linux
