@@ -1,12 +1,5 @@
 .hypothesis {
-  width: calc(100% - 1rem);
-  margin: .5rem;
   color: #fff;
-
-  @media (min-width: $bp-medium) {
-    margin: 0;
-    width: 7/12 * 100%;
-  }
 
   &__header {
     margin-bottom: 2rem;
