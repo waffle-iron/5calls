@@ -18,7 +18,7 @@ A development site should be available at http://localhost:8000
 ### go
 
 In the go directory, use the go tool to run the code:
-`go run main.go`
+`go run *.go`
 
 ## Deployment
 
