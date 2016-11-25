@@ -24,4 +24,4 @@ In the go directory, use the go tool to run the code:
 
 Use the makefile in the go folder. You can `make deploy` to update the go server or `make deploy_static` to update the site.
 
-After updating the go server, remember to log in, connect to the screen instance (`screen -r`) and restart the go process.
+When updating the go server, remember to log in, connect to the screen instance (`screen -r`) and stop the go process before replacing it via the deploy, otherwise you get "text file busy" errors in scp.
