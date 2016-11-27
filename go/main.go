@@ -4,19 +4,24 @@ import (
 	"database/sql"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
 	"text/template"
+	"time"
 
 	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/patrickmn/go-cache"
 )
 
 var (
 	addr         = flag.String("addr", ":8090", "[ip]:port to listen on")
 	dbfile       = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
 	loadedIssues = []Issue{}
+	db           *sql.DB
+	countCache   = cache.New(1*time.Hour, 10*time.Minute)
 )
 
 var pagetemplate *template.Template
@@ -30,7 +35,7 @@ func main() {
 	}
 	pagetemplate = p
 
-	db, err := sql.Open("sqlite3", fmt.Sprintf("./%s", *dbfile))
+	db, err = sql.Open("sqlite3", fmt.Sprintf("./%s", *dbfile))
 	if err != nil {
 		log.Printf("can't open databse: %s", err)
 		return
@@ -44,7 +49,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/issues/{zip}", pageHandler)
 	r.HandleFunc("/issues/", pageHandler)
-	r.HandleFunc("/report/{result}", reportHandler)
+	r.HandleFunc("/report/", reportHandler)
 	http.Handle("/", r)
 	log.Printf("running fivecalls-web on port %v", *addr)
 
