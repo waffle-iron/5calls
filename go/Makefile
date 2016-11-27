@@ -11,10 +11,10 @@ deploy:
 	set -e
 	set -x
 
-	GOOS=linux go build -o fivecalls-linux
-	echo "Built for linux"
+	# GOOS=linux go build -o fivecalls-linux
+	# echo "Built for linux"
 
-	scp fivecalls-linux issues.csv contacts.csv index.html fivecalls@5calls.org:/home/fivecalls/
+	scp fivecalls-linux-amd64 issues.csv contacts.csv index.html fivecalls@5calls.org:/home/fivecalls/
 	echo "Sent to server, please log in and restart"
 
 deploy_static:
