@@ -44,9 +44,8 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/issues/{zip}", pageHandler)
-	r.HandleFunc("/", pageHandler)
+	r.HandleFunc("/issues/", pageHandler)
 	http.Handle("/", r)
-
 	log.Printf("running fivecalls-web on port %v", *addr)
 
 	log.Fatal(http.ListenAndServe(*addr, nil))
@@ -103,7 +102,9 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 	for _, issue := range loadedIssues {
 		for i, contact := range issue.Contacts {
 			if contact.Name == "LOCAL REP" {
+				// this is how you remove an item from a list in go :/
 				issue.Contacts = append(issue.Contacts[:i], issue.Contacts[i+1:]...)
+				// add the local contacts loaded from google civic
 				issue.Contacts = append(issue.Contacts, localContacts...)
 			}
 		}
