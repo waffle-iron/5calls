@@ -53,6 +53,11 @@ func main() {
 }
 
 func pageHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		http.Error(w, "GET only", 403)
+		return
+	}
+
 	vars := mux.Vars(r)
 	zip := vars["zip"]
 
