@@ -17,6 +17,7 @@ type CSVIssue struct {
 
 func (i CSVIssue) issue() Issue {
 	issue := Issue{Name: i.Name, Script: i.Script}
+	issue.Contacts = []Contact{}
 
 	return issue
 }

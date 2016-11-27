@@ -1,7 +1,7 @@
 package main
 
 import (
-	// "database/sql"
+	"database/sql"
 	"encoding/json"
 	"flag"
 	"log"
@@ -10,12 +10,12 @@ import (
 	"text/template"
 
 	"github.com/gorilla/mux"
-	// "github.com/mattn/go-sqlite3"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var (
-	addr = flag.String("addr", ":8090", "[ip]:port to listen on")
-	// dbfile = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
+	addr         = flag.String("addr", ":8090", "[ip]:port to listen on")
+	dbfile       = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
 	loadedIssues = []Issue{}
 )
 
@@ -30,13 +30,12 @@ func main() {
 	}
 	pagetemplate = p
 
-	// db, err := sql.Open("sqlite3", fmt.Sprintf("./%s", *dbfile))
-	// if err != nil {
-	// 	log.Printf("can't open databse: %s", err)
-	// 	return
-	// }
-	// // cachedb = db
-	// defer db.Close()
+	db, err := sql.Open("sqlite3", fmt.Sprintf("./%s", *dbfile))
+	if err != nil {
+		log.Printf("can't open databse: %s", err)
+		return
+	}
+	defer db.Close()
 
 	// load the current csv files
 	loadedIssues = loadCSVs()
@@ -44,9 +43,9 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/issues/{zip}", pageHandler)
-	r.HandleFunc("/", pageHandler)
+	r.HandleFunc("/issues/", pageHandler)
+	// r.HandleFunc("/result/{result}", resultsHandler)
 	http.Handle("/", r)
-
 	log.Printf("running fivecalls-web on port %v", *addr)
 
 	log.Fatal(http.ListenAndServe(*addr, nil))
@@ -108,7 +107,9 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 	for _, issue := range loadedIssues {
 		for i, contact := range issue.Contacts {
 			if contact.Name == "LOCAL REP" {
+				// this is how you remove an item from a list in go :/
 				issue.Contacts = append(issue.Contacts[:i], issue.Contacts[i+1:]...)
+				// add the local contacts loaded from google civic
 				issue.Contacts = append(issue.Contacts, localContacts...)
 			}
 		}
