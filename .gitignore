@@ -95,6 +95,8 @@ app/static/
 .DS_Store
 
 # go
-# ignore binary
+# ignore binaries
 go/fivecalls
 go/fivecalls-linux
+# gin files if you're live-reloading
+go/gin-bin

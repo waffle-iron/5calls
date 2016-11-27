@@ -44,7 +44,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/issues/{zip}", pageHandler)
 	r.HandleFunc("/issues/", pageHandler)
-	// r.HandleFunc("/result/{result}", resultsHandler)
+	r.HandleFunc("/report/{result}", reportHandler)
 	http.Handle("/", r)
 	log.Printf("running fivecalls-web on port %v", *addr)
 
