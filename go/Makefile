@@ -11,7 +11,11 @@ deploy:
 	set -e
 	set -x
 
+	# this works great for non-cgo stuff, we're using sqlite :(
 	# GOOS=linux go build -o fivecalls-linux
+
+	# install xgo and docker first, but pretty straightforward
+	# xgo -out fivecalls -go 1.7.x --targets=linux/amd64 .
 	# echo "Built for linux"
 
 	scp fivecalls-linux-amd64 issues.csv contacts.csv index.html fivecalls@5calls.org:/home/fivecalls/

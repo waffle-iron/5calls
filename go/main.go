@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"text/template"
 	"time"
@@ -19,6 +20,7 @@ import (
 var (
 	addr         = flag.String("addr", ":8090", "[ip]:port to listen on")
 	dbfile       = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
+	airtableKey  = os.Getenv("AIRTABLE_API_KEY")
 	loadedIssues = []Issue{}
 	db           *sql.DB
 	countCache   = cache.New(1*time.Hour, 10*time.Minute)
@@ -28,6 +30,17 @@ var pagetemplate *template.Template
 
 func main() {
 	flag.Parse()
+
+	if airtableKey == "" {
+		log.Fatal("No airtable API key found")
+	}
+
+	log.Printf("api key %s", airtableKey)
+
+	issues, _ := fetchIssues()
+	log.Printf("issues %v", issues)
+	contacts, _ := fetchContacts()
+	log.Printf("contacts %v", contacts)
 
 	p, err := template.ParseFiles("index.html")
 	if err != nil {

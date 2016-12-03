@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	// "log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/patrickmn/go-cache"
@@ -36,7 +37,7 @@ func reportHandler(w http.ResponseWriter, r *http.Request) {
 			countCache.Set("totalCount", count, cache.DefaultExpiration)
 		}
 
-		returnData["count"] = string(count)
+		returnData["count"] = strconv.Itoa(count)
 	} else if r.Method == "POST" {
 		r.ParseForm()
 		location := r.FormValue("location")
