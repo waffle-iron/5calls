@@ -4,25 +4,82 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
-type AirtableIssues struct {
-	Records []AirtableIssue `json:"records"`
-}
+func refreshIssuesAndContacts() {
+	globalIssues, _ = fetchIssues()
+	log.Printf("issues %v", globalIssues)
+	contacts, _ := fetchContacts()
+	log.Printf("contacts %v", contacts)
 
-type AirtableIssue struct {
-	ID     string `json:"id"`
-	Fields struct {
-		Name      string
-		Action    string `json:"Action requested"`
-		Script    string
-		ContactID string `json:"Contact"`
+	// remove empty ones from airtable
+	for index, issue := range globalIssues.Records {
+		if issue.Fields.Name == "" {
+			globalIssues.Records = append(globalIssues.Records[:index], globalIssues.Records[index+1:]...)
+		}
 	}
+
+	// add contacts to the right spot
+	for index, issue := range globalIssues.Records {
+		if issue.Contacts == nil {
+			issue.Contacts = []AirtableContact{}
+		}
+
+		for _, contactID := range issue.Fields.ContactIDs {
+			for _, contact := range contacts.Records {
+				if contactID == contact.ID {
+					globalIssues.Records[index].Contacts = append(globalIssues.Records[index].Contacts, contact)
+				}
+			}
+		}
+	}
+
 }
 
-func fetchIssues() (*AirtableIssues, error) {
-	url := "https://api.airtable.com/v0/app6dzsa26hDjI7tp/Issues%20list"
+type AirtableIssues struct {
+	Records []struct {
+		ID     string `json:"id"`
+		Fields struct {
+			Name       string
+			Action     string `json:"Action requested"`
+			Script     string
+			ContactIDs []string `json:"Contact"`
+		}
+		Contacts []AirtableContact
+	} `json:"records"`
+}
+
+func (i AirtableIssues) exportIssues() []Issue {
+	issues := []Issue{}
+	// jsonData, _ := json.Marshal(i)
+	// log.Printf("airtable: %s", jsonData)
+
+	for _, airtableIssue := range i.Records {
+		newIssue := Issue{Name: airtableIssue.Fields.Name, Script: airtableIssue.Fields.Script}
+
+		newContacts := []Contact{}
+		for _, airtableContact := range airtableIssue.Contacts {
+			newContact := Contact{
+				Name:     airtableContact.Fields.Name,
+				Phone:    airtableContact.Fields.Phone,
+				PhotoURL: airtableContact.Fields.PhotoURL,
+				Area:     airtableContact.Fields.Area,
+			}
+
+			newContacts = append(newContacts, newContact)
+		}
+		newIssue.Contacts = newContacts
+
+		issues = append(issues, newIssue)
+	}
+
+	return issues
+}
+
+func fetchIssues() (AirtableIssues, error) {
+	url := "https://api.airtable.com/v0/app6dzsa26hDjI7tp/Issues%20list?filterByFormula=NOT(%7BInactive%7D)"
 
 	client := http.DefaultClient
 	req, e := http.NewRequest("GET", url, nil)
@@ -31,13 +88,13 @@ func fetchIssues() (*AirtableIssues, error) {
 	defer resp.Body.Close()
 
 	body, _ := ioutil.ReadAll(resp.Body)
+	parsedResponse := AirtableIssues{}
 	if resp.StatusCode >= 200 && resp.StatusCode <= 400 && e == nil {
-		parsedResponse := AirtableIssues{}
 		json.Unmarshal(body, &parsedResponse)
-		return &parsedResponse, nil
+		return parsedResponse, nil
 	}
 
-	return nil, fmt.Errorf("issue error code:%d error:%v body:%s", resp.StatusCode, e, body)
+	return parsedResponse, fmt.Errorf("issue error code:%d error:%v body:%s", resp.StatusCode, e, body)
 }
 
 type AirtableContacts struct {
@@ -47,12 +104,14 @@ type AirtableContacts struct {
 type AirtableContact struct {
 	ID     string
 	Fields struct {
-		Name  string
-		Phone string
+		Name     string
+		Phone    string
+		PhotoURL string
+		Area     string
 	}
 }
 
-func fetchContacts() (*AirtableContacts, error) {
+func fetchContacts() (AirtableContacts, error) {
 	url := "https://api.airtable.com/v0/app6dzsa26hDjI7tp/Contact"
 
 	client := http.DefaultClient
@@ -62,11 +121,11 @@ func fetchContacts() (*AirtableContacts, error) {
 	defer resp.Body.Close()
 
 	body, _ := ioutil.ReadAll(resp.Body)
+	parsedResponse := AirtableContacts{}
 	if resp.StatusCode >= 200 && resp.StatusCode <= 400 && e == nil {
-		parsedResponse := AirtableContacts{}
 		json.Unmarshal(body, &parsedResponse)
-		return &parsedResponse, nil
+		return parsedResponse, nil
 	}
 
-	return nil, fmt.Errorf("contact error code:%d error:%v body:%s", resp.StatusCode, e, body)
+	return parsedResponse, fmt.Errorf("contact error code:%d error:%v body:%s", resp.StatusCode, e, body)
 }

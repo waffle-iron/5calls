@@ -21,9 +21,11 @@ var (
 	addr         = flag.String("addr", ":8090", "[ip]:port to listen on")
 	dbfile       = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
 	airtableKey  = os.Getenv("AIRTABLE_API_KEY")
-	loadedIssues = []Issue{}
-	db           *sql.DB
-	countCache   = cache.New(1*time.Hour, 10*time.Minute)
+	civicKey     = os.Getenv("CIVIC_API_KEY")
+	globalIssues = AirtableIssues{}
+
+	db         *sql.DB
+	countCache = cache.New(1*time.Hour, 10*time.Minute)
 )
 
 var pagetemplate *template.Template
@@ -34,13 +36,12 @@ func main() {
 	if airtableKey == "" {
 		log.Fatal("No airtable API key found")
 	}
+	if civicKey == "" {
+		log.Fatal("No google civic API key found")
+	}
 
-	log.Printf("api key %s", airtableKey)
-
-	issues, _ := fetchIssues()
-	log.Printf("issues %v", issues)
-	contacts, _ := fetchContacts()
-	log.Printf("contacts %v", contacts)
+	log.Printf("api keys %s", airtableKey, civicKey)
+	refreshIssuesAndContacts()
 
 	p, err := template.ParseFiles("index.html")
 	if err != nil {
@@ -56,12 +57,14 @@ func main() {
 	defer db.Close()
 
 	// load the current csv files
-	loadedIssues = loadCSVs()
+	// loadedIssues = loadCSVs()
 	// log.Print("issues %v", loadedIssues)
 
 	r := mux.NewRouter()
 	r.HandleFunc("/issues/{zip}", pageHandler)
 	r.HandleFunc("/issues/", pageHandler)
+	r.HandleFunc("/admin/", adminHandler)
+	r.HandleFunc("/admin/refresh", adminRefreshHandler)
 	r.HandleFunc("/report/", reportHandler)
 	http.Handle("/", r)
 	log.Printf("running fivecalls-web on port %v", *addr)
@@ -78,7 +81,7 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	zip := vars["zip"]
 
-	localContacts := []Contact{}
+	localContacts := []AirtableContact{}
 
 	if len(zip) == 5 && zip != "" {
 		log.Printf("zip %s", zip)
@@ -112,7 +115,19 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 
 		// swap to our own model for sane JSON
 		for _, rep := range validOfficials {
-			contact := Contact{Name: rep.Name, Phone: rep.Phones[0], PhotoURL: rep.PhotoURL, Area: rep.Area}
+			// fields := AirtableContact.Fields{Name: rep.Name, Phone: rep.Phones[0]}
+			contact := AirtableContact{Fields: struct {
+				Name     string
+				Phone    string
+				PhotoURL string
+				Area     string
+			}{
+				Name:     rep.Name,
+				Phone:    rep.Phones[0],
+				PhotoURL: rep.PhotoURL,
+				Area:     rep.Area,
+			}}
+			// contact := Contact{Name: rep.Name, Phone: rep.Phones[0], PhotoURL: rep.PhotoURL, Area: rep.Area}
 
 			localContacts = append(localContacts, contact)
 		}
@@ -121,10 +136,10 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// add local reps where necessary
-	customizedIssues := []Issue{}
-	for _, issue := range loadedIssues {
+	customizedIssues := AirtableIssues{}
+	for _, issue := range globalIssues.Records {
 		for i, contact := range issue.Contacts {
-			if contact.Name == "LOCAL REP" {
+			if contact.Fields.Name == "LOCAL REP" {
 				// this is how you remove an item from a list in go :/
 				issue.Contacts = append(issue.Contacts[:i], issue.Contacts[i+1:]...)
 				// add the local contacts loaded from google civic
@@ -132,10 +147,10 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		customizedIssues = append(customizedIssues, issue)
+		customizedIssues.Records = append(customizedIssues.Records, issue)
 	}
 
-	jsonData, err := json.Marshal(customizedIssues)
+	jsonData, err := json.Marshal(customizedIssues.exportIssues())
 	if err != nil {
 		panic(err)
 	}
