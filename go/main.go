@@ -40,15 +40,17 @@ func main() {
 		log.Fatal("No google civic API key found")
 	}
 
-	log.Printf("api keys %s", airtableKey, civicKey)
+	// log.Printf("api keys %s %s", airtableKey, civicKey)
 	refreshIssuesAndContacts()
 
+	// index template... unused
 	p, err := template.ParseFiles("index.html")
 	if err != nil {
 		log.Println("can't parse template:", err)
 	}
 	pagetemplate = p
 
+	// open database
 	db, err = sql.Open("sqlite3", fmt.Sprintf("./%s", *dbfile))
 	if err != nil {
 		log.Printf("can't open databse: %s", err)
@@ -56,10 +58,7 @@ func main() {
 	}
 	defer db.Close()
 
-	// load the current csv files
-	// loadedIssues = loadCSVs()
-	// log.Print("issues %v", loadedIssues)
-
+	// set up http routing
 	r := mux.NewRouter()
 	r.HandleFunc("/issues/{zip}", pageHandler)
 	r.HandleFunc("/issues/", pageHandler)

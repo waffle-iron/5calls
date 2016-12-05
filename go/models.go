@@ -2,6 +2,7 @@ package main
 
 // Issue is a thing to care about and call on
 type Issue struct {
+	ID       string    `json:"id"`
 	Name     string    `json:"name"`
 	Script   string    `json:"script"`
 	Contacts []Contact `json:"contacts"`
