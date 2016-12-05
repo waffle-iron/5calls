@@ -18,7 +18,7 @@ module.exports = (state, prev, send) => {
         <a href="/">5 Calls</a>
       </h1>
       <p class="issues__subtitle">
-        You’re at <strong class="issues__zip-code">12345</strong>. 
+        You’re at <strong class="issues__zip-code">${state.zip}</strong>. 
         <a href="#">Change?</a>
       </p>
     </header>

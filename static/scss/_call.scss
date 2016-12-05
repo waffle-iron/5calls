@@ -1,4 +1,9 @@
 .call {
   background-color: fade-out(#fff, 0.3);
   padding: 2rem;
+
+  &__header {
+  	font-size: 2rem;
+  	text-transform: uppercase;
+  }
 }

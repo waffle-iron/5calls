@@ -10,13 +10,13 @@ app.model({
   // extremely hackily shoving sample data into state
   state: {
     issues: [],
-    zip: false,
+    zip: '',
     activeIssue: false
   },
 
   effects: {
     fetch: (data, state, send, done) => {
-      http('http://5calls.org/issues/', (err, res, body) => {
+      http('https://5calls.org/issues/'+state.zip, (err, res, body) => {
       // http('http://localhost:8090/issues/', (err, res, body) => {
         send('receive', body, done)
       })
@@ -25,7 +25,6 @@ app.model({
 
   reducers: {
     receive: (data, state) => {
-      console.log("got data",data,state);
       return extend(state, { issues: JSON.parse(data) });
     },
     changeActiveIssue: (issueId, state) => {
