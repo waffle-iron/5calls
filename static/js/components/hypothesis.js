@@ -6,9 +6,9 @@ module.exports = (state, prev, send) => {
   return html`
     <div class="hypothesis">
       <header class="hypothesis__header">
-        <h2 class="hypothesis__title">Let’s Save Democracy</h2>
-        <p>Set up the premise here. What are we doing. Why are we doing it. Yadda, yadda, blah, blah. Set up the premise here. What are we doing.</p>
-        <p>You only need you to make five calls. today.</p>
+        <h2 class="hypothesis__title">Help Save Democracy</h2>
+        <p>This government <i>for the people</i>. They need to hear your opinions. Facebook likes don't count.</p>
+        <p>You can do your part by making five calls, today.</p>
       </header>
       <dl class="hypothesis__stats">
         <li class="hypothesis__stat">

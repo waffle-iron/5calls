@@ -16,7 +16,6 @@ module.exports = (state, prev, send) => {
   }
 
   function changeLocation(e) {
-    console.log("change zip");
     zip = prompt("What's your zip code?")
 
     send('setLocation', zip);

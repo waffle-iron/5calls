@@ -5,13 +5,15 @@
     margin-bottom: 2rem;
 
     p {
+      margin-bottom: 3rem;
       font-size: 2rem;
       line-height: 1.25;
     }
   }
 
   &__title {
-    font-size: 3rem;
+    margin: 0.6rem 0 2rem 0;
+    font-size: 4rem;
     font-weight: bold;
     text-transform: uppercase;
   }
@@ -29,11 +31,16 @@
       display: block;
       width: 50%;
       padding: .25rem;
-      font-size: 3rem;
+      font-size: 3.5rem;
+      font-weight: bold;
     }
   }
 
   &__stat-value {
     text-align: right;
+  }
+
+  &__stat-dd {
+    margin-left: 0.6rem;
   }
 }
