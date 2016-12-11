@@ -22,6 +22,7 @@ var (
 	dbfile       = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
 	airtableKey  = os.Getenv("AIRTABLE_API_KEY")
 	civicKey     = os.Getenv("CIVIC_API_KEY")
+	civicCache   = cache.New(1*time.Hour, 10*time.Minute)
 	globalIssues = AirtableIssues{}
 
 	db         *sql.DB

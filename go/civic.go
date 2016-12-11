@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/patrickmn/go-cache"
 )
 
 // GoogleRepResponse is the whole response
@@ -29,17 +31,28 @@ type GoogleOfficial struct {
 }
 
 func getReps(zip string) (*GoogleRepResponse, error) {
-	url := fmt.Sprintf("https://www.googleapis.com/civicinfo/v2/representatives?address=%s&fields=offices(name,officialIndices),officials(name,phones,urls,photoUrl)&levels=country&key=%s", zip, civicKey)
+	if cacheReps, cacheFound := civicCache.Get(zip); cacheFound {
+		// log.Printf("got cached reps for %s",zip)
 
-	client := http.DefaultClient
-	r, e := client.Get(url)
-	defer r.Body.Close()
-	body, _ := ioutil.ReadAll(r.Body)
-	if r.StatusCode >= 200 && r.StatusCode <= 400 && e == nil {
-		parsedResponse := GoogleRepResponse{}
-		json.Unmarshal(body, &parsedResponse)
-		return &parsedResponse, nil
+		repResponse := cacheReps.(GoogleRepResponse)
+		return &repResponse, nil
+	} else {
+		// log.Printf("fetching new reps for %s",zip)
+		url := fmt.Sprintf("https://www.googleapis.com/civicinfo/v2/representatives?address=%s&fields=offices(name,officialIndices),officials(name,phones,urls,photoUrl)&levels=country&key=%s", zip, civicKey)
+
+		client := http.DefaultClient
+		r, e := client.Get(url)
+		defer r.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+		if r.StatusCode >= 200 && r.StatusCode <= 400 && e == nil {
+			parsedResponse := GoogleRepResponse{}
+			json.Unmarshal(body, &parsedResponse)
+
+			civicCache.Set(zip, parsedResponse, cache.DefaultExpiration)
+
+			return &parsedResponse, nil
+		}
+
+		return nil, fmt.Errorf("rep error code:%d error:%v body:%s", r.StatusCode, e, body)
 	}
-
-	return nil, fmt.Errorf("rep error code:%d error:%v body:%s", r.StatusCode, e, body)
 }
