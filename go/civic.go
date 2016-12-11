@@ -29,7 +29,7 @@ type GoogleOfficial struct {
 }
 
 func getReps(zip string) (*GoogleRepResponse, error) {
-	url := fmt.Sprintf("https://www.googleapis.com/civicinfo/v2/representatives?address=%s&fields=offices(name,officialIndices),officials(name,phones,urls,photoUrl)&levels=country&key=AIzaSyCNNKXRLCny-ZGGZliWjXz2JvVRBeXBeU8", zip)
+	url := fmt.Sprintf("https://www.googleapis.com/civicinfo/v2/representatives?address=%s&fields=offices(name,officialIndices),officials(name,phones,urls,photoUrl)&levels=country&key=%s", zip, civicKey)
 
 	client := http.DefaultClient
 	r, e := client.Get(url)

@@ -112,9 +112,7 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		// swap to our own model for sane JSON
 		for _, rep := range validOfficials {
-			// fields := AirtableContact.Fields{Name: rep.Name, Phone: rep.Phones[0]}
 			contact := AirtableContact{Fields: struct {
 				Name     string
 				Phone    string
@@ -126,7 +124,6 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 				PhotoURL: rep.PhotoURL,
 				Area:     rep.Area,
 			}}
-			// contact := Contact{Name: rep.Name, Phone: rep.Phones[0], PhotoURL: rep.PhotoURL, Area: rep.Area}
 
 			localContacts = append(localContacts, contact)
 		}
@@ -137,15 +134,23 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 	// add local reps where necessary
 	customizedIssues := AirtableIssues{}
 	for _, issue := range globalIssues.Records {
-		for i, contact := range issue.Contacts {
+		addContacts := false
+		newContacts := []AirtableContact{}
+
+		for _, contact := range issue.Contacts {
 			if contact.Fields.Name == "LOCAL REP" {
-				// this is how you remove an item from a list in go :/
-				issue.Contacts = append(issue.Contacts[:i], issue.Contacts[i+1:]...)
-				// add the local contacts loaded from google civic
-				issue.Contacts = append(issue.Contacts, localContacts...)
+				addContacts = true
+			} else {
+				newContacts = append(newContacts, contact)
 			}
 		}
 
+		if addContacts {
+			// add the local contacts loaded from google civic
+			newContacts = append(newContacts, localContacts...)
+		}
+
+		issue.Contacts = newContacts
 		customizedIssues.Records = append(customizedIssues.Records, issue)
 	}
 
