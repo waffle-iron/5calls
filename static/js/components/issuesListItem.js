@@ -20,7 +20,7 @@ module.exports = (issue, state, prev, send) => {
   return html`
     <li class="${classString(state, '')}" onclick=${handleClick}>
       <p class="${classString(state, '__title')}">${issue.name}</p>
-      <p class="${classString(state, '__summary')}">4 calls to make</p>
+      <p class="${classString(state, '__summary')}">${issue.contacts.length} call${ issue.contacts.length > 1 ? "s" : "" } to make</p>
     </li>
   `;
 }

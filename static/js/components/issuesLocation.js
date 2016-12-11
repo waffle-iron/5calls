@@ -19,7 +19,5 @@ module.exports = (state, prev, send) => {
     zip = prompt("What's your zip code?")
 
     send('setLocation', zip);
-    // refetch data after the new location is set
-    send('fetch');
   }
 }

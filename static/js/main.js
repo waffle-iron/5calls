@@ -12,7 +12,11 @@ app.model({
   },
 
   reducers: {
-    receive: (data, state) => ({ issues: JSON.parse(data) }),
+    receive: (data, state) => {
+      issues = JSON.parse(data).filter((v) => { console.log("v",v.contacts.length); return v.contacts.length > 0 });
+      console.log("new issues", issues);
+      return { issues: issues }
+    },
     locationState: (zip, state) => ({ zip: zip }),
     changeActiveIssue: (issueId, state) => ({ activeIssue: issueId }),
   },
@@ -26,6 +30,7 @@ app.model({
     },
     setLocation: (data, state, send, done) => {
       send('locationState', data, done);
+      send('fetch', {}, done);
     }
   },
 });
