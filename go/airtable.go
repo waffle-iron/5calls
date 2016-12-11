@@ -57,7 +57,7 @@ func (i AirtableIssues) exportIssues() []Issue {
 	// log.Printf("airtable: %s", jsonData)
 
 	for _, airtableIssue := range i.Records {
-		newIssue := Issue{ID: airtableIssue.ID, Name: airtableIssue.Fields.Name, Script: airtableIssue.Fields.Script}
+		newIssue := Issue{ID: airtableIssue.ID, Name: airtableIssue.Fields.Name, Reason: airtableIssue.Fields.Action, Script: airtableIssue.Fields.Script}
 
 		newContacts := []Contact{}
 		for _, airtableContact := range airtableIssue.Contacts {
@@ -65,6 +65,7 @@ func (i AirtableIssues) exportIssues() []Issue {
 				Name:     airtableContact.Fields.Name,
 				Phone:    airtableContact.Fields.Phone,
 				PhotoURL: airtableContact.Fields.PhotoURL,
+				Reason:   airtableContact.Fields.Reason,
 				Area:     airtableContact.Fields.Area,
 			}
 
@@ -108,6 +109,7 @@ type AirtableContact struct {
 		Phone    string
 		PhotoURL string
 		Area     string
+		Reason   string `json:"Contact Reason"`
 	}
 }
 

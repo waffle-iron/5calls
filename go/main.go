@@ -119,6 +119,7 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 				Phone    string
 				PhotoURL string
 				Area     string
+				Reason   string `json:"Contact Reason"`
 			}{
 				Name:     rep.Name,
 				Phone:    rep.Phones[0],
@@ -148,7 +149,15 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 
 		if addContacts {
 			// add the local contacts loaded from google civic
-			newContacts = append(newContacts, localContacts...)
+			for _, contact := range localContacts {
+				if contact.Fields.Area == "Senate" {
+					contact.Fields.Reason = "This is one of your two Senators"
+				} else if contact.Fields.Area == "House" {
+					contact.Fields.Reason = "This is your local representative in the House"
+				}
+
+				newContacts = append(newContacts, contact)				
+			}
 		}
 
 		issue.Contacts = newContacts
