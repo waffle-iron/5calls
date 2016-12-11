@@ -1,10 +1,18 @@
 const html = require('choo/html');
 const find = require('lodash/find');
+const contact = require('./contact.js');
 
 module.exports = (state, prev, send) => {
   const issue = find(state.issues, ['id', state.activeIssue]);
+  const contactsLeft = issue.contacts.length - (state.contactIndex + 1);
 
-  console.log(issue);
+  const contactsLeftText = contactsLeft > 0 ? contactsLeft + " calls left" : "This is the last contact";
+
+  // console.log(issue);
+
+  function outcome() {
+    send('callComplete');
+  }
 
   return html`
     <section class="call">
@@ -13,13 +21,7 @@ module.exports = (state, prev, send) => {
         <h3 class="call__reason">${issue.reason}</h2>
       </header>
 
-      <div class="call__contact">
-        <div class="call__contact__image"><div class="crop"><img src="http://paulryan.house.gov/images/img12.jpg"/></div></div>
-        <p class="call__contact__type">Call this office:</p>
-        <p class="call__contact__name">Paul Ryan, WI-R</p>
-        <p class="call__contact__phone">666-666-666</p>
-        <p class="call__contact__reason"><strong>Why we're calling:</strong> He's the speaker of the house. He's on the comittee for bullshit.</p>
-      </div>
+      ${contact(state, prev, send)}
 
       <div class="call__script">
         <h3 class="call__script__header">Your script:</h3>
@@ -27,13 +29,13 @@ module.exports = (state, prev, send) => {
       </div>
 
       <menu class="call__outcomes">
-        <menuitem>Unavailable</menuitem>
-        <menuitem>Left Voicemail</menuitem>
-        <menuitem>Made Contact</menuitem>
+        <menuitem onclick=${outcome}>Unavailable</menuitem>
+        <menuitem onclick=${outcome}>Left Voicemail</menuitem>
+        <menuitem onclick=${outcome}>Made Contact</menuitem>
       </menu>
 
       <div class="call__promote">
-        <p>3 calls left for this issue • <a href="#">Tweet this issue</a></p>
+        <p>${contactsLeftText} for this issue • <a href="#">Tweet this issue</a></p>
       </div>
     </section>
   `;

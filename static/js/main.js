@@ -8,17 +8,18 @@ app.model({
   state: {
     issues: [],
     zip: '',
-    activeIssue: false
+    activeIssue: false,
+    contactIndex: 0,
   },
 
   reducers: {
     receive: (data, state) => {
-      issues = JSON.parse(data).filter((v) => { console.log("v",v.contacts.length); return v.contacts.length > 0 });
-      console.log("new issues", issues);
+      issues = JSON.parse(data).filter((v) => { return v.contacts.length > 0 });
       return { issues: issues }
     },
     locationState: (zip, state) => ({ zip: zip }),
-    changeActiveIssue: (issueId, state) => ({ activeIssue: issueId }),
+    changeActiveIssue: (issueId, state) => ({ activeIssue: issueId, contactIndex: 0 }),
+    callComplete: (data, state) => ({ contactIndex: state.contactIndex + 1 }),
   },
 
   effects: {
