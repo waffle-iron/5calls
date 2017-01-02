@@ -1,8 +1,11 @@
 const choo = require('choo');
 const html = require('choo/html');
 const http = require('choo/http');
+const queryString = require('query-string');
 
 const app = choo();
+// const appURL = 'https://5calls.org';
+const appURL = 'http://localhost:8090';
 
 app.model({
   state: {
@@ -10,6 +13,7 @@ app.model({
     zip: '',
     activeIssue: false,
     contactIndex: 0,
+    completedIssues: [],
   },
 
   reducers: {
@@ -19,20 +23,30 @@ app.model({
     },
     locationState: (zip, state) => ({ zip: zip }),
     changeActiveIssue: (issueId, state) => ({ activeIssue: issueId, contactIndex: 0 }),
-    callComplete: (data, state) => ({ contactIndex: state.contactIndex + 1 }),
+    incrementContact: (data, state) => {
+      if (true) {
+        return { contactIndex: state.contactIndex + 1 }
+      }
+    },
   },
 
   effects: {
     fetch: (data, state, send, done) => {
-      // http('https://5calls.org/issues/'+state.zip, (err, res, body) => {
-      http('http://localhost:8090/issues/'+state.zip, (err, res, body) => {
+      http(appURL+'/issues/'+state.zip, (err, res, body) => {
         send('receive', body, done)
       })
     },
     setLocation: (data, state, send, done) => {
       send('locationState', data, done);
       send('fetch', {}, done);
-    }
+    },
+    callComplete: (data, state, send, done) => {
+      const body = queryString.stringify({ location: state.zip, result: data.result })
+      http.post(appURL+'/report', { body: body, headers: {"Content-Type": "application/x-www-form-urlencoded"} }, (err, res, body) => {
+        // don't really care about the result
+      })
+      send('incrementContact', data, done);
+    },
   },
 });
 
@@ -41,28 +55,3 @@ app.router((route) => [
 ]);
 
 const tree = app.start('#root');
-
-// localStorage wrapper
-const store = {
-  getAll: (storeName, cb) => {
-    try {
-      cb(JSON.parse(window.localStorage[storeName]))
-    } catch (e) {
-      cb([])
-    }
-  },
-  add: (storeName, item, cb) => {
-    store.getAll(storeName, (items) => {
-      items.push(item)
-      window.localStorage[storeName] = JSON.stringify(items)
-      cb()
-    })
-  },
-  replace: (storeName, index, item, cb) => {
-    store.getAll(storeName, (items) => {
-      items[index] = item
-      window.localStorage[storeName] = JSON.stringify(items)
-      cb()
-    })
-  }
-}

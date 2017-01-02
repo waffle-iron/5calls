@@ -11,8 +11,8 @@ module.exports = (state, prev, send) => {
 
   const contactsLeftText = contactsLeft > 0 ? contactsLeft + " calls left" : "This is the last contact";
 
-  function outcome() {
-    send('callComplete');
+  function outcome(result) {
+    send('callComplete', { result: result });
   }
 
   return html`
@@ -30,9 +30,9 @@ module.exports = (state, prev, send) => {
       </div>
 
       <menu class="call__outcomes">
-        <menuitem onclick=${outcome}>Unavailable</menuitem>
-        <menuitem onclick=${outcome}>Left Voicemail</menuitem>
-        <menuitem onclick=${outcome}>Made Contact</menuitem>
+        <menuitem onclick=${() => outcome('unavailable')}>Unavailable</menuitem>
+        <menuitem onclick=${() => outcome('vm')}>Left Voicemail</menuitem>
+        <menuitem onclick=${() => outcome('contacted')}>Made Contact</menuitem>
       </menu>
 
       <div class="call__promote">
