@@ -20,5 +20,11 @@ module.exports = {
       window.localStorage[storeName] = JSON.stringify(items)
       cb()
     })
-  }
+  },
+  remove: (storeName, cb) => {
+    module.exports.getAll(storeName, (items) => {
+      window.localStorage[storeName] = null
+      cb()
+    })
+  },
 }

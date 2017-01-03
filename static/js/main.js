@@ -7,6 +7,7 @@ const store = require('./utils/localstorage.js');
 const app = choo();
 // const appURL = 'https://5calls.org';
 const appURL = 'http://localhost:8090';
+const debug = true;
 
 initialZip = '';
 store.getAll('org.5calls.location', (location) => {
@@ -22,6 +23,7 @@ app.model({
     activeIssue: false,
     contactIndex: 0,
     completedIssues: [],
+    debug: debug,
   },
 
   reducers: {
@@ -39,6 +41,10 @@ app.model({
       if (true) {
         return { contactIndex: state.contactIndex + 1 }
       }
+    },
+    resetLocation: (data, state) => {
+      store.remove("org.5calls.location", () => {});
+      return { zip: '' }
     },
   },
 
