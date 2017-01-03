@@ -6,11 +6,11 @@
 
   @media (min-width: $bp-medium) {
     flex-direction: row;
-    margin: 3rem 3rem;
+    margin: 3rem 3rem 1.5rem 3rem;
   }
 
   @media (min-width: $bp-large) {
-    margin: 5rem auto;
+    margin: 5rem auto 1.5rem 5rem;
   }
 }
 
@@ -32,5 +32,15 @@
   @media (min-width: $bp-medium) {
     margin: 0;
     width: 15/24 * 100%;
+  }
+}
+
+footer {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #999;
+
+  a {
+    color: #fff;
   }
 }

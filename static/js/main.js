@@ -9,6 +9,7 @@ const app = choo();
 const appURL = 'http://localhost:8090';
 const debug = true;
 
+// get the stored zip location
 initialZip = '';
 store.getAll('org.5calls.location', (location) => {
   if (location.length > 0) {
@@ -16,13 +17,17 @@ store.getAll('org.5calls.location', (location) => {
   }
 });
 
+// get the stored completed issues
+completedIssues = [];
+store.getAll('5calls-complete', (completed) => { completedIssues = completed; } );
+
 app.model({
   state: {
     issues: [],
     zip: initialZip,
     activeIssue: false,
     contactIndex: 0,
-    completedIssues: [],
+    completedIssues: completedIssues,
     debug: debug,
   },
 
