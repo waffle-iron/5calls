@@ -3,6 +3,7 @@ const find = require('lodash/find');
 
 module.exports = (c, state, prev, send) => {
   const photoURL = c.photoURL == "" ? "/img/generic-small.png" : c.photoURL;
+  const reason = c.reason == "" ? "This organization is related to the issue." : c.reason;
 
 	return html`
       <div class="call__contact">
@@ -10,7 +11,7 @@ module.exports = (c, state, prev, send) => {
         <p class="call__contact__type">Call this office:</p>
         <p class="call__contact__name">${c.name}</p>
         <p class="call__contact__phone">${c.phone}</p>
-        <p class="call__contact__reason"><strong>Why we're calling:</strong> He's the speaker of the house. He's on the comittee for bullshit.</p>
+        <p class="call__contact__reason"><strong>Why you're calling:</strong> ${reason}</p>
       </div>
 	`;
 }

@@ -36,7 +36,7 @@ module.exports = (state, prev, send) => {
       </menu>
 
       <div class="call__promote">
-        <p>${contactsLeftText} for this issue • <a href="#">Tweet this issue</a></p>
+        <p>${contactsLeftText} for this issue • <a href="https://twitter.com/intent/tweet?text=Make%205%20calls%20today%20to%20change%20your%20government%20http%3A%2F%2Fbit.ly%2F2iJb5nH&source=webclient&via=make5calls">Tweet this issue</a> • <a href="https://www.facebook.com/sharer/sharer.php?u=http://bit.ly/2iJb5nH">Share this issue</a></p>
       </div>
     </section>
   `;
