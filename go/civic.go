@@ -102,6 +102,8 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 						Name:     official.Name,
 						Phone:    phone,
 						PhotoURL: official.PhotoUrl,
+						Party:	  official.Party,
+						State:	  r.NormalizedInput.State,
 						Area:     area,
 					}
 					if area == areaHouse {

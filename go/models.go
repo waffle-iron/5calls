@@ -18,6 +18,8 @@ type Contact struct {
 	Name     string `json:"name"`
 	Phone    string `json:"phone"`
 	PhotoURL string `json:"photoURL"`
+	Party	 string `json:"party"`
+	State	 string `json:"state"`
 	Reason   string `json:"reason"`
 	Area     string `json:"area"`
 }
