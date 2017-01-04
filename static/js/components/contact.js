@@ -16,7 +16,7 @@ module.exports = (c, state, prev, send) => {
         <p class="call__contact__type">Call this office:</p>
         <p class="call__contact__name">${c.name} ${repID}</p>
         <p class="call__contact__phone">${c.phone}</p>
-        <p class="call__contact__reason"><strong>Why you're calling:</strong> ${reason}</p>
+        <p class="call__contact__reason"><strong>Why you're calling this office:</strong> ${reason}</p>
       </div>
 	`;
 }

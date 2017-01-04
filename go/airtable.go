@@ -51,6 +51,7 @@ func (i *atIssue) toIssue(contacts []Contact) Issue {
 	return Issue{
 		ID:       i.ID,
 		Name:     i.Name,
+		Reason:	  i.Action,
 		Script:   i.Script,
 		Contacts: contacts,
 	}
