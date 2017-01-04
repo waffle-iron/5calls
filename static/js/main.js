@@ -17,14 +17,24 @@ store.getAll('org.5calls.location', (location) => {
   }
 });
 
+// get the stored geo location
+initialGeo = '';
+store.getAll('org.5calls.geolocation', (geo) => {
+  if (geo.length > 0) {
+   initialGeo = geo[0]
+  }
+});
+
 // get the stored completed issues
 completedIssues = [];
-store.getAll('5calls-complete', (completed) => { completedIssues = completed; } );
+store.getAll('org.5calls.completed', (completed) => { completedIssues = completed; } );
 
 app.model({
   state: {
     issues: [],
+    askingLocation: false,
     zip: initialZip,
+    geolocation: initialGeo,
     activeIssue: false,
     contactIndex: 0,
     completedIssues: completedIssues,
@@ -47,9 +57,24 @@ app.model({
         return { contactIndex: state.contactIndex + 1 }
       }
     },
+    enterLocation: (data, state) => {
+      // if ("geolocation" in navigator) {
+      //   navigator.geolocation.getCurrentPosition((position) => {
+      //     geolocation = position.coords.latitude + "," + position.coords.longitude
+
+      //     store.replace("org.5calls.geolocation", 0, geolocation, () => {});
+      //     return { geolocation: geolocation };
+      //   }, (error) => {
+      //     console.log("error",error);
+      //   })
+      // }
+
+      return { askingLocation: true }
+    },
     resetLocation: (data, state) => {
       store.remove("org.5calls.location", () => {});
-      return { zip: '' }
+      store.remove("org.5calls.geolocation", () => {});
+      return { zip: '', geolocation: '' }
     },
   },
 
