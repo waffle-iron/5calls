@@ -33,6 +33,7 @@ app.model({
   state: {
     issues: [],
     askingLocation: false,
+    askingLocationError: false,    
     zip: initialZip,
     geolocation: initialGeo,
     activeIssue: false,
@@ -49,13 +50,16 @@ app.model({
     locationState: (zip, state) => {
       store.replace("org.5calls.location", 0, zip, () => {});
       
-      return { zip: zip }
+      return { zip: zip, askingLocation: false, askingLocationError: false }
     },
     changeActiveIssue: (issueId, state) => ({ activeIssue: issueId, contactIndex: 0 }),
     incrementContact: (data, state) => {
       if (true) {
         return { contactIndex: state.contactIndex + 1 }
       }
+    },
+    locationError: (error, state) => {
+      return { askingLocationError: error }
     },
     enterLocation: (data, state) => {
       // if ("geolocation" in navigator) {

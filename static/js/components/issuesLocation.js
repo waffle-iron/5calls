@@ -9,10 +9,15 @@ module.exports = (state, prev, send) => {
 
   function pretext(state) {
     if (state.askingLocation) {
-      return html`<p>Zip code: <input name="zip" /><button>Go</button></p>`;
+      zipText = html`Zip code:`;
+      if (state.askingLocationError != false) {
+        zipText = html`${state.askingLocationError}`
+      }
+
+      return html`<p><form onsubmit=${submitZip}>${zipText} <input autofocus="true" name="zip" maxlength="5" /><button>Go</button></form></p>`;
     } else {
       if (state.zip != "") {
-        return html`<p>You’re at <strong class="issues__zip-code">${state.zip}</strong>, <a href="#" onclick=${changeLocation}>Change?</a> ${debugText(state.debug)}</p>`;
+        return html`<p>You’re at <strong class="issues__zip-code">${state.zip}</strong>, <a href="#" onclick=${enterLocation}>Change?</a> ${debugText(state.debug)}</p>`;
       } else if (state.geolocation != "") {
         return html`<p>We've got your location. ${debugText(state.debug)}</p>`
       } else {
@@ -25,14 +30,20 @@ module.exports = (state, prev, send) => {
     return debug ? html`<a href="#" onclick=${resetLocation}>reset</a>` : html``;
   }
 
-  function enterLocation(e) {
-    send('enterLocation');
-  }
+  function submitZip(e) {
+    e.preventDefault();
+    zip = this.elements["zip"].value;
 
-  function changeLocation(e) {
-    zip = prompt("What's your zip code?")
+    if (zip.length != 5) {
+      send('locationError', "Please enter a 5-digit zip:");
+      return;
+    }
 
     send('setLocation', zip);
+  }
+
+  function enterLocation(e) {
+    send('enterLocation');
   }
 
   function resetLocation() {
