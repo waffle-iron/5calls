@@ -14,8 +14,10 @@ module.exports = (state, prev, send) => {
   function outcome(result) {
     send('callComplete', { result: result });
   }
-
-  return html`
+  if (state.completeIssue) {
+    return html`<section class="call">COMPLETE</section>`;
+  } else {
+    return html`
     <section class="call">
       <header class="call__header">
         <h2 class="call__title">${issue.name}</h2>
@@ -39,5 +41,6 @@ module.exports = (state, prev, send) => {
         <p>${contactsLeftText} for this issue • <a href="https://twitter.com/intent/tweet?text=Make%205%20calls%20today%20to%20change%20your%20government%20http%3A%2F%2Fbit.ly%2F2iJb5nH&source=webclient&via=make5calls">Tweet this issue</a> • <a href="https://www.facebook.com/sharer/sharer.php?u=http://bit.ly/2iJb5nH">Share this issue</a></p>
       </div>
     </section>
-  `;
+    `;    
+  }
 }

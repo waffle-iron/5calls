@@ -1,6 +1,7 @@
 const choo = require('choo');
 const html = require('choo/html');
 const http = require('choo/http');
+const find = require('lodash/find');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
 
@@ -27,7 +28,7 @@ store.getAll('org.5calls.geolocation', (geo) => {
 
 // get the stored completed issues
 completedIssues = [];
-store.getAll('org.5calls.completed', (completed) => { completedIssues = completed; } );
+store.getAll('org.5calls.completed', (completed) => { completedIssues = completed; console.log("complete",completed); } );
 
 app.model({
   state: {
@@ -37,6 +38,7 @@ app.model({
     zip: initialZip,
     geolocation: initialGeo,
     activeIssue: false,
+    completeIssue: false,
     contactIndex: 0,
     completedIssues: completedIssues,
     debug: debug,
@@ -52,10 +54,18 @@ app.model({
       
       return { zip: zip, askingLocation: false, askingLocationError: false }
     },
-    changeActiveIssue: (issueId, state) => ({ activeIssue: issueId, contactIndex: 0 }),
+    changeActiveIssue: (issueId, state) => {
+      return { activeIssue: issueId, completeIssue: false, contactIndex: 0 }
+    },
     incrementContact: (data, state) => {
-      if (true) {
+      const issue = find(state.issues, ['id', state.activeIssue]);
+
+      if (state.contactIndex < issue.contacts.length - 1) {
         return { contactIndex: state.contactIndex + 1 }
+      } else {
+        store.add("org.5calls.completed", issue.id, () => {})
+        console.log("DONE CONTACTS");
+        return { contactIndex: 0, completeIssue: true, completedIssues: state.completedIssues.concat(issue.id) }
       }
     },
     locationError: (error, state) => {

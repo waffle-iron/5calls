@@ -1,6 +1,8 @@
 const html = require('choo/html');
 
 module.exports = (issue, state, prev, send) => {
+  const completeDisplay =  state.completedIssues.indexOf(issue.id) == -1 ? "none" : "block";
+
   function classString(state, baseAddition) {
     const BASE_CLASS = 'issues-list__item' + baseAddition;
     const ACTIVE_CLASS = 'is-active';
@@ -21,6 +23,7 @@ module.exports = (issue, state, prev, send) => {
     <li class="${classString(state, '')}" onclick=${handleClick}>
       <p class="${classString(state, '__title')}">${issue.name}</p>
       <p class="${classString(state, '__summary')}">${issue.contacts.length} call${ issue.contacts.length > 1 ? "s" : "" } to make</p>
+      <img style="display:${completeDisplay}" src="/img/done.png" width="83" />
     </li>
   `;
 }

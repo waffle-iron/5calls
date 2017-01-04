@@ -42,6 +42,7 @@
     background-color: fade-out(#fff, .4);
     margin-bottom: 1px;
     padding: 0.6em 0.8rem;
+    position: relative;
 
     &__title {
       min-height: 3em;
@@ -51,6 +52,12 @@
     &__summary {
       font-size: 0.9rem;
       text-align: right;
+    }
+
+    img {
+      position: absolute;
+      top: 20px;
+      right: -35px;
     }
 
     > * {

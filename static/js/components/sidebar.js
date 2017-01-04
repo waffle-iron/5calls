@@ -1,5 +1,4 @@
 const html = require('choo/html');
-
 const issues = require('./issues.js');
 
 module.exports = (state, prev, send) => {
