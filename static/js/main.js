@@ -28,11 +28,15 @@ store.getAll('org.5calls.geolocation', (geo) => {
 
 // get the stored completed issues
 completedIssues = [];
-store.getAll('org.5calls.completed', (completed) => { completedIssues = completed; console.log("complete",completed); } );
+store.getAll('org.5calls.completed', (completed) => {
+  completedIssues = completed == null ? [] : completed;
+  console.log("complete",completed);
+});
 
 app.model({
   state: {
     issues: [],
+    totalCalls: 1000,
     askingLocation: false,
     askingLocationError: false,    
     zip: initialZip,
@@ -89,6 +93,10 @@ app.model({
       store.remove("org.5calls.location", () => {});
       store.remove("org.5calls.geolocation", () => {});
       return { zip: '', geolocation: '' }
+    },
+    resetCompletedIssues: (data, state) => {
+      store.remove("org.5calls.completed", () => {});
+      return { completedIssues: [] }
     },
   },
 

@@ -2,9 +2,6 @@
   background-color: fade-out(#fff, 0.3);
   padding: 2rem;
 
-  &__header {
-  }
-
   &__title {
   	margin: 0;
   	font-size: 3.4rem;
@@ -98,6 +95,28 @@
   &__promote {
     p {
       margin: 0;
+      text-align: center;
+    }
+  }
+
+  &__complete {
+
+    &__title {
+      margin: 0 0 2rem 0;
+      font-size: 3.4rem;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    &__text {
+      margin: 2rem 0 2rem 0;
+      font-size: 1.5rem;
+      font-weight: 300;
+      line-height: 2rem;
+    }
+
+    &__share {
+      font-size: 1.8rem;
       text-align: center;
     }
   }
