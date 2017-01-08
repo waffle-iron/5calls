@@ -76,6 +76,7 @@ func (c *atContact) String() string { return asJson(c) }
 
 func (c *atContact) toContact() Contact {
 	return Contact{
+		ID:       c.ID,
 		Name:     c.Name,
 		Phone:    c.Phone,
 		PhotoURL: c.PhotoURL,

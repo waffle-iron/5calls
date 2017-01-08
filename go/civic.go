@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"time"
 	"regexp"
+	"strings"
 )
 
 const (
@@ -103,6 +104,7 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 						area = areaSenate
 					}
 					c := &Contact{
+						ID:		  fmt.Sprintf("%s-%s",r.NormalizedInput.State,strings.Replace(official.Name, " ", "", -1)),
 						Name:     official.Name,
 						Phone:    reformattedPhone(phone),
 						PhotoURL: official.PhotoUrl,

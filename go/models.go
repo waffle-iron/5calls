@@ -15,6 +15,7 @@ func (i *Issue) String() string {
 
 // Contact is a single point of contact related to an issue
 type Contact struct {
+	ID       string `json:"id"`
 	Name     string `json:"name"`
 	Phone    string `json:"phone"`
 	PhotoURL string `json:"photoURL"`
