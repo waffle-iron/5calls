@@ -74,6 +74,12 @@
     margin: auto auto 2rem auto;
     padding: 0;
 
+    &__header {
+      margin-bottom: 0.8rem;
+      font-size: 1.6rem;
+      // font-weight: 300;
+    }
+
     menuitem {
       // float: left;
       padding: 0.8rem 0;

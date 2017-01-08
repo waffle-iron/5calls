@@ -4,7 +4,7 @@ module.exports = (state, prev, send) => {
   // TODO: separate this out into straight up content and stats
 
   return html`
-    <div class="hypothesis">
+    <div class="hypothesis" onload=${(e) => send('getTotals')}>
       <header class="hypothesis__header">
         <h2 class="hypothesis__title">Help Save Democracy</h2>
         <p>This government <i>for the people</i>. They need to hear your opinions. Facebook likes don't count.</p>
@@ -12,12 +12,8 @@ module.exports = (state, prev, send) => {
       </header>
       <dl class="hypothesis__stats">
         <li class="hypothesis__stat">
-          <dt class="hypothesis__stat-value">5,301,000</dt>
+          <dt class="hypothesis__stat-value">${state.totalCalls.toLocaleString()}</dt>
           <dd class="hypothesis__stat-dd">calls to date</dd>
-        </li>
-        <li class="hypothesis__stat">
-          <dt class="hypothesis__stat-value">54,291</dt>
-          <dd class="hypothesis__stat-dd">calls today</dd>
         </li>
       </dl>
     </div>

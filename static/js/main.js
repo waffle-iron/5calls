@@ -36,7 +36,7 @@ store.getAll('org.5calls.completed', (completed) => {
 app.model({
   state: {
     issues: [],
-    totalCalls: 1000,
+    totalCalls: 0,
     askingLocation: false,
     askingLocationError: false,    
     zip: initialZip,
@@ -49,9 +49,13 @@ app.model({
   },
 
   reducers: {
-    receive: (data, state) => {
+    receiveIssues: (data, state) => {
       issues = JSON.parse(data).filter((v) => { return v.contacts.length > 0 });
       return { issues: issues }
+    },
+    receiveTotals: (data, state) => {
+      totals = JSON.parse(data);
+      return { totalCalls: totals.count }
     },
     locationState: (zip, state) => {
       store.replace("org.5calls.location", 0, zip, () => {});
@@ -103,7 +107,12 @@ app.model({
   effects: {
     fetch: (data, state, send, done) => {
       http(appURL+'/issues/'+state.zip, (err, res, body) => {
-        send('receive', body, done)
+        send('receiveIssues', body, done)
+      })
+    },
+    getTotals: (data, state, send, done) => {
+      http(appURL+'/report/', (err, res, body) => {
+        send('receiveTotals', body, done)
       })
     },
     setLocation: (data, state, send, done) => {
