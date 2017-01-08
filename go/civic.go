@@ -10,6 +10,7 @@ import (
 	"github.com/patrickmn/go-cache"
 	"net/url"
 	"time"
+	"regexp"
 )
 
 const (
@@ -20,6 +21,7 @@ const (
 )
 
 var baseURL = "https://www.googleapis.com/civicinfo/v2/representatives"
+var phoneRegex = regexp.MustCompile(`\((\d{3})\)\s+(\d{3})[\s\-](\d{4})`)
 
 // RepFinder provides a mechanism to find local reps given an address.
 type RepFinder interface {
@@ -93,6 +95,8 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 					var phone string
 					if len(official.Phones) > 0 {
 						phone = official.Phones[0]
+					} else {
+						continue
 					}
 					var area = areaHouse
 					if role == roleUpperBody {
@@ -100,7 +104,7 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 					}
 					c := &Contact{
 						Name:     official.Name,
-						Phone:    phone,
+						Phone:    reformattedPhone(phone),
 						PhotoURL: official.PhotoUrl,
 						Party:	  official.Party,
 						State:	  r.NormalizedInput.State,
@@ -175,6 +179,17 @@ func NewRepCache(delegate RepFinder, ttl time.Duration, gc time.Duration) RepFin
 		delegate: delegate,
 		cache:    cache.New(ttl, gc),
 	}
+}
+
+// reformat phone numbers that come from the google civic API
+func reformattedPhone(civicPhone string) (string) {
+	result := phoneRegex.FindStringSubmatch(civicPhone)
+
+	if len(result) >= 3 {
+		return fmt.Sprintf("%s-%s-%s",result[1],result[2],result[3])
+	}
+
+	return civicPhone
 }
 
 // GetReps returns local representatives for the supplied address.
