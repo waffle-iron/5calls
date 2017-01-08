@@ -32,8 +32,18 @@ func (h *reportHandler) RegisterCall(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "must pass result", 400)
 		return
 	}
+	contactID := r.FormValue("contactid")
+	if contactID == "" {
+		http.Error(w, "must pass contact id", 400)
+		return
+	}
+	issueID := r.FormValue("issueid")
+	if issueID == "" {
+		http.Error(w, "must pass issue id", 400)
+		return
+	}
 
-	stmt, err := h.db.Prepare("INSERT INTO results(location, result, time) values(?,?,?)")
+	stmt, err := h.db.Prepare("INSERT INTO results(location, result, time, issueID, contactID) values(?,?,?,?,?)")
 	if err != nil {
 		http.Error(w, "can't prepare statement", 500)
 		return
@@ -41,7 +51,7 @@ func (h *reportHandler) RegisterCall(w http.ResponseWriter, r *http.Request) {
 	defer stmt.Close()
 
 	now := time.Now()
-	_, err = stmt.Exec(location, result, now.Unix())
+	_, err = stmt.Exec(location, result, now.Unix(), issueID, contactID)
 	if err != nil {
 		http.Error(w, "can't exec statement", 500)
 		return
