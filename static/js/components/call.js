@@ -6,13 +6,14 @@ const scriptLine = require('./scriptLine.js');
 module.exports = (state, prev, send) => {
   const issue = find(state.issues, ['id', state.activeIssue]);
   const currentContact = issue.contacts[state.contactIndex];
+  console.log("contact",currentContact);
 
   const contactsLeft = issue.contacts.length - (state.contactIndex + 1);
 
   const contactsLeftText = contactsLeft > 0 ? contactsLeft + " calls left" : "This is the last contact";
 
   function outcome(result) {
-    send('callComplete', { result: result });
+    send('callComplete', { result: result, contactid: currentContact.id, issueid: issue.id });
   }
   if (state.completeIssue) {
     return html`
