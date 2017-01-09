@@ -1,0 +1,22 @@
+.about {
+  background-color: fade-out(#fff, 0.3);
+  padding: 2rem;
+
+  &__title {
+  	margin: 0;
+  	font-size: 3.4rem;
+  	text-transform: uppercase;
+  }
+
+  &__subtitle {
+  	margin: 1.2rem 0;
+  	font-size: 2.2rem;
+  	text-transform: uppercase;
+  }
+
+  p {
+  	font-size: 1.4rem;
+  	font-weight: 300;
+  	line-height: 2rem;
+  }
+}

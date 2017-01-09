@@ -41,6 +41,7 @@ app.model({
     askingLocationError: false,    
     zip: initialZip,
     geolocation: initialGeo,
+    getInfo: false,
     activeIssue: false,
     completeIssue: false,
     contactIndex: 0,
@@ -63,7 +64,7 @@ app.model({
       return { zip: zip, askingLocation: false, askingLocationError: false }
     },
     changeActiveIssue: (issueId, state) => {
-      return { activeIssue: issueId, completeIssue: false, contactIndex: 0 }
+      return { activeIssue: issueId, completeIssue: false, getInfo: false, contactIndex: 0 }
     },
     incrementContact: (data, state) => {
       const issue = find(state.issues, ['id', state.activeIssue]);
@@ -75,6 +76,7 @@ app.model({
         return { contactIndex: 0, completeIssue: true, completedIssues: state.completedIssues.concat(issue.id) }
       }
     },
+    getInfo: (data, state) => ({ getInfo: true }),
     locationError: (error, state) => {
       return { askingLocationError: error }
     },
