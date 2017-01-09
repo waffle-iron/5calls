@@ -16,16 +16,27 @@ type handler struct {
 func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 	var localReps *LocalReps
 	var err error
-	zip := mux.Vars(r)["zip"]
 
-	if len(zip) == 5 {
-		log.Printf("zip %s", zip)
-		localReps, _, err = h.repFinder.GetReps(zip)
+	var civicLocationParam string
+	zip := mux.Vars(r)["zip"]
+	address := r.URL.Query().Get("address") // could be geolocation too
+
+	if len(zip) != 0 && len(zip) == 5 {
+		civicLocationParam = zip
+	}
+	if len(address) != 0 {
+		civicLocationParam = address
+	}
+
+	if len(civicLocationParam) != 0 {
+		log.Println("getting local reps for", civicLocationParam)
+
+		localReps, _, err = h.repFinder.GetReps(civicLocationParam)
 		if err != nil {
 			log.Println("Unable to find local reps for", zip, err)
 		}
 	} else {
-		log.Println("no zip")
+		log.Println("no address or zip")
 	}
 
 	// add local reps where necessary

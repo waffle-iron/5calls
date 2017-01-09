@@ -9,14 +9,15 @@ import (
 	"bytes"
 	"github.com/patrickmn/go-cache"
 	"net/url"
-	"time"
 	"regexp"
 	"strings"
+	"time"
 )
 
 const (
 	roleLowerBody = "legislatorLowerBody"
 	roleUpperBody = "legislatorUpperBody"
+	roleLevel     = "country"
 	areaHouse     = "House"
 	areaSenate    = "Senate"
 )
@@ -104,12 +105,12 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 						area = areaSenate
 					}
 					c := &Contact{
-						ID:		  fmt.Sprintf("%s-%s",r.NormalizedInput.State,strings.Replace(official.Name, " ", "", -1)),
+						ID:       fmt.Sprintf("%s-%s", r.NormalizedInput.State, strings.Replace(official.Name, " ", "", -1)),
 						Name:     official.Name,
 						Phone:    reformattedPhone(phone),
 						PhotoURL: official.PhotoUrl,
-						Party:	  official.Party,
-						State:	  r.NormalizedInput.State,
+						Party:    official.Party,
+						State:    r.NormalizedInput.State,
 						Area:     area,
 					}
 					if area == areaHouse {
@@ -140,8 +141,8 @@ func NewCivicAPI(key string, client *http.Client) RepFinder {
 
 // GetReps returns local representatives for the supplied address.
 func (c *civicAPI) GetReps(address string) (*LocalReps, *Address, error) {
-	u := fmt.Sprintf("%s?key=%s&role=%s&role=%s&address=%s",
-		baseURL, c.key, roleUpperBody, roleLowerBody,
+	u := fmt.Sprintf("%s?key=%s&levels=%s&address=%s",
+		baseURL, c.key, roleLevel,
 		url.QueryEscape(address),
 	)
 	req, err := http.NewRequest("GET", u, nil)
@@ -184,11 +185,11 @@ func NewRepCache(delegate RepFinder, ttl time.Duration, gc time.Duration) RepFin
 }
 
 // reformat phone numbers that come from the google civic API
-func reformattedPhone(civicPhone string) (string) {
+func reformattedPhone(civicPhone string) string {
 	result := phoneRegex.FindStringSubmatch(civicPhone)
 
 	if len(result) >= 3 {
-		return fmt.Sprintf("%s-%s-%s",result[1],result[2],result[3])
+		return fmt.Sprintf("%s-%s-%s", result[1], result[2], result[3])
 	}
 
 	return civicPhone
