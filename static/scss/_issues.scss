@@ -31,6 +31,16 @@
 
   &__subtitle {
     color: $gray-dark;
+    font-size: 1.5rem;
+
+    input {
+      width: 100px;
+      margin-right: 10px;
+    }
+
+    button {
+      border-radius: 8px;
+    }
   }
 }
 

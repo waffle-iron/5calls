@@ -120,6 +120,9 @@ app.model({
       send('locationState', data, done);
       send('fetch', {}, done);
     },
+    skipCall: (data, state, send, done) => {
+      send('incrementContact', data, done);
+    },
     callComplete: (data, state, send, done) => {
       const body = queryString.stringify({ location: state.zip, result: data.result, contactid: data.contactid, issueid: data.issueid })
       http.post(appURL+'/report', { body: body, headers: {"Content-Type": "application/x-www-form-urlencoded"} }, (err, res, body) => {
