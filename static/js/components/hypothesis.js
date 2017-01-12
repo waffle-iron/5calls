@@ -19,7 +19,7 @@ module.exports = (state, prev, send) => {
       <div class="hypothesis__text">
         <p>There's one simple and straightforward way to influence the Government that is supposed to represent you: <strong>Call them on the phone</strong>.</p>
         <p>Calling is the most effective way to influence your representative. 5 Calls gives you <strong>contacts and scripts</strong> so calling is quick and easy. We use your location to give you your local representatives so <strong>your calls are more impactful</strong>.</p>
-        <p>Want to know more? Read about <a href="#" onclick=${(e) => about(e)}>why calling works</a></p>
+        <p>Want to know more? Read about <a href="#" onclick=${(e) => about(e)}>why calling works</a> or <a href="#" onclick=${(e) => about(e)}>more about us</a></p>
       </div>
       <dl class="hypothesis__stats">
         <li class="hypothesis__stat">
