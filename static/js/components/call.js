@@ -9,8 +9,9 @@ module.exports = (state, prev, send) => {
   console.log("contact",currentContact);
 
   const contactsLeft = issue.contacts.length - (state.contactIndex + 1);
+  const callsPluralization = contactsLeft > 1 ? "s" : "";
 
-  const contactsLeftText = contactsLeft > 0 ? contactsLeft + " calls left" : "This is the last contact";
+  const contactsLeftText = contactsLeft > 0 ? contactsLeft + " call"+ callsPluralization +" left" : "This is the last contact";
 
   function outcome(result) {
     if (result == null) {
@@ -42,7 +43,7 @@ module.exports = (state, prev, send) => {
     <section class="call">
       <header class="call__header">
         <h2 class="call__title">${issue.name}</h2>
-        <h3 class="call__reason">${issue.reason}</h2>
+        <h3 class="call__reason">${issue.reason.split('\n').map((line) => scriptLine(line, state, prev, send))}</h2>
       </header>
 
       ${contact(currentContact, state, prev, send)}

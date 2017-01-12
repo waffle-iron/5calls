@@ -22,7 +22,8 @@ store.getAll('org.5calls.location', (location) => {
 initialGeo = '';
 store.getAll('org.5calls.geolocation', (geo) => {
   if (geo.length > 0) {
-   initialGeo = geo[0]
+    // console.log("geo get",geo[0]);
+    // initialGeo = geo[0]
   }
 });
 
@@ -30,12 +31,12 @@ store.getAll('org.5calls.geolocation', (geo) => {
 completedIssues = [];
 store.getAll('org.5calls.completed', (completed) => {
   completedIssues = completed == null ? [] : completed;
-  console.log("complete",completed);
 });
 
 app.model({
   state: {
     issues: [],
+    splitDistrict: false,
     totalCalls: 0,
     askingLocation: false,
     askingLocationError: false,    
@@ -51,17 +52,13 @@ app.model({
 
   reducers: {
     receiveIssues: (data, state) => {
-      issues = JSON.parse(data).filter((v) => { return v.contacts.length > 0 });
-      return { issues: issues }
+      response = JSON.parse(data)
+      issues = response.issues.filter((v) => { return v.contacts.length > 0 });
+      return { issues: issues, splitDistrict: response.splitDistrict }
     },
     receiveTotals: (data, state) => {
       totals = JSON.parse(data);
       return { totalCalls: totals.count }
-    },
-    locationState: (zip, state) => {
-      store.replace("org.5calls.location", 0, zip, () => {});
-      
-      return { zip: zip, askingLocation: false, askingLocationError: false }
     },
     changeActiveIssue: (issueId, state) => {
       return { activeIssue: issueId, completeIssue: false, getInfo: false, contactIndex: 0 }
@@ -76,22 +73,20 @@ app.model({
         return { contactIndex: 0, completeIssue: true, completedIssues: state.completedIssues.concat(issue.id) }
       }
     },
-    getInfo: (data, state) => ({ getInfo: true }),
-    locationError: (error, state) => {
-      return { askingLocationError: error }
+    getInfo: (data, state) => ({ getInfo: true }),    
+    // locationError: (error, state) => {
+    //   return { askingLocationError: error }
+    // },
+    setZip: (zip, state) => {
+      store.replace("org.5calls.location", 0, zip, () => {});
+      
+      return { zip: zip, askingLocation: false, askingLocationError: false }
+    },
+    setGeolocation: (data, state) => {
+      store.replace("org.5calls.geolocation", 0, data, () => {});
+      return { geolocation: data }
     },
     enterLocation: (data, state) => {
-      // if ("geolocation" in navigator) {
-      //   navigator.geolocation.getCurrentPosition((position) => {
-      //     geolocation = position.coords.latitude + "," + position.coords.longitude
-
-      //     store.replace("org.5calls.geolocation", 0, geolocation, () => {});
-      //     return { geolocation: geolocation };
-      //   }, (error) => {
-      //     console.log("error",error);
-      //   })
-      // }
-
       return { askingLocation: true }
     },
     resetLocation: (data, state) => {
@@ -107,7 +102,12 @@ app.model({
 
   effects: {
     fetch: (data, state, send, done) => {
-      http(appURL+'/issues/'+state.zip, (err, res, body) => {
+      address = ""
+      if (state.geolocation !== "") {
+        address = "?address="+state.geolocation
+      }
+
+      http(appURL+'/issues/'+state.zip+address, (err, res, body) => {
         send('receiveIssues', body, done)
       })
     },
@@ -116,8 +116,24 @@ app.model({
         send('receiveTotals', body, done)
       })
     },
+    geolocation: (data, state, send, done) => {
+      // if ("geolocation" in navigator) {
+      //   navigator.geolocation.getCurrentPosition((position) => {
+      //     geolocation = position.coords.latitude + "," + position.coords.longitude
+
+      //     // TODO: is this close to the stored geolocation? don't change it
+
+      //     console.log("got geo",geolocation);
+      //     send('setGeolocation', geolocation, done);
+      //     // store.replace("org.5calls.geolocation", 0, geolocation, () => {});
+      //     // return { geolocation: geolocation };
+      //   }, (error) => {
+      //     console.log("error",error);
+      //   })
+      // }
+    },
     setLocation: (data, state, send, done) => {
-      send('locationState', data, done);
+      send('setZip', data, done);
       send('fetch', {}, done);
     },
     skipCall: (data, state, send, done) => {

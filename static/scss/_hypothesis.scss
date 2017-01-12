@@ -2,12 +2,26 @@
   color: #fff;
 
   &__header {
-    margin-bottom: 2rem;
+    margin-bottom: 1.8rem;
 
     p {
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
       font-size: 2rem;
       line-height: 1.25;
+    }
+  }
+
+  &__text {
+    p {
+      margin-bottom: 2rem;
+      font-size: 1.6rem;
+      line-height: 1.2;
+
+      a {
+        color: #fff;
+        font-weight: 400;
+        text-decoration: underline;
+      }
     }
   }
 
@@ -20,7 +34,7 @@
 
   &__stats {
     list-style: none;
-    margin: 0;
+    margin: 2rem 0 0 0;
     padding: 0;
   }
 

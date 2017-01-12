@@ -19,7 +19,7 @@ module.exports = (state, prev, send) => {
       if (state.zip != "") {
         return html`<p>You’re at <strong class="issues__zip-code">${state.zip}</strong>, <a href="#" onclick=${enterLocation}>Change?</a> ${debugText(state.debug)}</p>`;
       } else if (state.geolocation != "") {
-        return html`<p>We've got your location. ${debugText(state.debug)}</p>`
+        return html`<p>Located via your browser. <a href="#">Use a zip/address</a> ${debugText(state.debug)}</p>`
       } else {
         return html`<p>Get your local reps by setting <a href="#" onclick=${enterLocation}>your location</a></p>`;
       }
