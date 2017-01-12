@@ -39,8 +39,12 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 		log.Println("no address or zip")
 	}
 
+	issueResponse := IssueResponse{}
+	if localReps != nil && localReps.HouseRep == nil {
+		issueResponse.SplitDistrict = true
+	}
+
 	// add local reps where necessary
-	customizedIssues := []Issue{}
 	all, err := h.issueLister.AllIssues()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -62,12 +66,14 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 						newContacts = append(newContacts, c)
 					}
 				}
+			} else if contact.Phone == "" {
+				// filter anyone without a phone
 			} else {
 				newContacts = append(newContacts, contact)
 			}
 		}
 		issue.Contacts = newContacts
-		customizedIssues = append(customizedIssues, issue)
+		issueResponse.Issues = append(issueResponse.Issues, issue)
 	}
-	writeJSON(w, customizedIssues)
+	writeJSON(w, issueResponse)
 }

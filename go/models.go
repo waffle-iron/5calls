@@ -1,5 +1,10 @@
 package main
 
+type IssueResponse struct {
+	SplitDistrict bool    `json:"splitDistrict"`
+	Issues        []Issue `json:"issues"`
+}
+
 // Issue is a thing to care about and call on
 type Issue struct {
 	ID       string    `json:"id"`
@@ -19,8 +24,8 @@ type Contact struct {
 	Name     string `json:"name"`
 	Phone    string `json:"phone"`
 	PhotoURL string `json:"photoURL"`
-	Party	 string `json:"party"`
-	State	 string `json:"state"`
+	Party    string `json:"party"`
+	State    string `json:"state"`
 	Reason   string `json:"reason"`
 	Area     string `json:"area"`
 }
