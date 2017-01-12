@@ -73,7 +73,7 @@ app.model({
         return { contactIndex: 0, completeIssue: true, completedIssues: state.completedIssues.concat(issue.id) }
       }
     },
-    getInfo: (data, state) => ({ getInfo: true }),    
+    getInfo: (data, state) => ({ activeIssue: false, getInfo: true }),    
     // locationError: (error, state) => {
     //   return { askingLocationError: error }
     // },
@@ -99,7 +99,7 @@ app.model({
       return { completedIssues: [] }
     },
     home: (data, state) => {
-      return { activeIssue: false }
+      return { activeIssue: false, getInfo: false }
     }
   },
 
