@@ -6,7 +6,11 @@ import (
 	"net/http"
 )
 
-const localPlaceholder = "LOCAL REP"
+const (
+	localPlaceholder  = "LOCAL REP"
+	senatePlaceholder = "US SENATE"
+	housePlaceholder  = "US HOUSE"
+)
 
 type handler struct {
 	repFinder   RepFinder
@@ -63,6 +67,22 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 					for _, s := range localReps.Senators {
 						c := *s
 						c.Reason = "This is one of your two senators"
+						newContacts = append(newContacts, c)
+					}
+				}
+			} else if contact.Name == senatePlaceholder {
+				if localReps != nil {
+					for _, s := range localReps.Senators {
+						c := *s
+						c.Reason = "This is one of your two senators"
+						newContacts = append(newContacts, c)
+					}
+				}
+			} else if contact.Name == housePlaceholder {
+				if localReps != nil {
+					if localReps.HouseRep != nil {
+						c := *localReps.HouseRep
+						c.Reason = "This is your local representative in the house"
 						newContacts = append(newContacts, c)
 					}
 				}

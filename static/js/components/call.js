@@ -13,7 +13,11 @@ module.exports = (state, prev, send) => {
   const contactsLeftText = contactsLeft > 0 ? contactsLeft + " calls left" : "This is the last contact";
 
   function outcome(result) {
-    send('callComplete', { result: result, contactid: currentContact.id, issueid: issue.id });
+    if (result == null) {
+      send('skipCall');
+    } else {
+      send('callComplete', { result: result, contactid: currentContact.id, issueid: issue.id });      
+    }
   }
 
   function about(e) {
@@ -49,10 +53,11 @@ module.exports = (state, prev, send) => {
       </div>
 
       <menu class="call__outcomes">
-        <h3 class="call__outcomes__header">Your call result:</h3>
+        <h3 class="call__outcomes__header">Enter your call result to get the next call:</h3>
         <menuitem onclick=${() => outcome('unavailable')}>Unavailable</menuitem>
         <menuitem onclick=${() => outcome('vm')}>Left Voicemail</menuitem>
         <menuitem onclick=${() => outcome('contacted')}>Made Contact</menuitem>
+        <menuitem onclick=${() => outcome()}>Skip</menuitem>
       </menu>
 
       <div class="call__promote">
