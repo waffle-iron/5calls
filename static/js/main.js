@@ -6,9 +6,9 @@ const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
 
 const app = choo();
-// const appURL = 'https://5calls.org';
-const appURL = 'http://localhost:8090';
-const debug = true;
+const appURL = 'https://5calls.org';
+const debug = false;
+// const appURL = 'http://localhost:8090';
 
 // get the stored zip location
 initialZip = '';
@@ -98,6 +98,9 @@ app.model({
       store.remove("org.5calls.completed", () => {});
       return { completedIssues: [] }
     },
+    home: (data, state) => {
+      return { activeIssue: false }
+    }
   },
 
   effects: {

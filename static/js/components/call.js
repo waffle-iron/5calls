@@ -6,7 +6,7 @@ const scriptLine = require('./scriptLine.js');
 module.exports = (state, prev, send) => {
   const issue = find(state.issues, ['id', state.activeIssue]);
   const currentContact = issue.contacts[state.contactIndex];
-  console.log("contact",currentContact);
+  // console.log("contact",currentContact);
 
   const contactsLeft = issue.contacts.length - (state.contactIndex + 1);
   const callsPluralization = contactsLeft > 1 ? "s" : "";

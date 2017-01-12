@@ -16,11 +16,11 @@ module.exports = (state, prev, send) => {
       <p>If there's a current or upcoming topic that isn't covered that should be, please <a href="mailto:make5calls@gmail.com">reach out</a>.</p>
 
       <h3 class="about__subtitle">Calling Tips</h3>
-      <p>Calls should take a minute or less. You'll be speaking to a staffer, so make your point clearly so they can tally your opinion correctly. The provided scripts are useful here but you can add your own words.</p>
+      <p>Calls should take a minute or less. You'll be speaking to a staffer, so make your point clearly so they can tally your opinion correctly. The provided scripts are useful but you can add your own words.</p>
       <p>Be respectful. The staffers that pick up the phone aren't looking to challenge you and you should treat them with the same respect you expect from them, regardless of which party they work for.</p>
 
       <h3 class="about__subtitle">Who we are</h3>
-      <p>We’re a group of like-minded volunteers who want to make advocacy accessible. Our hope is 5 Calls will make it effortless for regular people to have a voice when it’s needed most.</p>
+      <p>We’re a group of like-minded volunteers who want to make advocacy accessible. We hope 5 Calls will make it effortless for regular people to have a voice when it’s needed most.</p>
       <p>5 Calls is brought to you by <a href="https://twitter.com/nickoneill">@nickoneill</a>, <a href="https://twitter.com/syntheticmethod">@syntheticmethod</a>, <a href="https://twitter.com/monteiro">@monteiro</a>, <a href="https://twitter.com/stewartsc">@stewartsc</a>, <a href="https://twitter.com/liamdanger">@liamdanger</a>, <a href="https://twitter.com/capndesign">@capndesign</a>, Krishnan and more supporters.</a>
 
       <h3 class="about__subtitle">Join us</h3>
