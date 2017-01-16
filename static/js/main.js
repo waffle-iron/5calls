@@ -11,19 +11,36 @@ const debug = false;
 // const appURL = 'http://localhost:8090';
 
 // get the stored zip location
-initialZip = '';
+cachedAddress = '';
 store.getAll('org.5calls.location', (location) => {
   if (location.length > 0) {
-   initialZip = location[0]
+   cachedAddress = location[0]
   }
 });
 
 // get the stored geo location
-initialGeo = '';
+cachedGeo = '';
 store.getAll('org.5calls.geolocation', (geo) => {
   if (geo.length > 0) {
-    // console.log("geo get",geo[0]);
-    // initialGeo = geo[0]
+    console.log("geo get",geo[0]);
+    cachedGeo = geo[0]
+  }
+});
+
+// get the time the geo was last fetched
+cachedGeoTime = '';
+store.getAll('org.5calls.geolocation_time', (geo) => {
+  if (geo.length > 0) {
+    console.log("geo time get",geo[0]);
+    cachedGeoTime = geo[0]
+  }
+});
+
+cachedCity = '';
+store.getAll('org.5calls.geolocation_city', (city) => {
+  if (city.length > 0) {
+    console.log("city get",city[0]);
+    cachedCity = city[0]
   }
 });
 
@@ -35,18 +52,27 @@ store.getAll('org.5calls.completed', (completed) => {
 
 app.model({
   state: {
+    // remote data
     issues: [],
-    splitDistrict: false,
     totalCalls: 0,
-    askingLocation: false,
-    askingLocationError: false,    
-    zip: initialZip,
-    geolocation: initialGeo,
+    splitDistrict: false,
+
+    // manual input address
+    address: cachedAddress,
+
+    // automatically geolocating
+    geolocation: cachedGeo,
+    geoCacheTime: cachedGeoTime,
+    cachedCity: cachedCity,
+
+    // view state
     getInfo: false,
     activeIssue: false,
     completeIssue: false,
+    askingLocation: false,
     contactIndex: 0,
     completedIssues: completedIssues,
+
     debug: debug,
   },
 
@@ -59,6 +85,16 @@ app.model({
     receiveTotals: (data, state) => {
       totals = JSON.parse(data);
       return { totalCalls: totals.count }
+    },
+    receiveLoc: (data, state) => {
+      response = JSON.parse(data)
+      geo = response.loc
+      city = response.city
+      time = new Date().valueOf()
+      store.replace("org.5calls.geolocation", 0, geo, () => {});
+      store.replace("org.5calls.geolocation_city", 0, city, () => {});
+      store.replace("org.5calls.geolocation_time", 0, time, () => {});
+      return { geolocation: geo, cachedCity: city, geoCacheTime: time }
     },
     changeActiveIssue: (issueId, state) => {
       return { activeIssue: issueId, completeIssue: false, getInfo: false, contactIndex: 0 }
@@ -77,10 +113,10 @@ app.model({
     // locationError: (error, state) => {
     //   return { askingLocationError: error }
     // },
-    setZip: (zip, state) => {
-      store.replace("org.5calls.location", 0, zip, () => {});
+    setAddress: (address, state) => {
+      store.replace("org.5calls.location", 0, address, () => {});
       
-      return { zip: zip, askingLocation: false, askingLocationError: false }
+      return { address: address, askingLocation: false }
     },
     setGeolocation: (data, state) => {
       store.replace("org.5calls.geolocation", 0, data, () => {});
@@ -92,7 +128,9 @@ app.model({
     resetLocation: (data, state) => {
       store.remove("org.5calls.location", () => {});
       store.remove("org.5calls.geolocation", () => {});
-      return { zip: '', geolocation: '' }
+      store.remove("org.5calls.geolocation_city", () => {});
+      store.remove("org.5calls.geolocation_time", () => {});
+      return { address: '', geolocation: '', cachedCity: '', geoCacheTime: '' }
     },
     resetCompletedIssues: (data, state) => {
       store.remove("org.5calls.completed", () => {});
@@ -105,12 +143,16 @@ app.model({
 
   effects: {
     fetch: (data, state, send, done) => {
-      address = ""
-      if (state.geolocation !== "") {
-        address = "?address="+state.geolocation
+      address = "?address="
+      if (state.address !== '') {
+        address += state.address        
+      } else if (state.geolocation !== "") {
+        address += state.geolocation
       }
 
-      http(appURL+'/issues/'+state.zip+address, (err, res, body) => {
+      const issueURL = appURL+'/issues/'+address
+      // console.log("fetching url",issueURL);
+      http(issueURL, (err, res, body) => {
         send('receiveIssues', body, done)
       })
     },
@@ -119,34 +161,39 @@ app.model({
         send('receiveTotals', body, done)
       })
     },
-    geolocation: (data, state, send, done) => {
-      // if ("geolocation" in navigator) {
-      //   navigator.geolocation.getCurrentPosition((position) => {
-      //     geolocation = position.coords.latitude + "," + position.coords.longitude
-
-      //     // TODO: is this close to the stored geolocation? don't change it
-
-      //     console.log("got geo",geolocation);
-      //     send('setGeolocation', geolocation, done);
-      //     // store.replace("org.5calls.geolocation", 0, geolocation, () => {});
-      //     // return { geolocation: geolocation };
-      //   }, (error) => {
-      //     console.log("error",error);
-      //   })
-      // }
-    },
     setLocation: (data, state, send, done) => {
-      send('setZip', data, done);
+      send('setAddress', data, done);
       send('fetch', {}, done);
     },
-    skipCall: (data, state, send, done) => {
-      send('incrementContact', data, done);
+    unsetLocation: (data, state, send, done) => {
+      send('resetLocation', data, done)
+      send('startup', data, done)
+    },
+    startup: (data, state, send, done) => {
+      geoFetchTime = state.geoCacheTime
+      cachePlusHours = new Date(geoFetchTime)
+      cachePlusHours.setHours(cachePlusHours.getHours() + 24)
+      // console.log("geo fetch time",geoFetchTime, cachePlusHours)
+      now = new Date()
+
+      // only fetch geo if it's 24 hours old
+      if (state.geolocation == '' || now.valueOf() > cachePlusHours.valueOf()) {
+        http('http://ipinfo.io/json', (err, res, body) => {
+          send('receiveLoc', body, done)
+          send('fetch', {}, done)
+        })        
+      } else {
+        send('fetch', {}, done)
+      }
     },
     callComplete: (data, state, send, done) => {
       const body = queryString.stringify({ location: state.zip, result: data.result, contactid: data.contactid, issueid: data.issueid })
       http.post(appURL+'/report', { body: body, headers: {"Content-Type": "application/x-www-form-urlencoded"} }, (err, res, body) => {
         // don't really care about the result
       })
+      send('incrementContact', data, done);
+    },
+    skipCall: (data, state, send, done) => {
       send('incrementContact', data, done);
     },
   },

@@ -13,7 +13,7 @@ module.exports = (state, prev, send) => {
   }
 
   return html`
-    <div class="issues" onload=${(e) => send('geolocation')}>
+    <div class="issues">
       ${issuesHeader(state, prev, send)}
       ${issuesList(state, prev, send)}
       ${debugText(state.debug)}

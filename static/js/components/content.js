@@ -16,7 +16,7 @@ module.exports = (state, prev, send) => {
   }
 
   return html`
-    <main role="main" class="layout__main">
+    <main role="main" class="layout__main" onload=${(e) => send('startup')}>
       ${currentView(state, prev, send)}
     </main>
   `;
