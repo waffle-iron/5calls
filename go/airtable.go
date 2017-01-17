@@ -51,7 +51,7 @@ func (i *atIssue) toIssue(contacts []Contact) Issue {
 	return Issue{
 		ID:       i.ID,
 		Name:     i.Name,
-		Reason:	  i.Action,
+		Reason:   i.Action,
 		Script:   i.Script,
 		Contacts: contacts,
 	}
@@ -97,7 +97,7 @@ type AirtableClient struct {
 }
 
 func NewAirtableClient(config AirtableConfig) *AirtableClient {
-	c := airtable.New(config.APIKey, config.BaseID, true)
+	c, _ := airtable.New(config.APIKey, config.BaseID)
 	return &AirtableClient{client: c}
 }
 
@@ -116,10 +116,17 @@ func (c *AirtableClient) AllIssues() ([]Issue, error) {
 	for _, c := range cList {
 		contactsMap[c.ID] = c
 	}
+
 	// load all issues
 	var list []*atIssue
 	err = c.client.ListRecords(issuesTable, &list, airtable.ListParameters{
 		FilterByFormula: `NOT(OR(NAME = "", INACTIVE))`,
+		Sort: []airtable.SortParameter{
+			airtable.SortParameter{
+				Field:          "Sort",
+				ShouldSortDesc: false,
+			},
+		},
 	})
 	if err != nil {
 		return nil, fmt.Errorf("unable to load issues, %v", err)
