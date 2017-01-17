@@ -1,6 +1,6 @@
 const choo = require('choo');
 const html = require('choo/html');
-const http = require('choo/http');
+const http = require('xhr');
 const find = require('lodash/find');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
@@ -67,7 +67,7 @@ app.model({
 
     // view state
     getInfo: false,
-    activeIssue: false,
+    // activeIssue: false,
     completeIssue: false,
     askingLocation: false,
     contactIndex: 0,
@@ -77,16 +77,16 @@ app.model({
   },
 
   reducers: {
-    receiveIssues: (data, state) => {
+    receiveIssues: (state, data) => {
       response = JSON.parse(data)
       issues = response.issues.filter((v) => { return v.contacts.length > 0 });
       return { issues: issues, splitDistrict: response.splitDistrict }
     },
-    receiveTotals: (data, state) => {
+    receiveTotals: (state, data) => {
       totals = JSON.parse(data);
       return { totalCalls: totals.count }
     },
-    receiveLoc: (data, state) => {
+    receiveLoc: (state, data) => {
       response = JSON.parse(data)
       geo = response.loc
       city = response.city
@@ -96,11 +96,12 @@ app.model({
       store.replace("org.5calls.geolocation_time", 0, time, () => {});
       return { geolocation: geo, cachedCity: city, geoCacheTime: time }
     },
-    changeActiveIssue: (issueId, state) => {
-      return { activeIssue: issueId, completeIssue: false, getInfo: false, contactIndex: 0 }
+    changeActiveIssue: (state, issueId) => {
+      return { completeIssue: false, getInfo: false, contactIndex: 0 }
     },
-    incrementContact: (data, state) => {
-      const issue = find(state.issues, ['id', state.activeIssue]);
+    incrementContact: (state, data) => {
+      console.log("increment",state.location)
+      const issue = find(state.issues, ['id', data.issueid]);
 
       if (state.contactIndex < issue.contacts.length - 1) {
         return { contactIndex: state.contactIndex + 1 }
@@ -109,40 +110,36 @@ app.model({
         return { contactIndex: 0, completeIssue: true, completedIssues: state.completedIssues.concat(issue.id) }
       }
     },
-    getInfo: (data, state) => ({ activeIssue: false, getInfo: true }),    
-    // locationError: (error, state) => {
-    //   return { askingLocationError: error }
-    // },
-    setAddress: (address, state) => {
+    setAddress: (state, address) => {
       store.replace("org.5calls.location", 0, address, () => {});
       
       return { address: address, askingLocation: false }
     },
-    setGeolocation: (data, state) => {
+    setGeolocation: (state, data) => {
       store.replace("org.5calls.geolocation", 0, data, () => {});
       return { geolocation: data }
     },
-    enterLocation: (data, state) => {
+    enterLocation: (state, data) => {
       return { askingLocation: true }
     },
-    resetLocation: (data, state) => {
+    resetLocation: (state, data) => {
       store.remove("org.5calls.location", () => {});
       store.remove("org.5calls.geolocation", () => {});
       store.remove("org.5calls.geolocation_city", () => {});
       store.remove("org.5calls.geolocation_time", () => {});
       return { address: '', geolocation: '', cachedCity: '', geoCacheTime: '' }
     },
-    resetCompletedIssues: (data, state) => {
+    resetCompletedIssues: (state, data) => {
       store.remove("org.5calls.completed", () => {});
       return { completedIssues: [] }
     },
-    home: (data, state) => {
+    home: (state, data) => {
       return { activeIssue: false, getInfo: false }
     }
   },
 
   effects: {
-    fetch: (data, state, send, done) => {
+    fetch: (state, data, send, done) => {
       address = "?address="
       if (state.address !== '') {
         address += state.address        
@@ -156,51 +153,75 @@ app.model({
         send('receiveIssues', body, done)
       })
     },
-    getTotals: (data, state, send, done) => {
+    getTotals: (state, data, send, done) => {
       http(appURL+'/report/', (err, res, body) => {
         send('receiveTotals', body, done)
       })
     },
-    setLocation: (data, state, send, done) => {
+    changeActiveIssueEffect: (state, issueId, send, done) => {
+      send('location:set', "/#issue/"+issueId, done)
+      send('changeActiveIssue', issueId, done)
+    },
+    setLocation: (state, data, send, done) => {
       send('setAddress', data, done);
       send('fetch', {}, done);
     },
-    unsetLocation: (data, state, send, done) => {
+    unsetLocation: (state, data, send, done) => {
       send('resetLocation', data, done)
       send('startup', data, done)
     },
-    startup: (data, state, send, done) => {
-      geoFetchTime = state.geoCacheTime
-      cachePlusHours = new Date(geoFetchTime)
-      cachePlusHours.setHours(cachePlusHours.getHours() + 24)
-      // console.log("geo fetch time",geoFetchTime, cachePlusHours)
-      now = new Date()
+    startup: (state, data, send, done) => {
+      // sometimes we trigger this again when reloading mainView, check for issues
+      if (state.issues.length == 0 || state.geolocation == '') {
+        geoFetchTime = state.geoCacheTime
+        cachePlusHours = new Date(geoFetchTime)
+        cachePlusHours.setHours(cachePlusHours.getHours() + 24)
+        // console.log("geo fetch time",geoFetchTime, cachePlusHours)
+        now = new Date()
 
-      // only fetch geo if it's 24 hours old
-      if (state.geolocation == '' || now.valueOf() > cachePlusHours.valueOf()) {
-        http('https://ipinfo.io/json', (err, res, body) => {
-          send('receiveLoc', body, done)
+        // only fetch geo if it's 24 hours old
+        if (state.geolocation == '' || now.valueOf() > cachePlusHours.valueOf()) {
+          http('https://ipinfo.io/json', (err, res, body) => {
+            send('receiveLoc', body, done)
+            send('fetch', {}, done)
+          })        
+        } else {
           send('fetch', {}, done)
-        })        
-      } else {
-        send('fetch', {}, done)
+        }
       }
     },
-    callComplete: (data, state, send, done) => {
+    callComplete: (state, data, send, done) => {
       const body = queryString.stringify({ location: state.zip, result: data.result, contactid: data.contactid, issueid: data.issueid })
       http.post(appURL+'/report', { body: body, headers: {"Content-Type": "application/x-www-form-urlencoded"} }, (err, res, body) => {
         // don't really care about the result
       })
       send('incrementContact', data, done);
     },
-    skipCall: (data, state, send, done) => {
+    skipCall: (state, data, send, done) => {
       send('incrementContact', data, done);
     },
   },
 });
 
-app.router((route) => [
-  route('/', require('./pages/mainView.js'))
+app.router({ default: '/404' }, [
+  ['/', require('./pages/mainView.js')],
+  ['/issue', require('./pages/mainView.js'),
+    [':issueid', require('./pages/mainView.js')]
+  ],
+  ['/about', require('./pages/aboutView.js')]
 ]);
 
-const tree = app.start('#root');
+const tree = app.start();
+const rootNode = document.getElementById('root');
+document.body.replaceChild(tree, rootNode);
+
+// window.addEventListener('popstate', (e) => {
+//   console.log("new pop",event)
+//   if (event.state) {
+//     if (event.state.issueId != '') {
+//       console.log("pop to issue",event.state.issueId)
+//     }
+//   } else {
+//     // console.log("send",app._router)
+//   }
+// })

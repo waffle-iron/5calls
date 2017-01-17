@@ -23,9 +23,10 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "choo": "^3.3.0",
+    "choo": "^4.0.0",
     "lodash": "^4.17.2",
     "query-string": "^4.2.3",
-    "xtend": "^4.0.1"
+    "xtend": "^4.0.1",
+    "xhr": "^2.3"
   }
 }

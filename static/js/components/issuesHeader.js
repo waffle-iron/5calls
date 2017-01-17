@@ -18,7 +18,7 @@ module.exports = (state, prev, send) => {
 
     let classes = [BASE_CLASS];
 
-    state.activeIssue === false && classes.push(ACTIVE_CLASS);
+    state.location.params.issueid == null && classes.push(ACTIVE_CLASS);
 
     return classes.join(' ');
   }

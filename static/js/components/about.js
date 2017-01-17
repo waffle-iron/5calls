@@ -2,6 +2,7 @@ const html = require('choo/html');
 
 module.exports = (state, prev, send) => {
   return html`
+    <main role="main" class="layout__main">
     <section class="about">
       <h2 class="about__title">About 5 Calls</h2>
       <p>Calling members of congress is the most effective way to have your voice heard. Call results are tallied by staffers and given to your representatives, informing them on how their constituents feel about current issues. <strong>The sooner you reach out to your representatives about an issue, the more likely it is that your voice will influence their position.</strong></p> 
@@ -26,5 +27,6 @@ module.exports = (state, prev, send) => {
       <h3 class="about__subtitle">Join us</h3>
       <p>This project is <a href="https://github.com/5calls/5calls">open source</a> and volunteer made. If you’d like to join us in developing useful tools for citizens, please get in touch via <a href="https://twitter.com/make5calls">Twitter</a> or <a href="mailto:make5calls@gmail.com">email</a>.</p>
     </section>
+    </main>
   `;
 }

@@ -5,7 +5,7 @@ const about 	 = require('./about.js');
 const call       = require('./call.js');
 
 module.exports = (state, prev, send) => {
-  const currentView = state.activeIssue !== false ? call : infoPages();
+  const currentView = state.location.params.issueid != null && state.issues.length > 0 ? call : infoPages();
 
   function infoPages() {
   	if (state.getInfo == true) {
