@@ -66,9 +66,9 @@ app.model({
     cachedCity: cachedCity,
 
     // view state
-    getInfo: false,
+    // getInfo: false,
     // activeIssue: false,
-    completeIssue: false,
+    // completeIssue: false,
     askingLocation: false,
     contactIndex: 0,
     completedIssues: completedIssues,
@@ -97,17 +97,14 @@ app.model({
       return { geolocation: geo, cachedCity: city, geoCacheTime: time }
     },
     changeActiveIssue: (state, issueId) => {
-      return { completeIssue: false, getInfo: false, contactIndex: 0 }
+      return { contactIndex: 0 }
     },
-    incrementContact: (state, data) => {
-      console.log("increment",state.location)
-      const issue = find(state.issues, ['id', data.issueid]);
-
-      if (state.contactIndex < issue.contacts.length - 1) {
-        return { contactIndex: state.contactIndex + 1 }
+    setContactIndex: (state, data) => {
+      if (data.newIndex != 0) {
+        return { contactIndex: data.newIndex }
       } else {
-        store.add("org.5calls.completed", issue.id, () => {})
-        return { contactIndex: 0, completeIssue: true, completedIssues: state.completedIssues.concat(issue.id) }
+        store.add("org.5calls.completed", data.issueid, () => {})
+        return { contactIndex: 0, completedIssues: state.completedIssues.concat(data.issueid) }
       }
     },
     setAddress: (state, address) => {
@@ -190,6 +187,19 @@ app.model({
         }
       }
     },
+    incrementContact: (state, data, send, done) => {
+      const issue = find(state.issues, ['id', data.issueid]);
+
+      if (state.contactIndex < issue.contacts.length - 1) {
+        send('setContactIndex', { newIndex: state.contactIndex + 1, issueid: issue.id }, done)
+        // return { contactIndex: state.contactIndex + 1 }
+      } else {
+        store.add("org.5calls.completed", issue.id, () => {})
+        send('location:set', "/#done", done)
+        send('setContactIndex', { newIndex: 0, issueid: issue.id }, done)
+        // return { contactIndex: 0, completeIssue: true, completedIssues: state.completedIssues.concat(issue.id) }
+      }
+    },
     callComplete: (state, data, send, done) => {
       const body = queryString.stringify({ location: state.zip, result: data.result, contactid: data.contactid, issueid: data.issueid })
       http.post(appURL+'/report', { body: body, headers: {"Content-Type": "application/x-www-form-urlencoded"} }, (err, res, body) => {
@@ -208,20 +218,10 @@ app.router({ default: '/404' }, [
   ['/issue', require('./pages/mainView.js'),
     [':issueid', require('./pages/mainView.js')]
   ],
-  ['/about', require('./pages/aboutView.js')]
+  ['/about', require('./pages/aboutView.js')],
+  ['/done', require('./pages/doneView.js')],
 ]);
 
 const tree = app.start();
 const rootNode = document.getElementById('root');
 document.body.replaceChild(tree, rootNode);
-
-// window.addEventListener('popstate', (e) => {
-//   console.log("new pop",event)
-//   if (event.state) {
-//     if (event.state.issueId != '') {
-//       console.log("pop to issue",event.state.issueId)
-//     }
-//   } else {
-//     // console.log("send",app._router)
-//   }
-// })
