@@ -98,10 +98,10 @@ app.model({
           store.replace("org.5calls.geolocation_time", 0, time, () => {});
           return { geolocation: geo, cachedCity: city, geoCacheTime: time }
         } else {
-          Raven.captureMessage("Location with no city: "+response.loc);
+          Raven.captureMessage("Location with no city: "+response.loc, { level: 'warning' });
         }
       } catch(e) {
-        Raven.captureMessage("Couldn't parse ipinfo json");
+        Raven.captureMessage("Couldn't parse ipinfo json", { level: 'error' });
       } 
     },
     changeActiveIssue: (state, issueId) => {
@@ -190,7 +190,7 @@ app.model({
             if (res.statusCode == 200) {
               send('receiveLoc', body, done)            
             } else {
-              Raven.captureMessage("Non-200 from ipinfo");
+              Raven.captureMessage("Non-200 from ipinfo", { level: 'info' });
             }
             send('fetch', {}, done)
           })        
