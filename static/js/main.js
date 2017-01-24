@@ -87,14 +87,18 @@ app.model({
       return { totalCalls: totals.count }
     },
     receiveLoc: (state, data) => {
-      response = JSON.parse(data)
-      geo = response.loc
-      city = response.city
-      time = new Date().valueOf()
-      store.replace("org.5calls.geolocation", 0, geo, () => {});
-      store.replace("org.5calls.geolocation_city", 0, city, () => {});
-      store.replace("org.5calls.geolocation_time", 0, time, () => {});
-      return { geolocation: geo, cachedCity: city, geoCacheTime: time }
+      try {
+        response = JSON.parse(data)
+        geo = response.loc
+        city = response.city
+        time = new Date().valueOf()
+        store.replace("org.5calls.geolocation", 0, geo, () => {});
+        store.replace("org.5calls.geolocation_city", 0, city, () => {});
+        store.replace("org.5calls.geolocation_time", 0, time, () => {});
+        return { geolocation: geo, cachedCity: city, geoCacheTime: time }        
+      } catch(e) {
+        Raven.captureException(e)
+      } 
     },
     changeActiveIssue: (state, issueId) => {
       return { contactIndex: 0 }
