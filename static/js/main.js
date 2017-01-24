@@ -97,9 +97,11 @@ app.model({
           store.replace("org.5calls.geolocation_city", 0, city, () => {});
           store.replace("org.5calls.geolocation_time", 0, time, () => {});
           return { geolocation: geo, cachedCity: city, geoCacheTime: time }
+        } else {
+          Raven.captureMessage("Location with no city: "+response.loc);
         }
       } catch(e) {
-        Raven.captureException(e)
+        Raven.captureMessage("Couldn't parse ipinfo json");
       } 
     },
     changeActiveIssue: (state, issueId) => {
@@ -187,6 +189,8 @@ app.model({
           http('https://ipinfo.io/json', (err, res, body) => {
             if (res.statusCode == 200) {
               send('receiveLoc', body, done)            
+            } else {
+              Raven.captureMessage("Non-200 from ipinfo");
             }
             send('fetch', {}, done)
           })        
