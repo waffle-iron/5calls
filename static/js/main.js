@@ -183,7 +183,9 @@ app.model({
         // only fetch geo if it's 24 hours old
         if (state.geolocation == '' || now.valueOf() > cachePlusHours.valueOf()) {
           http('https://ipinfo.io/json', (err, res, body) => {
-            send('receiveLoc', body, done)
+            if (res.statusCode == 200) {
+              send('receiveLoc', body, done)            
+            }
             send('fetch', {}, done)
           })        
         } else {
