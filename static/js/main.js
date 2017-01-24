@@ -192,12 +192,10 @@ app.model({
 
       if (state.contactIndex < issue.contacts.length - 1) {
         send('setContactIndex', { newIndex: state.contactIndex + 1, issueid: issue.id }, done)
-        // return { contactIndex: state.contactIndex + 1 }
       } else {
         store.add("org.5calls.completed", issue.id, () => {})
         send('location:set', "/#done", done)
         send('setContactIndex', { newIndex: 0, issueid: issue.id }, done)
-        // return { contactIndex: 0, completeIssue: true, completedIssues: state.completedIssues.concat(issue.id) }
       }
     },
     callComplete: (state, data, send, done) => {

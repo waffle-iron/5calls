@@ -16,7 +16,7 @@ module.exports = (state, prev, send) => {
       } else if (state.cachedCity != '') {
         return html`<p>We've included reps for ${state.cachedCity} • <a href="#" onclick=${enterLocation}>Change</a> ${debugText(state.debug)}</p>`
       } else {
-        return html`<p>No location.</p>`
+        return html`<p>No location <a href="#" onclick=${enterLocation}>Change</a></p>`
       }      
     }
   }
