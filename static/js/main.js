@@ -101,6 +101,7 @@ app.model({
           Raven.captureMessage("Location with no city: "+response.loc, { level: 'warning' });
         }
       } catch(e) {
+        Raven.setExtraContext({ json: data })
         Raven.captureMessage("Couldn't parse ipinfo json", { level: 'error' });
       } 
     },
@@ -116,6 +117,7 @@ app.model({
       }
     },
     setAddress: (state, address) => {
+      Raven.setExtraContext({ address: address })
       store.replace("org.5calls.location", 0, address, () => {});
       
       return { address: address, askingLocation: false }
