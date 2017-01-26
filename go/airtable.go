@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/fabioberger/airtable-go"
-	"time"
 )
 
 const (
@@ -151,9 +152,10 @@ func (c *AirtableClient) AllIssues() ([]Issue, error) {
 // issueCache stores an in-memory copy of the issue list with automatic refresh.
 type issueCache struct {
 	delegate IssueLister
-	stop     chan struct{}
+	stop     chan struct{} // close-only
 	force    chan struct{}
-	val      atomic.Value
+	val      atomic.Value // of []Issue
+	stopOnce sync.Once
 }
 
 // NewIssueCache returns an issue cache after ensuring that the issue list is loaded.
@@ -167,7 +169,7 @@ func NewIssueCache(delegate IssueLister, refreshInterval time.Duration) (IssueLi
 	}
 	ic := &issueCache{
 		delegate: delegate,
-		stop:     make(chan struct{}, 1),
+		stop:     make(chan struct{}),
 		force:    make(chan struct{}, 1),
 	}
 	ic.val.Store(issues)
@@ -181,7 +183,7 @@ func (ic *issueCache) Reload() {
 }
 
 func (ic *issueCache) Close() error {
-	close(ic.stop)
+	ic.stopOnce.Do(func() { close(ic.stop) })
 	return nil
 }
 
@@ -194,19 +196,16 @@ func (ic *issueCache) refresh(interval time.Duration) {
 		log.Println(len(issues), "issues loaded")
 		ic.val.Store(issues)
 	}
-	t := time.NewTicker(interval)
-	defer func() {
-		t.Stop()
-	}()
+	t := time.NewTimer(interval)
+	defer t.Stop()
 	for {
 		select {
 		case <-t.C:
+			t.Reset(interval)
 			reload()
 		case <-ic.force:
+			t.Reset(interval)
 			reload()
-			// reset the timer to start the refresh from now
-			t.Stop()
-			t = time.NewTicker(interval)
 		case <-ic.stop:
 			return
 		}
