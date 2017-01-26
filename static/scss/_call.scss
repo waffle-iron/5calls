@@ -47,9 +47,12 @@
     }
 
     &__reason {
-      margin-left: calc(200px + 1rem);
       font-size: 1.4rem;
       line-height: 1.8rem;
+
+      @media only screen and (min-width: $bp-large) {
+        margin-left: calc(200px + 1rem);
+      }
     }
   }
 
