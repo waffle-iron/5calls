@@ -4,6 +4,7 @@ const http = require('xhr');
 const find = require('lodash/find');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
+const scrollIntoView = require('scroll-into-view');
 
 const app = choo();
 const appURL = 'https://5calls.org';
@@ -205,8 +206,10 @@ app.model({
       const issue = find(state.issues, ['id', data.issueid]);
 
       if (state.contactIndex < issue.contacts.length - 1) {
+        scrollIntoView(document.querySelector('#contact'));
         send('setContactIndex', { newIndex: state.contactIndex + 1, issueid: issue.id }, done)
       } else {
+        scrollIntoView(document.querySelector('#content'));
         store.add("org.5calls.completed", issue.id, () => {})
         send('location:set', "/#done", done)
         send('setContactIndex', { newIndex: 0, issueid: issue.id }, done)
@@ -222,6 +225,10 @@ app.model({
     skipCall: (state, data, send, done) => {
       send('incrementContact', data, done);
     },
+    activateIssue: (state, data, send, done) => {
+      scrollIntoView(document.querySelector('#content'));
+      location.hash = "issue/" + data.id;
+    }
   },
 });
 

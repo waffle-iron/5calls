@@ -14,6 +14,12 @@
   	text-transform: uppercase;
   }
 
+  &__source {
+    font-size: 0.9rem;
+    font-weight: 300;
+    white-space: nowrap;
+  }
+
   p {
   	font-size: 1.4rem;
   	font-weight: 300;

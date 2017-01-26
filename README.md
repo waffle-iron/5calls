@@ -6,6 +6,8 @@
 
 Install the requirements with:
 `npm install`
+and
+`npm install -g gulp`
 
 Then you can just use gulp to generate the site and watch for changes:
 `gulp`

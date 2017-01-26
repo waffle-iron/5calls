@@ -25,7 +25,7 @@ module.exports = (state, prev, send) => {
     if (result == null) {
       send('skipCall', { issueid: issue.id });
     } else {
-      send('callComplete', { result: result, contactid: currentContact.id, issueid: issue.id });      
+      send('callComplete', { result: result, contactid: currentContact.id, issueid: issue.id });
     }
   }
 
@@ -43,17 +43,19 @@ module.exports = (state, prev, send) => {
       <div class="call__script__body">${issue.script.split('\n').map((line) => scriptLine(line, state, prev, send))}</div>
     </div>
 
-    <menu class="call__outcomes">
+    <div class="call__outcomes">
       <h3 class="call__outcomes__header">Enter your call result to get the next call:</h3>
-      <menuitem onclick=${() => outcome('unavailable')}>Unavailable</menuitem>
-      <menuitem onclick=${() => outcome('vm')}>Left Voicemail</menuitem>
-      <menuitem onclick=${() => outcome('contacted')}>Made Contact</menuitem>
-      <menuitem onclick=${() => outcome()}>Skip</menuitem>
-    </menu>
+      <div class="call__outcomes__items">
+        <button onclick=${() => outcome('unavailable')}>Unavailable</button>
+        <button onclick=${() => outcome('vm')}>Left Voicemail</button>
+        <button onclick=${() => outcome('contacted')}>Made Contact</button>
+        <button onclick=${() => outcome()}>Skip</button>
+      </div>
+    </div>
 
     <div class="call__promote">
       <p>${contactsLeftText} for this issue • <a target="_blank" href="https://twitter.com/intent/tweet?text=Make%205%20calls%20today%20to%20change%20your%20government%20http%3A%2F%2Fbit.ly%2F2iJb5nH&source=webclient&via=make5calls"><i class="fa fa-twitter" aria-hidden="true"></i> Tweet this issue</a> • <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://bit.ly/2iJb5nH"><i class="fa fa-facebook" aria-hidden="true"></i> Share this issue</a></p>
     </div>
   </section>
-  `;    
+  `;
 }
