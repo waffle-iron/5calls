@@ -2,17 +2,32 @@
   background-color: fade-out(#fff, 0.3);
   padding: 2rem;
 
+  @include bp(small) {
+    padding: 1rem .5rem;
+  }
+
   &__title {
   	margin: 0;
   	font-size: 3.4rem;
   	text-transform: uppercase;
-  	xtext-align: center;
+  	text-align: left;
+    line-height: 1.1;
+
+    @include bp(small) {
+      font-size: 2.2rem;
+    }
+
   }
 
   &__reason {
   	font-size: 1.4rem;
   	font-weight: 300;
-  	line-height: 2rem;
+  	line-height: 1.4;
+
+    @include bp(small) {
+      font-size: 1.2rem;
+    }
+
   }
 
   &__contact {
@@ -21,6 +36,11 @@
       width: 200px;
       height: 200px;
       margin: 0 1rem 1rem 0;
+
+      @include bp(small) {
+        float: none;
+        margin: 0 auto;
+      }
 
       img {
         max-width: 100%;
@@ -38,21 +58,39 @@
       margin-bottom: 0.1rem;
       font-size: 2.8rem;
       font-weight: 600;
+
+      @include bp(small) {
+        font-size: 2.2rem;
+      }
+
     }
 
     &__phone {
       margin-bottom: 0.1rem;
       font-size: 5rem;
       font-weight: 600;
+
+      @include bp(small) {
+        font-size: 2rem;
+        font-size: 14vw;
+        margin: .5rem 0;
+      }
+
+
     }
 
     &__reason {
       font-size: 1.4rem;
-      line-height: 1.8rem;
+      line-height: 1.4;
 
       @media only screen and (min-width: $bp-large) {
         margin-left: calc(200px + 1rem);
       }
+
+      @include bp(small) {
+        font-size: 1.2rem;
+      }
+
     }
   }
 
@@ -69,7 +107,12 @@
       background-color: fade-out(#fff, 0.5);
       font-size: 1.4rem;
       font-weight: 300;
-      line-height: 2rem;
+      line-height: 1.4;
+
+      @include bp(small) {
+        font-size: 1.2rem;
+      }
+
     }
   }
 
@@ -109,8 +152,9 @@
 
   &__promote {
     p {
-      margin: 0;
+      padding: 1rem 0;
       text-align: center;
+      line-height: 1.5;
     }
   }
 
@@ -127,7 +171,8 @@
       margin: 2rem 0 2rem 0;
       font-size: 1.5rem;
       font-weight: 300;
-      line-height: 2rem;
+      line-height: 1.4;
+
     }
 
     &__share {
