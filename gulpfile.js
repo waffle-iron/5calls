@@ -8,6 +8,7 @@ var gulp = require('gulp')
   , es2040 = require('es2040')
   , buffer = require('vinyl-buffer')
   , source = require('vinyl-source-stream')
+  , uglify = require('gulp-uglify')
   ;
 
 var SRC = {
@@ -63,13 +64,27 @@ gulp.task('copy-images:watch', function() {
 gulp.task('scripts', function() {
   var b = browserify({
     entries: `${SRC.js}/main.js`,
-    debug: true, // TODO: non-debug deploy task
+    debug: true,
     transform: [es2040]
   });
 
   return b.bundle()
     .pipe(source('app.js'))
     .pipe(buffer())
+    .pipe(gulp.dest(DEST.js));
+});
+
+gulp.task('build-scripts', function() {
+  var b = browserify({
+    entries: `${SRC.js}/main.js`,
+    debug: false,
+    transform: [es2040]
+  });
+
+  return b.bundle()
+    .pipe(source('app.js'))
+    .pipe(buffer())
+    .pipe(uglify())
     .pipe(gulp.dest(DEST.js));
 });
 
@@ -83,4 +98,4 @@ gulp.task('extra', function() {
 });
 
 gulp.task('default', ['html', 'html:watch', 'sass', 'sass:watch', 'copy-images', 'copy-images:watch', 'scripts', 'scripts:watch', 'extra']);
-gulp.task('deploy', ['html', 'sass', 'scripts', 'extra', 'copy-images']);
+gulp.task('deploy', ['html', 'sass', 'build-scripts', 'extra', 'copy-images']);
