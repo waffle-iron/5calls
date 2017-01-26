@@ -14,12 +14,9 @@ module.exports = (state, prev, send) => {
         <p>Calling is the most effective way to influence your representative. 5 Calls gives you <strong>contacts and scripts</strong> so calling is quick and easy. We use your location to give you your local representatives so <strong>your calls are more impactful</strong>.</p>
         <p>Want to know more? Read about <a href="#about">why calling works</a> or <a href="#about">more about us</a></p>
       </div>
-      <dl class="hypothesis__stats">
-        <li class="hypothesis__stat">
-          <dt class="hypothesis__stat-value">${state.totalCalls.toLocaleString()}</dt>
-          <dd class="hypothesis__stat-dd">calls to date</dd>
-        </li>
-      </dl>
+      <p class="hypothesis__stats">
+        ${state.totalCalls.toLocaleString()} calls to date
+      </p>
     </div>
   `;
 }
