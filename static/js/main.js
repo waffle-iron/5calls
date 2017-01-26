@@ -4,6 +4,7 @@ const http = require('xhr');
 const find = require('lodash/find');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
+const scrollIntoView = require('scroll-into-view');
 
 const app = choo();
 const appURL = 'https://5calls.org';
@@ -220,6 +221,10 @@ app.model({
     skipCall: (state, data, send, done) => {
       send('incrementContact', data, done);
     },
+    activateIssue: (state, data, send, done) => {
+      scrollIntoView(document.querySelector('#content'));
+      location.hash = "issue/" + data.id;
+    }
   },
 });
 
