@@ -7,6 +7,17 @@ all:
 	go build -o fivecalls
 	echo "Build done"
 
+build:
+	set -e
+	set -x
+
+	# this works great for non-cgo stuff, we're using sqlite :(
+	# GOOS=linux go build -o fivecalls-linux
+
+	# install xgo and docker first, but pretty straightforward
+	~/gocode/bin/xgo -out fivecalls -go 1.7.x --targets=linux/amd64 .
+	echo "Built for linux"
+
 deploy:
 	set -e
 	set -x
