@@ -5,13 +5,14 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/gorilla/mux"
-	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"net/http"
 	"os"
 	"text/template"
 	"time"
+
+	"github.com/gorilla/mux"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var pagetemplate *template.Template
@@ -31,15 +32,20 @@ func enableCORS(fn http.HandlerFunc) http.HandlerFunc {
 }
 
 func main() {
+	var (
+		dbfile       = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
+		airtableBase = flag.String("airtable-base", "app6dzsa26hDjI7tp", "base ID for airtable store")
+		addr         = flag.String("addr", ":8090", "[ip]:port to listen on")
+		autoRestart  = flag.Bool("auto-restart", false, "automatically restart (by exit 0) on binary update; assumes running a supervisor")
+	)
+	flag.Parse()
 
-	dbfile := flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
-	airtableBase := flag.String("airtable-base", "app6dzsa26hDjI7tp", "base ID for airtable store")
-	addr := flag.String("addr", ":8090", "[ip]:port to listen on")
 	airtableKey := os.Getenv("AIRTABLE_API_KEY")
 	civicKey := os.Getenv("CIVIC_API_KEY")
 
-	flag.Parse()
-
+	if *autoRestart {
+		go restartIfBinaryUpdated()
+	}
 	if airtableKey == "" {
 		log.Fatalln("No airtable API key found")
 	}
@@ -101,4 +107,24 @@ func main() {
 
 	log.Printf("running fivecalls-web on port %v", *addr)
 	log.Fatal(http.ListenAndServe(*addr, r))
+}
+
+func restartIfBinaryUpdated() {
+	bin := os.Args[0]
+	fi, err := os.Stat(bin)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Monitoring %s for changes; binary size = %d; modtime %v", bin, fi.Size(), fi.ModTime())
+	for {
+		fi2, err := os.Stat(bin)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if fi2.ModTime().After(fi.ModTime()) || fi.Size() != fi2.Size() {
+			log.Printf("executable on disk updated; restarting.")
+			os.Exit(0)
+		}
+		time.Sleep(1 * time.Second)
+	}
 }

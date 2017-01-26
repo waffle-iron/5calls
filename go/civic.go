@@ -1,17 +1,17 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-
-	"bytes"
-	"github.com/patrickmn/go-cache"
 	"net/url"
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/patrickmn/go-cache"
 )
 
 const (
