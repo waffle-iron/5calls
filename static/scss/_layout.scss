@@ -9,7 +9,7 @@
   @media (min-width: $bp-medium) {
     flex-direction: row;
     margin: 0 3rem -4rem 3rem;
-    padding: 3rem 0;
+    padding: 3rem 0 5rem;
   }
 
   @media (min-width: $bp-large) {
@@ -41,12 +41,25 @@
 
 footer {
   height: 4rem;
-}
-
-footer {
   text-align: center;
   font-size: 1.2rem;
   color: #999;
+
+  .tinyletter__form {
+    margin: 10px 0;
+
+    label {
+      color: #fff;
+    }
+
+    input[type=text] {
+      margin: 0 10px;
+    }
+
+    input[type=submit] {
+      border-radius: 8px;
+    }
+  }
 
   a {
     color: #fff;

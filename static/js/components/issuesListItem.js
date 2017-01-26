@@ -16,7 +16,7 @@ module.exports = (issue, state, prev, send) => {
   }
 
   function handleClick(e) {
-    location.hash = "issue/"+issue.id
+    send("activateIssue", { id: issue.id });
   }
 
   return html`

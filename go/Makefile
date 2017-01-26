@@ -29,8 +29,10 @@ deploy:
 	xgo -out fivecalls -go 1.7.x --targets=linux/amd64 .
 	echo "Built for linux"
 
-	scp fivecalls-linux-amd64 index.html fivecalls@5calls.org:/home/fivecalls/
-	echo "Sent to server, please log in and restart"
+	scp index.html fivecalls@5calls.org:/home/fivecalls/
+	scp -C fivecalls-linux-amd64 fivecalls@5calls.org:/home/fivecalls/fivecalls-linux-amd64.tmp
+	ssh fivecalls@5calls.org install /home/fivecalls/fivecalls-linux-amd64.tmp /home/fivecalls/fivecalls-linux-amd64
+	echo "Uploaded."
 
 deploy_static:
 	cd .. && gulp deploy
