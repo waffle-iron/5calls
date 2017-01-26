@@ -33,28 +33,9 @@
   }
 
   &__stats {
-    list-style: none;
-    margin: 2rem 0 0 0;
-    padding: 0;
-  }
-
-  &__stat {
-    display: flex;
-
-    > * {
-      display: block;
-      width: 40%;
-      padding: .25rem;
-      font-size: 3.5rem;
-      font-weight: bold;
-    }
-  }
-
-  &__stat-value {
-    text-align: right;
-  }
-
-  &__stat-dd {
-    margin-left: 0.6rem;
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 3.5rem;
+    font-weight: bold;
   }
 }
