@@ -17,3 +17,15 @@ $font-sans: 'Roboto Condensed', sans-serif;
 $bp-large:  85rem;
 $bp-medium: 45rem;
 $bp-small:  28rem;
+// for debugging layout
+@mixin debug-layout($color: black, $important: false) {
+  @if $important {
+    * {
+      background: rgba($color, .05) !important;
+    }
+  } @else {
+    * {
+      background: rgba($color, .05);
+    }
+  }
+}
