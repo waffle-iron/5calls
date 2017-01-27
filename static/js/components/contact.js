@@ -12,7 +12,7 @@ module.exports = (c, state, prev, send) => {
 
 	return html`
       <div class="call__contact" id="contact">
-        <div class="call__contact__image"><div class="crop"><img src="${photoURL}"/></div></div>
+        <div class="call__contact__image"><img src="${photoURL}"/></div>
         <p class="call__contact__type">Call this office:</p>
         <p class="call__contact__name">${c.name} ${repID}</p>
         <p class="call__contact__phone">

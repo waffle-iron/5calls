@@ -3,13 +3,12 @@
 }
 
 body {
-  color: $color-text;
   font-family: $font-sans;
-  background-color: $blue-darker;
-  background-image: url(/img/5calls_bgd.jpg);
-  background-size: cover;
-  background-position: 50% 50%;
-  min-height: 100vh;
+  color: $color-text;
+  background-color: $color-bg;
+  @include bp(small) {
+
+  }
 }
 
 html, body {
@@ -17,16 +16,12 @@ html, body {
 }
 
 p {
-  margin: 0 0 1rem;
+  font-size: $font-small;
 }
 
 a {
-  color: $blue;
+  color: $color-link;
   text-decoration: none;
-
-  transition-property: color, background-color, border;
-  transition-duration: 0.2s;
-  transition-timing-function: ease;
 
   &:hover,
   &:focus {
@@ -37,8 +32,12 @@ a {
 
 button {
   font-family: $font-sans;
+}
 
-  transition-property: background-color;
-  transition-duration: 0.2s;
-  transition-timing-function: ease;
+input[type=text] {
+  margin: 0 10px;
+}
+
+input[type=submit] {
+  border-radius: 8px;
 }
