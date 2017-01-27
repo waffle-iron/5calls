@@ -15,7 +15,7 @@ module.exports = (state, prev, send) => {
         <p>Want to know more? Read about <a href="#about">why calling works</a> or <a href="#about">more about us</a></p>
       </div>
       <p class="hypothesis__stats">
-        ${state.totalCalls.toLocaleString()} calls to date
+        ${state.totalCalls.toLocaleString().replace(/\D\d\d$/, '')} calls to date
       </p>
     </div>
   `;

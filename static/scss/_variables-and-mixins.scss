@@ -16,4 +16,32 @@ $font-sans: 'Roboto Condensed', sans-serif;
 
 $bp-large:  85rem;
 $bp-medium: 45rem;
-$bp-small:  20rem;
+$bp-small:  28rem;
+
+// mixin to reduce amount of code for responsive design tweaks
+@mixin bp($point) {
+
+  @if $point == large {
+    @media only screen and (min-width: $bp-large) { @content; }
+  }
+  @else if $point == medium {
+    @media only screen and (max-width: $bp-medium) { @content; }
+  }
+  @else if $point == small {
+    @media only screen and (max-width: $bp-small) { @content; }
+  }
+
+}
+
+// for debugging layout
+@mixin debug-layout($color: black, $important: false) {
+  @if $important {
+    * {
+      background: rgba($color, .05) !important;
+    }
+  } @else {
+    * {
+      background: rgba($color, .05);
+    }
+  }
+}
