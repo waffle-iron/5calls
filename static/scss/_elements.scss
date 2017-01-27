@@ -17,6 +17,12 @@ html, body {
 
 p {
   font-size: $font-small;
+  line-height: 1.4em;
+}
+
+p, h2 {
+  margin: 0;
+  padding: 12px 12px 6px;
 }
 
 a {
@@ -30,14 +36,23 @@ a {
   }
 }
 
-button {
+button, input[type=submit] {
   font-family: $font-sans;
+  border: 1px solid $white;
+  border-radius: 4px;
+  background-color: $red;
+  color: $white;
+  margin: 2px;
+  padding: 6px 18px;
 }
 
-input[type=text] {
-  margin: 0 10px;
-}
-
-input[type=submit] {
-  border-radius: 8px;
+input {
+  font-family: $font-sans;
+  border: 1px solid transparent;
+  padding: 6px;
+  border-radius: 4px;
+  &:focus {
+    border-radius: 4px;
+    outline: 2px solid $blue-light;
+  }
 }

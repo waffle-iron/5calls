@@ -1,41 +1,42 @@
 .hypothesis {
-  color: #fff;
 
   &__header {
-    margin-bottom: 1.8rem;
 
     p {
-      margin-bottom: 2rem;
-      font-size: 2rem;
-      line-height: 1.25;
-    }
-  }
-
-  &__text {
-    p {
-      margin-bottom: 2rem;
-      font-size: 1.6rem;
-      line-height: 1.2;
-
-      a {
-        color: #fff;
-        font-weight: 400;
-        text-decoration: underline;
+      font-size: $font-large;
+      @include bp(small) {
+        font-size: $font-small;
       }
     }
   }
 
   &__title {
-    margin: 0.6rem 0 2rem 0;
-    font-size: 4rem;
+    font-size: $font-xxxlarge;
     font-weight: bold;
     text-transform: uppercase;
+    @include bp(small) {
+      font-size: $font-xlarge;
+    }
+  }
+
+  &__text {
+    p {
+      font-size: $font-normal;
+      @include bp(small) {
+        font-size: $font-small;
+      }      
+      a {
+        font-weight: bold;
+      }
+    }
   }
 
   &__stats {
-    margin-top: 2rem;
     text-align: center;
-    font-size: 3.5rem;
+    font-size: $font-xxlarge;
     font-weight: bold;
+    @include bp(small) {
+      font-size: $font-xlarge;
+    }
   }
 }

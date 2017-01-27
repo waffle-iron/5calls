@@ -1,13 +1,37 @@
 .layout {
+  display: flex;
+  flex-direction: row;
+  min-height: 80%;
+  margin: 0 auto;
+  max-width: 1024px;
 
+
+  @include bp(medium) {
+    flex-direction: column;
+  }
 }
 
 .layout__side {
+  flex: 1;
+  border-top: 2px solid $red;
+  margin: 36px 18px;
+  min-width: 300px;
+
+  @include bp(medium) {
+    margin: 0;
+  }
 
 }
 
 .layout__main {
+  flex: 2;
 
+  margin: 24px 18px 0 6px;
+
+
+  @include bp(medium) {
+    margin: 0;
+  }
 }
 
 .logo__header {
@@ -16,20 +40,25 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: 48px auto;
-  height: 64px;
+  height: 56px;
 }
 
 footer {
-  background-color: $red;
+  background-color: $blue;
   text-align: center;
   font-size: $font-small;
   color: #fff;
+  padding-top: 12px;
 
-  .tinyletter__form {
-    margin: 10px 0;
+  .tinyletter__form, .colophon {
+    padding-bottom: 24px;
   }
 
   a {
     color: #fff;
+  }
+
+  input[type=text] {
+    width: 100px;
   }
 }

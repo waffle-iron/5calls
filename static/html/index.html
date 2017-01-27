@@ -86,18 +86,20 @@
     <footer>
       <div class="tinyletter__form">
         <form action="https://tinyletter.com/fivecalls" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/fivecalls', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
-          <label for="tlemail">Get email reminders once a week:</label>
-          <input type="text" style="width:140px" name="email" id="tlemail" />
+          <label for="tlemail">Send reminders to</label>
+          <input type="text" name="email" id="tlemail" placeholder="email address" />
           <input type="hidden" value="1" name="embed"/>
           <input type="submit" value="Subscribe" /></form>
       </div>
-      <a href="https://github.com/5calls/5calls">
-        <i class="fa fa-github" aria-hidden="true"></i> Open Source
-      </a>
-      &nbsp;&nbsp;—&nbsp;&nbsp;
-      <a href="https://twitter.com/make5calls">
-        <i class="fa fa-twitter" aria-hidden="true"></i> Updates on Twitter
-      </a>
+      <div class="colophon">
+        <a href="https://github.com/5calls/5calls">
+          <i class="fa fa-github" aria-hidden="true"></i> Open Source
+        </a>
+        &nbsp;&nbsp;—&nbsp;&nbsp;
+        <a href="https://twitter.com/make5calls">
+          <i class="fa fa-twitter" aria-hidden="true"></i> Updates on Twitter
+        </a>
+      </div>
     </footer>
 
     <script src="/js/app.js"></script>
