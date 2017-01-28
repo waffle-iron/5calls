@@ -103,7 +103,7 @@ app.model({
         }
       } catch(e) {
         Raven.captureMessage("Couldn't parse ipinfo json", { level: 'error' });
-      } 
+      }
     },
     changeActiveIssue: (state, issueId) => {
       return { contactIndex: 0 }
@@ -118,7 +118,7 @@ app.model({
     },
     setAddress: (state, address) => {
       store.replace("org.5calls.location", 0, address, () => {});
-      
+
       return { address: address, askingLocation: false }
     },
     setGeolocation: (state, data) => {
@@ -148,7 +148,7 @@ app.model({
     fetch: (state, data, send, done) => {
       address = "?address="
       if (state.address !== '') {
-        address += state.address        
+        address += state.address
       } else if (state.geolocation !== "") {
         address += state.geolocation
       }
@@ -189,12 +189,12 @@ app.model({
         if (state.geolocation == '' || now.valueOf() > cachePlusHours.valueOf()) {
           http('https://ipinfo.io/json', (err, res, body) => {
             if (res.statusCode == 200) {
-              send('receiveLoc', body, done)            
+              send('receiveLoc', body, done)
             } else {
               Raven.captureMessage("Non-200 from ipinfo", { level: 'info' });
             }
             send('fetch', {}, done)
-          })        
+          })
         } else {
           send('fetch', {}, done)
         }

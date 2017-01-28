@@ -9,7 +9,7 @@ module.exports = (state, prev, send) => {
 
   function pretext(state) {
     if (state.askingLocation) {
-      return html`<p><form onsubmit=${submitAddress}><input autofocus="true" name="address" placeholder="Enter an address or zip code" /> <button>Go</button></form></p>`
+      return html`<p><form onsubmit=${submitAddress}><input type="text" autofocus="true" name="address" placeholder="Enter an address or zip code" /> <button>Go</button></form></p>`
     } else {
       if (state.address != '') {
         return html`<p>for <a href="#" onclick=${enterLocation}>${state.address}</a></p>`

@@ -6,9 +6,6 @@ body {
   font-family: $font-sans;
   color: $color-text;
   background-color: $color-bg;
-  @include bp(small) {
-
-  }
 }
 
 html, body {
@@ -16,13 +13,19 @@ html, body {
 }
 
 p {
-  font-size: $font-small;
+  font-size: $font-normal;
   line-height: 1.4em;
+  margin: 0 0 16px 0;
 }
 
-p, h2 {
-  margin: 0;
-  padding: 12px 12px 6px;
+h2 {
+  margin: 24px 0 16px 0;
+  font-weight: bold;
+  line-height: 1.1em;
+}
+
+h3 {
+  margin: 24px 0 6px 0;
 }
 
 a {
@@ -38,21 +41,32 @@ a {
 
 button, input[type=submit] {
   font-family: $font-sans;
-  border: 1px solid $white;
-  border-radius: 4px;
-  background-color: $red;
-  color: $white;
-  margin: 2px;
+  border: 1px solid transparent;
+  border-radius: $form-radius;
+  background-color: $blue-light;
+  color: $blue;
+  margin: 2px 3px;
   padding: 6px 18px;
+  &:hover, &:focus {
+    color: $white;
+    background-color: $red;
+  }
+  &:active {
+    box-shadow: inset 0 1px  rgba(0, 0, 0, 0.2);
+  }
 }
 
-input {
+input[type=text] {
   font-family: $font-sans;
-  border: 1px solid transparent;
   padding: 6px;
-  border-radius: 4px;
+  border-radius: $form-radius;
+  border: 1px solid $gray-light;
+  background-color: $white;
+
   &:focus {
-    border-radius: 4px;
-    outline: 2px solid $blue-light;
+    outline: 0;
+    padding: 5px;
+    border-radius: $form-radius;
+    border: 2px solid $blue-light;
   }
 }
