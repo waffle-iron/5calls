@@ -216,6 +216,8 @@ app.model({
       }
     },
     callComplete: (state, data, send, done) => {
+      ga('send', 'called', data.result);
+
       const body = queryString.stringify({ location: state.zip, result: data.result, contactid: data.contactid, issueid: data.issueid })
       http.post(appURL+'/report', { body: body, headers: {"Content-Type": "application/x-www-form-urlencoded"} }, (err, res, body) => {
         // don't really care about the result
@@ -223,6 +225,8 @@ app.model({
       send('incrementContact', data, done);
     },
     skipCall: (state, data, send, done) => {
+      ga('send', 'called', 'skip');
+
       send('incrementContact', data, done);
     },
     activateIssue: (state, data, send, done) => {
