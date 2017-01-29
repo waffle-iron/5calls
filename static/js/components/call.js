@@ -23,9 +23,9 @@ module.exports = (state, prev, send) => {
   const currentContact = issue.contacts[state.contactIndex];
 
   const contactsLeft = issue.contacts.length - (state.contactIndex + 1);
-  const callsPluralization = contactsLeft > 1 ? "s" : "";
+  const callsPluralization = contactsLeft > 1 ? "people" : "person";
 
-  const contactsLeftText = contactsLeft > 0 ? contactsLeft + " call"+ callsPluralization +" left" : "This is the last contact";
+  const contactsLeftText = contactsLeft > 0 ? contactsLeft + " more " + callsPluralization +" to call for this issue." : "You've made all the calls for this issue.";
 
   function outcome(result) {
     if (result == null) {
@@ -57,6 +57,8 @@ module.exports = (state, prev, send) => {
         <button onclick=${() => outcome('contacted')}>Made Contact</button>
         <button onclick=${() => outcome()}>Skip</button>
       </div>
+
+      <h3 class="call__contacts__left">${contactsLeftText}</h3>
     </div>
 
     ${promote(state, prev, send)}

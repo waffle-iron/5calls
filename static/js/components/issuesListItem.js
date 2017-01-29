@@ -28,7 +28,7 @@ module.exports = (issue, state, prev, send) => {
   if (issueIndex <= 5) {
     return html`
       <li class="${classString(state, '')}" onclick=${handleClick} href="#issue/${issue.id}">
-        <p class="${classString(state, '__status')}">${issueIndex}</p>
+        <p class="${classString(state, '__status')}"></p>
         <p class="${classString(state, '__title')}">${issue.name}</p>
         <p class="${classString(state, '__summary')}">${issue.contacts.length} call${ issue.contacts.length > 1 ? "s" : "" } to make</p>
       </li>

@@ -24,7 +24,7 @@
   }
 
   &__logo {
-    width: 140px;
+    width: 200px;
   }
 
   &__location {
@@ -63,6 +63,7 @@
       top: 14px;
       left: 12px;
       border-radius: 50%;
+      border: 3px solid $gray-light;
       width: 36px;
       height: 36px;
       font-size: 21px;
@@ -72,10 +73,10 @@
       margin: 0;
       padding: 0;
       color: $white;
-      background-color: $red;
 
       &.is-complete {
         color: transparent;
+        border: 3px solid $green;
         background-color: $green;
         background-image: url(/img/5calls-icon-checkmark.png);
         background-size: 26px auto;

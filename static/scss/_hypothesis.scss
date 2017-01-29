@@ -1,7 +1,7 @@
 .hypothesis {
 
-  &__header {
-    p {
+  &__header, &__list {
+    p, li {
       font-size: $font-large;
       @include bp(small) {
         font-size: $font-small;
@@ -35,19 +35,9 @@
   }
 
   &__list {
-    font-size: $font-large;
     margin-top: 6px;
     li {
       margin-bottom: 12px;
-    }
-  }
-
-  &__stats {
-    font-size: $font-xxlarge;
-    font-weight: bold;
-    text-transform: uppercase;
-    @include bp(small) {
-      font-size: $font-xlarge;
     }
   }
 }

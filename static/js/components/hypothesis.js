@@ -1,4 +1,5 @@
 const html = require('choo/html');
+const callcount = require('./callcount.js');
 
 module.exports = (state, prev, send) => {
   // TODO: separate this out into straight up content and stats
@@ -18,13 +19,12 @@ module.exports = (state, prev, send) => {
         <h3 class="hypothesis__subtitle">5 Calls:</h3>
 
         <ul class="hypothesis__list">
-        <li>provides phone numbers and scripts so calling is quick and easy,</li>
+        <li>provides phone numbers and scripts so calling is quick and easy</li>
         <li>uses your location to find your local representatives so your calls have more impact</li>
-        <li>has helped people make</li>
       </div>
-      <h2 class="hypothesis__stats">
-        ${state.totalCalls.toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} calls so far!
-      </h2>
+      
+      ${callcount(state, prev, send)}
+
     </div>
   `;
 }

@@ -32,11 +32,27 @@
 
 .logo__header {
   background-color: $red;
-  background-image: url('/img/5calls-logo.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 48px auto;
-  height: 56px;
+  height: 12px;
+}
+
+.callcount {
+  font-size: $font-xlarge;
+  font-weight: bold;
+  text-transform: uppercase;
+  @include bp(small) {
+    font-size: $font-large;
+  }
+}
+
+.promote {
+  p {
+    font-size: $font-large;
+    text-align: center;
+  }
+  a {
+    display: inline-block;
+    margin: 12px 12px 20px;
+  }
 }
 
 footer {

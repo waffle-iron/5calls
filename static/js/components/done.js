@@ -1,5 +1,6 @@
 const html = require('choo/html');
 const promote = require('./promote.js');
+const callcount = require('./callcount.js');
 
 module.exports = (state, prev, send) => {
   return html`
@@ -13,6 +14,9 @@ module.exports = (state, prev, send) => {
         ${promote(state, prev, send)}
 
         <p class="call__text"> <a href="#about">Learn why calling</a> representatives is the most effective way of making your voice heard.</p>
+
+        ${callcount(state, prev, send)}
+
       </div>
 
 
