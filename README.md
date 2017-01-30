@@ -53,7 +53,9 @@ To build the application code to a binary file:
 To build and run the application code:
 `make run`
 
-Alternatively, run `go run *.go -airtable-base=appZ8ITCpRa5YCCN7`
+Or to connect to an alternative Airtable database, such as the development
+database:
+`make run AIRTABLE_DATABASE=appZ8ITCpRa5YCCN7`
 
 The following environment variables can be set on the application, both with
 `make run` and by calling the binary directly:

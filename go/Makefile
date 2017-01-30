@@ -1,5 +1,9 @@
 # Default GOPATH to the current directory
 GOPATH ?= `pwd`
+FIVECALLS_ARGS =
+ifdef AIRTABLE_DATABASE
+	FIVECALLS_ARGS = --airtable-base=$(AIRTABLE_DATABASE)
+endif
 
 .PHONY: default build build-dev build-prod deploy deploy-static deploy_static
 
@@ -15,7 +19,7 @@ deps:
 
 # Run with reload
 run:
-	GOPATH=$(GOPATH) go run *.go
+	GOPATH=$(GOPATH) go run *.go $(FIVECALLS_ARGS)
 
 # Build binary file locally
 build-dev:
