@@ -15,15 +15,19 @@ import (
 )
 
 const (
-	roleLowerBody = "legislatorLowerBody"
-	roleUpperBody = "legislatorUpperBody"
-	roleLevel     = "country"
-	areaHouse     = "House"
-	areaSenate    = "Senate"
+	roleLowerBody        = "legislatorLowerBody"
+	roleUpperBody        = "legislatorUpperBody"
+	roleHeadOfGovernment = "headOfGovernment"
+	roleLevelCountry     = "country"
+	roleLevelState       = "administrativeArea1"
+	areaHouse            = "House"
+	areaSenate           = "Senate"
+	areaGovernor         = "Governor"
 )
 
 var baseURL = "https://www.googleapis.com/civicinfo/v2/representatives"
 var phoneRegex = regexp.MustCompile(`\((\d{3})\)\s+(\d{3})[\s\-](\d{4})`)
+var roleLevel = [2]string{"country", "administrativeArea1"}
 
 // RepFinder provides a mechanism to find local reps given an address.
 type RepFinder interface {
@@ -90,34 +94,47 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 	}
 	ret := &LocalReps{}
 	for _, o := range r.Offices {
-		for _, role := range o.Roles {
-			if role == roleUpperBody || role == roleLowerBody {
-				for _, i := range o.OfficialIndices {
-					official := r.Officials[i]
-					var phone string
-					if len(official.Phones) > 0 {
-						phone = official.Phones[0]
-					} else {
-						continue
-					}
-					var area = areaHouse
-					if role == roleUpperBody {
-						area = areaSenate
-					}
-					c := &Contact{
-						ID:       fmt.Sprintf("%s-%s", r.NormalizedInput.State, strings.Replace(official.Name, " ", "", -1)),
-						Name:     official.Name,
-						Phone:    reformattedPhone(phone),
-						PhotoURL: official.PhotoUrl,
-						Party:    official.Party,
-						State:    r.NormalizedInput.State,
-						Area:     area,
-					}
-					if area == areaHouse {
-						ret.HouseRep = c
-					} else {
-						ret.Senators = append(ret.Senators, c)
-					}
+		var area string
+		for _, level := range o.Levels {
+			for _, role := range o.Roles {
+				switch {
+				case level == roleLevelCountry && role == roleLowerBody:
+					area = areaHouse
+				case level == roleLevelCountry && role == roleUpperBody:
+					area = areaSenate
+				// Civic API returns governor and deputy governor under same
+				// role level and role, comparing the name is the best we can do
+				// with this dataset
+				case level == roleLevelState && role == roleHeadOfGovernment && o.Name == "Governor":
+					area = areaGovernor
+				}
+			}
+		}
+		if area != "" {
+			for _, i := range o.OfficialIndices {
+				official := r.Officials[i]
+				var phone string
+				if len(official.Phones) > 0 {
+					phone = official.Phones[0]
+				} else {
+					continue
+				}
+				c := &Contact{
+					ID:       fmt.Sprintf("%s-%s", r.NormalizedInput.State, strings.Replace(official.Name, " ", "", -1)),
+					Name:     official.Name,
+					Phone:    reformattedPhone(phone),
+					PhotoURL: official.PhotoUrl,
+					Party:    official.Party,
+					State:    r.NormalizedInput.State,
+					Area:     area,
+				}
+				switch area {
+				case areaHouse:
+					ret.HouseRep = c
+				case areaSenate:
+					ret.Senators = append(ret.Senators, c)
+				case areaGovernor:
+					ret.Governor = c
 				}
 			}
 		}
@@ -141,11 +158,15 @@ func NewCivicAPI(key string, client *http.Client) RepFinder {
 
 // GetReps returns local representatives for the supplied address.
 func (c *civicAPI) GetReps(address string) (*LocalReps, *Address, error) {
-	u := fmt.Sprintf("%s?key=%s&levels=%s&address=%s",
-		baseURL, c.key, roleLevel,
-		url.QueryEscape(address),
-	)
-	req, err := http.NewRequest("GET", u, nil)
+	var u, _ = url.Parse(baseURL)
+	q := u.Query()
+	for _, l := range roleLevel {
+		q.Add("levels", l)
+	}
+	q.Set("key", c.key)
+	q.Set("address", url.QueryEscape(address))
+	u.RawQuery = q.Encode()
+	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, nil, err
 	}
