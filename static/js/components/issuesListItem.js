@@ -23,10 +23,12 @@ module.exports = (issue, state, prev, send) => {
   }
 
   return html`
-    <li class="${classString(state, '')}" onclick=${handleClick} href="#issue/${issue.id}">
-      <p class="${classString(state, '__status')}"></p>
-      <p class="${classString(state, '__title')}">${issue.name}</p>
-      <p class="${classString(state, '__summary')}">${issue.contacts.length} call${ issue.contacts.length > 1 ? "s" : "" } to make</p>
+    <li onclick=${handleClick}>
+      <a class="${classString(state, '')}" href=#issue${issue.id}">
+        <span class="${classString(state, '__status')}"></span>
+        <span class="${classString(state, '__title')}">${issue.name}</span>
+        <span class="${classString(state, '__summary')}">${issue.contacts.length} call${ issue.contacts.length > 1 ? "s" : "" } to make</span>
+      </a>
     </li>
   `;
 }
