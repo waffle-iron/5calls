@@ -15,7 +15,7 @@ module.exports = (state, prev, send) => {
 
   function issueExplain(state) {
     if (state.issues.length > 0) {
-      return html`<h2>Select an issue that you care about to get started:</h2>`      
+      return html`<h2>Choose an issue to get started:</h2>`      
     } else {
       return html``
     }
