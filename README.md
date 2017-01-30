@@ -1,5 +1,7 @@
 # 5calls
 
+This is where development for [5calls.org](http://5calls.org) happens. Please check the issue list and pull requests before starting work so we can ensure you're not duplicating work! We're all volunteers and want to treat the time you dedicate to the site with respect. Ping  [@make5calls](https://twitter.com/make5calls) on twitter with an email to get an invite to our Slack.
+
 ## Running the app for local development
 
 - run `gulp` from the root directory of the project
