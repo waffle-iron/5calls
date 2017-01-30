@@ -1,8 +1,23 @@
 # 5calls
 
+## Running the app for local development
+
+- run `gulp` from the root directory of the project
+- run `python -m SimpleHTTPServer` from the `app/static` directory
+- run `go run *.go -airtable-base=appZ8ITCpRa5YCCN7` from the `go` directory
+- Edit the `appUrl` variable in `static/js/main.js` to be `http://localhost:8090` to point the frontend at your local backend.
+
 ## Setup for Dev
 
-### frontend
+### System
+
+- Install [Node.js](https://nodejs.org/en/)
+- Install [Go](https://golang.org/)
+- Set your GOPATH `export GOPATH=$HOME/go` or add to `.bash_profile`
+
+If you are on a mac you'll need to install XCode and the CLI tools as well.
+
+### Frontend
 
 Install the requirements with:
 `npm install`
@@ -17,10 +32,34 @@ In a new terminal, use any web server to serve the compiled source locally, like
 
 A development site should be available at http://localhost:8000
 
-### go
+### Backend
 
-In the go directory, use the go tool to run the code:
-`go run *.go`
+#### Install dependencies
+
+- `go get github.com/fabioberger/airtable-go`
+- `go get github.com/gorilla/mux`
+- `go get github.com/mattn/go-sqlite3`
+- `go get github.com/patrickmn/go-cache`
+
+#### Set up [Airtable](https://airtable.com/)
+
+Make an account on [Airtable](https://airtable.com).
+
+Go to the [Account](https://airtable.com/account) page and generate an API key.
+
+Request an invitation to the dev airtable for this project. (TODO: how?)
+
+#### Get a Google Civic API Key
+
+Follow the instructions [here](https://developers.google.com/civic-information/docs/using_api) to get an API key for the Google civic API.
+
+#### Setup your environment
+
+Run the following: `export AIRTABLE_API_KEY=[the key i just got from airtable] && export CIVIC_API_KEY=[A google civic api key]`
+
+#### Running the code
+
+In the go direction run the code as follows `go run *.go -airtable-base=appZ8ITCpRa5YCCN7`
 
 ## Deployment
 
