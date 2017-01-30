@@ -1,6 +1,10 @@
 # 5calls
 
-5calls is split into two pieces
+This is where development for [5calls.org](http://5calls.org) happens. Please check the issue list and pull requests before starting work so we can ensure you're not duplicating work! We're all volunteers and want to treat the time you dedicate to the site with respect. Ping  [@make5calls](https://twitter.com/make5calls) on twitter with an email to get an invite to our Slack.
+
+Currently this repo contains both frontend and backend development pieces.
+
+## Running the app for local development
 
 * Site front end, written in Javascript, using Choo
 * Application server back end, for data processing, written in Go
