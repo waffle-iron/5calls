@@ -95,21 +95,25 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 	ret := &LocalReps{}
 	for _, o := range r.Offices {
 		var area string
-		for _, level := range o.Levels {
-			for _, role := range o.Roles {
-				switch {
-				case level == roleLevelCountry && role == roleLowerBody:
-					area = areaHouse
-				case level == roleLevelCountry && role == roleUpperBody:
-					area = areaSenate
-				// Civic API returns governor and deputy governor under same
-				// role level and role, comparing the name is the best we can do
-				// with this dataset
-				case level == roleLevelState && role == roleHeadOfGovernment && o.Name == "Governor":
-					area = areaGovernor
+		AreaLoop:
+			for _, level := range o.Levels {
+				for _, role := range o.Roles {
+					switch {
+					case level == roleLevelCountry && role == roleLowerBody:
+						area = areaHouse
+						continue AreaLoop
+					case level == roleLevelCountry && role == roleUpperBody:
+						area = areaSenate
+						continue AreaLoop
+					// Civic API returns governor and deputy governor under same
+					// role level and role, comparing the name is the best we can do
+					// with this dataset
+					case level == roleLevelState && role == roleHeadOfGovernment && o.Name == "Governor":
+						area = areaGovernor
+						continue AreaLoop
+					}
 				}
 			}
-		}
 		if area != "" {
 			for _, i := range o.OfficialIndices {
 				official := r.Officials[i]
