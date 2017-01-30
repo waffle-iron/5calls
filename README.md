@@ -20,14 +20,17 @@ Mac you'll need to install XCode and the CLI tools as well.
 ### Front End
 
 Front end requirements must first be installed with:
+
 `npm install`
 
 Gulp is used to compile front end static assets. If you do not have Gulp
 installed globally, you can install this with:
+
 `npm install -g gulp`
 
 Gulp is configured, by default, to watch and recompile front end files when
 any changes are detected. You can run Gulp in this mode with:
+
 `gulp`
 
 This default command will also spin up an HTTP server for serving the site
@@ -45,26 +48,27 @@ Code](https://golang.org/doc/code.html) for more information on this.
 
 With your environment set up, you should first start by installing
 dependencies. In the `go/` path, this will install these dependencies for you:
+
 `make deps`
 
 To build the application code to a binary file:
+
 `make`
 
 To build and run the application code:
+
 `make run`
 
 Or to connect to an alternative Airtable database, such as the development
 database:
+
 `make run AIRTABLE_DATABASE=appZ8ITCpRa5YCCN7`
 
 The following environment variables can be set on the application, both with
 `make run` and by calling the binary directly:
 
--------------------------------------------------------------------
-| AIRTABLE_API_KEY  | (required) Airtable API key                 |
--------------------------------------------------------------------
-| CIVIC_API_KEY     | (required) Google Civic Information API key |
--------------------------------------------------------------------
+* **AIRTABLE_API_KEY** *(required)* Airtable API key
+* **CIVIC_API_KEY** *(required)* Google Civic Information API key
 
 You will need to manually create an [Airtable][airtable] API key, a [Google
 Civic Information API][google-civic] API key, and access to the development
