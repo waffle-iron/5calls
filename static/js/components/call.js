@@ -2,6 +2,7 @@ const html = require('choo/html');
 const find = require('lodash/find');
 const contact = require('./contact.js');
 const scriptLine = require('./scriptLine.js');
+const promote = require('./promote.js');
 
 module.exports = (state, prev, send) => {
   const issue = find(state.issues, ['id', state.location.params.issueid]);
@@ -9,17 +10,22 @@ module.exports = (state, prev, send) => {
   if (issue == null) {
     return html`<section class="call">
       <div class="call_complete">
-        <h2 class="call__complete__title">No issue here</h2>
-        <p class="call__complete__text">I couldn't find the issue for this url, it may have expired. Pick one of our current issues on the left side.</p>
+        <h2 class="call__title">No calls to make</h2>
+        <p class="call__text">
+          This issue is no longer relevant, or the URL you used to get here was wrong. If you clicked a link on this site to get here, <a href="mailto:make5calls@gmail.com">please tell us</a> so we can fix it!
+        </p>
+        <p class="call__text">
+          Next choose a different issue from the list to make calls about.
+        </p>
       </div>
     </section>`;
   }
   const currentContact = issue.contacts[state.contactIndex];
 
   const contactsLeft = issue.contacts.length - (state.contactIndex + 1);
-  const callsPluralization = contactsLeft > 1 ? "s" : "";
+  const callsPluralization = contactsLeft > 1 ? "people" : "person";
 
-  const contactsLeftText = contactsLeft > 0 ? contactsLeft + " call"+ callsPluralization +" left" : "This is the last contact";
+  const contactsLeftText = contactsLeft > 0 ? contactsLeft + " more " + callsPluralization +" to call for this issue." : "You've made all the calls for this issue.";
 
   function outcome(result) {
     if (result == null) {
@@ -33,7 +39,7 @@ module.exports = (state, prev, send) => {
   <section class="call">
     <header class="call__header">
       <h2 class="call__title">${issue.name}</h2>
-      <h3 class="call__reason">${issue.reason.split('\n').map((line) => scriptLine(line, state, prev, send))}</h2>
+      <div class="call__reason">${issue.reason.split('\n').map((line) => scriptLine(line, state, prev, send))}</div>
     </header>
 
     ${contact(currentContact, state, prev, send)}
@@ -51,11 +57,12 @@ module.exports = (state, prev, send) => {
         <button onclick=${() => outcome('contacted')}>Made Contact</button>
         <button onclick=${() => outcome()}>Skip</button>
       </div>
+
+      <h3 class="call__contacts__left">${contactsLeftText}</h3>
     </div>
 
-    <div class="call__promote">
-      <p>${contactsLeftText} for this issue • <a target="_blank" href="https://twitter.com/intent/tweet?text=Make%205%20calls%20today%20to%20change%20your%20government%20http%3A%2F%2Fbit.ly%2F2iJb5nH&source=webclient&via=make5calls"><i class="fa fa-twitter" aria-hidden="true"></i> Tweet this issue</a> • <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://bit.ly/2iJb5nH"><i class="fa fa-facebook" aria-hidden="true"></i> Share this issue</a></p>
-    </div>
+    ${promote(state, prev, send)}
+
   </section>
   `;
 }

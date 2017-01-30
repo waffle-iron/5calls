@@ -7,14 +7,14 @@
 
     <!-- Schema.org markup for Google+ -->
     <meta itemprop="name" content="5 Calls">
-    <meta itemprop="description" content="5 calls a day to make your voice heard">
+    <meta itemprop="description" content="Spend 5 minutes. Make 5 calls. Make your voice heard.">
     <meta itemprop="image" content="https://5calls.org/img/5calls-logo.png">
 
     <!-- Twitter Card data -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@make5calls">
     <meta name="twitter:title" content="5 Calls">
-    <meta name="twitter:description" content="5 calls a day to make your voice heard">
+    <meta name="twitter:description" content="Spend 5 minutes. Make 5 calls. Make your voice heard.">
     <meta name="twitter:image:src" content="https://5calls.org/img/5calls-twitter.png">
 
     <!-- Open Graph data -->
@@ -22,7 +22,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://5calls.org" />
     <meta property="og:image" content="https://5calls.org/img/5calls-twitter.png" />
-    <meta property="og:description" content="5 calls a day to make your voice heard" />
+    <meta property="og:description" content="Spend 5 minutes. Make 5 calls. Make your voice heard." />
     <meta property="og:site_name" content="5 Calls" />
     <meta property="fb:app_id" content="1201592636562906" />
 
@@ -49,7 +49,11 @@
     <script src="https://use.fontawesome.com/e87f1bc9b3.js"></script>
   </head>
   <body>
+
+    <header class="logo__header" role="banner"></header>
+
     <div id="root" class="layout">
+
       <aside id="nav" role="contentinfo" class="layout__side">
         <div class="issues">
           <header class="issues__header" role="banner">
@@ -81,9 +85,21 @@
     </div>
     <footer>
       <div class="tinyletter__form">
-        <form action="https://my.sendinblue.com/users/subscribe/js_id/2p22o/id/1" method="get" target="popupwindow" onsubmit="window.open('https://my.sendinblue.com/users/subscribe/js_id/2p22o/id/1', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><label for="email">Get email alerts once a week:</label><input type="text" style="width:140px" name="email" id="email" /><input type="submit" value="Subscribe" /></form>
+        <form action="https://my.sendinblue.com/users/subscribe/js_id/2p22o/id/1" method="get" target="popupwindow" onsubmit="window.open('https://my.sendinblue.com/users/subscribe/js_id/2p22o/id/1', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+          <label for="email">Get email alerts once a week:</label>
+          <input type="text" style="width:140px" name="email" id="email" />
+          <input type="submit" value="Subscribe" />
+        </form>
       </div>
-      <a href="https://github.com/5calls/5calls"><i class="fa fa-github" aria-hidden="true"></i> Open Source</a>&nbsp;&nbsp;and&nbsp;&nbsp;<a href="https://twitter.com/make5calls"><i class="fa fa-twitter" aria-hidden="true"></i> Updates on Twitter</a>
+      <div class="colophon">
+        <a href="https://github.com/5calls/5calls">
+          <i class="fa fa-github" aria-hidden="true"></i> Open Source
+        </a>
+        &nbsp;&nbsp;—&nbsp;&nbsp;
+        <a href="https://twitter.com/make5calls">
+          <i class="fa fa-twitter" aria-hidden="true"></i> Updates on Twitter
+        </a>
+      </div>
     </footer>
 
     <script src="/js/app.js"></script>
