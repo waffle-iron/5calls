@@ -28,9 +28,14 @@ h3 {
   margin: 24px 0 6px 0;
 }
 
-a {
+a,
+.subtle-button {
   color: $color-link;
   text-decoration: none;
+
+  border: 0;
+  background-color: transparent;
+  display: inline;
 
   &:hover,
   &:focus {
@@ -40,24 +45,26 @@ a {
 }
 
 button, input[type=submit] {
-  font-family: $font-sans;
-  border: 1px solid transparent;
-  border-radius: $form-radius;
-  background-color: $blue-light;
-  color: $blue;
-  margin: 2px 3px;
-  padding: 6px 18px;
+  &:not(.subtle-button) {
+    font-family: $font-sans;
+    border: 1px solid transparent;
+    border-radius: $form-radius;
+    background-color: $blue-light;
+    color: $blue;
+    margin: 2px 3px;
+    padding: 6px 18px;
 
-  transition-property: background-color, color, border-color;
-  transition-duration: 0.15s;
-  transition-timing-function: ease;
+    transition-property: background-color, color, border-color;
+    transition-duration: 0.15s;
+    transition-timing-function: ease;
 
-  &:hover, &:focus {
-    color: $white;
-    background-color: $red;
-  }
-  &:active {
-    box-shadow: inset 0 1px  rgba(0, 0, 0, 0.2);
+    &:hover, &:focus {
+      color: $white;
+      background-color: $red;
+    }
+    &:active {
+      box-shadow: inset 0 1px  rgba(0, 0, 0, 0.2);
+    }
   }
 }
 
