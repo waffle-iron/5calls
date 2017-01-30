@@ -47,6 +47,11 @@ button, input[type=submit] {
   color: $blue;
   margin: 2px 3px;
   padding: 6px 18px;
+
+  transition-property: background-color, color, border-color;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+
   &:hover, &:focus {
     color: $white;
     background-color: $red;
@@ -60,13 +65,11 @@ input[type=text] {
   font-family: $font-sans;
   padding: 6px;
   border-radius: $form-radius;
-  border: 1px solid $gray-light;
+  border: 2px solid $blue;
   background-color: $white;
 
   &:focus {
     outline: 0;
-    padding: 5px;
-    border-radius: $form-radius;
     border: 2px solid $blue-light;
   }
 }
