@@ -8,6 +8,13 @@
   &__header {
     text-align: center;
     background-color: #fff;
+
+    h2 {
+      margin-top: 12px;
+      padding: 0 14px;
+      font-size: $font-large;
+      text-align: left;
+    }
   }
 
   &__title {
