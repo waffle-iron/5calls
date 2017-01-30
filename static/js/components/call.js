@@ -58,7 +58,7 @@ module.exports = (state, prev, send) => {
         <button onclick=${() => outcome()}>Skip</button>
       </div>
 
-      <h3 class="call__contacts__left">${contactsLeftText}</h3>
+      <h3 aria-live="polite" class="call__contacts__left">${contactsLeftText}</h3>
     </div>
 
     ${promote(state, prev, send)}
