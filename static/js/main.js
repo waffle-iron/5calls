@@ -80,7 +80,7 @@ app.model({
   reducers: {
     receiveIssues: (state, data) => {
       response = JSON.parse(data)
-      issues = response.issues.filter((v) => { return v.contacts.length > 0 });
+      issues = response.issues //.filter((v) => { return v.contacts.length > 0 });
       return { issues: issues, splitDistrict: response.splitDistrict }
     },
     receiveTotals: (state, data) => {
@@ -88,6 +88,7 @@ app.model({
       return { totalCalls: totals.count }
     },
     receiveLoc: (state, data) => {
+      return
       try {
         response = JSON.parse(data)
         if (response.city != "") {
@@ -192,8 +193,6 @@ app.model({
           http('https://ipinfo.io/json', (err, res, body) => {
             if (res.statusCode == 200) {
               send('receiveLoc', body, done)
-            } else {
-              Raven.captureMessage("Non-200 from ipinfo", { level: 'info' });
             }
             send('fetch', {}, done)
           })

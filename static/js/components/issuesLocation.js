@@ -33,6 +33,7 @@ module.exports = (state, prev, send) => {
   }
 
   function enterLocation(e) {
+    e.preventDefault();
     send('enterLocation');
   }
 

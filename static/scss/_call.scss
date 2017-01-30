@@ -59,6 +59,13 @@
     }
   }
 
+  &__nocontact {
+    h2 {
+      font-size: $font-xxlarge;
+      text-align: center;
+    }
+  }
+
   &__script {
     &__body {
       background-color: $gray-xlight;
