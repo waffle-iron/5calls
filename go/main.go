@@ -35,6 +35,7 @@ func main() {
 	var (
 		dbfile       = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
 		airtableBase = flag.String("airtable-base", "app6dzsa26hDjI7tp", "base ID for airtable store")
+		airpatchBase = flag.String("airpatch-base", "appbLElYlcjNcwK0q", "base ID for airtable patch database")
 		addr         = flag.String("addr", ":8090", "[ip]:port to listen on")
 		autoRestart  = flag.Bool("auto-restart", false, "automatically restart (by exit 0) on binary update; assumes running a supervisor")
 	)
@@ -58,7 +59,17 @@ func main() {
 		APIKey: airtableKey,
 	})
 
+	atPatchClient := NewAirtableClient(AirtableConfig{
+		BaseID: *airpatchBase,
+		APIKey: airtableKey,
+	})
+
 	issueLister, err := NewIssueCache(atClient, 30*time.Minute)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	contactPatcher, err := NewContactPatcher(atPatchClient, 30*time.Minute)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -82,8 +93,9 @@ func main() {
 	defer db.Close()
 
 	h := &handler{
-		repFinder:   repFinder,
-		issueLister: issueLister,
+		repFinder:      repFinder,
+		issueLister:    issueLister,
+		contactPatcher: contactPatcher,
 	}
 	a := &adminHandler{
 		reloader: issueLister.(cacheReloader),

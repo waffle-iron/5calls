@@ -34,6 +34,15 @@ func (c *Contact) String() string {
 	return asJson(c)
 }
 
+// Patch
+type Patch struct {
+	Name  string
+	Phone string
+	State string
+	Area  string
+	Type  string
+}
+
 // LocalReps are the contacts that constitute local representatives
 // for a supplied address.
 type LocalReps struct {

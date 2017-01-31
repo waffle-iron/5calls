@@ -14,8 +14,9 @@ const (
 )
 
 type handler struct {
-	repFinder   RepFinder
-	issueLister IssueLister
+	repFinder      RepFinder
+	issueLister    IssueLister
+	contactPatcher ContactPatcher
 }
 
 func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
@@ -55,6 +56,14 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	patches, err := h.contactPatcher.AllPatches()
+	if err != nil {
+		log.Printf("couldn't get patches")
+	}
+
+	log.Printf("patches", patches)
+
 	for _, issue := range all {
 		newContacts := []Contact{}
 		for _, contact := range issue.Contacts {
@@ -76,6 +85,15 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 					for _, s := range localReps.Senators {
 						c := *s
 						c.Reason = "This is one of your two senators"
+
+						// check for addition patches
+						for _, p := range patches {
+							log.Printf(c.State, p.State, c.Name, p.Name)
+							if c.State == p.State && c.Name == p.Name {
+								log.Printf("matched", p.Name)
+							}
+						}
+
 						newContacts = append(newContacts, c)
 					}
 				}

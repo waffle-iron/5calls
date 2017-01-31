@@ -12,8 +12,10 @@ import (
 )
 
 const (
-	issuesTable   = "Issues list"
-	contactsTable = "Contact"
+	issuesTable    = "Issues list"
+	contactsTable  = "Contact"
+	additionsTable = "Additions"
+	deletionsTable = "Deletions"
 )
 
 var minRefreshInterval = time.Minute
@@ -23,12 +25,25 @@ type IssueLister interface {
 	AllIssues() ([]Issue, error)
 }
 
+// ContactPatcher is a thing that can produce contact data patches
+type ContactPatcher interface {
+	AllPatches() ([]Patch, error)
+}
+
 func asJson(data interface{}) string {
 	b, err := json.Marshal(data)
 	if err != nil {
 		return fmt.Sprint(data)
 	}
 	return string(b)
+}
+
+// atPatch is a patch for a civic api contact
+type atPatch struct {
+	Name  string
+	Phone string
+	Area  string
+	State string
 }
 
 // atIssueInfo is the record definition of an issue, minus its key
@@ -100,6 +115,44 @@ type AirtableClient struct {
 func NewAirtableClient(config AirtableConfig) *AirtableClient {
 	c, _ := airtable.New(config.APIKey, config.BaseID)
 	return &AirtableClient{client: c}
+}
+
+// AllPatches returns a list of contact patches
+func (c *AirtableClient) AllPatches() ([]Patch, error) {
+	// load all additions
+	var aList []*atPatch
+	err := c.client.ListRecords(additionsTable, &aList, airtable.ListParameters{
+		FilterByFormula: `NOT(NAME = "")`,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("unable to load additions, %v", err)
+	}
+
+	for _, p := range aList {
+		log.Printf("found add %s %s %s", p.Name, p.Phone, p.State)
+	}
+
+	// load all deletions
+	var dList []*atPatch
+	err = c.client.ListRecords(deletionsTable, &dList, airtable.ListParameters{
+		FilterByFormula: `NOT(NAME = "")`,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("unable to load deletions, %v", err)
+	}
+
+	var patches []Patch
+	for _, add := range aList {
+		addition := Patch{Name: add.Name, Phone: add.Phone, State: add.State, Area: add.Area, Type: "ADD"}
+		patches = append(patches, addition)
+	}
+
+	for _, add := range dList {
+		deletion := Patch{Name: add.Name, Phone: add.Phone, State: add.State, Area: add.Area, Type: "DELETE"}
+		patches = append(patches, deletion)
+	}
+
+	return patches, nil
 }
 
 // AllIssues returns a list of issues with standard contacts, if any, linked to them.
@@ -214,4 +267,71 @@ func (ic *issueCache) refresh(interval time.Duration) {
 
 func (ic *issueCache) AllIssues() ([]Issue, error) {
 	return ic.val.Load().([]Issue), nil
+}
+
+// patchCache stores an in-memory copy of the issue list with automatic refresh.
+type patchCache struct {
+	delegate ContactPatcher
+	stop     chan struct{} // close-only
+	force    chan struct{}
+	val      atomic.Value // of []Issue
+	stopOnce sync.Once
+}
+
+// NewContactPatcher returns an contact patch cache after ensuring that the contact patch list is loaded.
+func NewContactPatcher(delegate ContactPatcher, refreshInterval time.Duration) (ContactPatcher, error) {
+	patches, err := delegate.AllPatches()
+	if err != nil {
+		return nil, err
+	}
+	if refreshInterval <= minRefreshInterval {
+		refreshInterval = minRefreshInterval
+	}
+	pc := &patchCache{
+		delegate: delegate,
+		stop:     make(chan struct{}),
+		force:    make(chan struct{}, 1),
+	}
+	pc.val.Store(patches)
+	go pc.refresh(refreshInterval)
+	return pc, nil
+}
+
+// Reload immediately reloads the database in the background.
+func (pc *patchCache) Reload() {
+	pc.force <- struct{}{}
+}
+
+func (pc *patchCache) Close() error {
+	pc.stopOnce.Do(func() { close(pc.stop) })
+	return nil
+}
+
+func (pc *patchCache) refresh(interval time.Duration) {
+	reload := func() {
+		patches, err := pc.delegate.AllPatches()
+		if err != nil {
+			log.Println("Error loading patches,", err)
+		}
+		log.Println(len(patches), "patches loaded")
+		pc.val.Store(patches)
+	}
+	t := time.NewTimer(interval)
+	defer t.Stop()
+	for {
+		select {
+		case <-t.C:
+			t.Reset(interval)
+			reload()
+		case <-pc.force:
+			t.Reset(interval)
+			reload()
+		case <-pc.stop:
+			return
+		}
+	}
+}
+
+func (pc *patchCache) AllPatches() ([]Patch, error) {
+	return pc.val.Load().([]Patch), nil
 }
