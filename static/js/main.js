@@ -143,7 +143,7 @@ app.model({
       return { fetchingLocation: data }
     },
     allowBrowserGeolocation: (state, data) => {
-      store.add("org.5calls.allow_geolocation", data, () => {})
+      store.replace("org.5calls.allow_geolocation", 0, data, () => {})
       return { allowBrowserGeo: data }
     },
     enterLocation: (state, data) => {
