@@ -20,6 +20,7 @@ type handler struct {
 
 func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 	var localReps *LocalReps
+	var normalizedAddress *Address
 	var err error
 
 	var civicLocationParam string
@@ -36,7 +37,7 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 	if len(civicLocationParam) != 0 {
 		log.Println("getting local reps for", civicLocationParam)
 
-		localReps, _, err = h.repFinder.GetReps(civicLocationParam)
+		localReps, normalizedAddress, err = h.repFinder.GetReps(civicLocationParam)
 		if err != nil {
 			log.Println("Unable to find local reps for", zip, err)
 		}
@@ -47,6 +48,10 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 	issueResponse := IssueResponse{}
 	if localReps != nil && localReps.HouseRep == nil {
 		issueResponse.SplitDistrict = true
+	}
+
+	if normalizedAddress != nil {
+		issueResponse.NormalizedLocation = normalizedAddress.City
 	}
 
 	// add local reps where necessary
