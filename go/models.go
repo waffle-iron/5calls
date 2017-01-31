@@ -1,8 +1,9 @@
 package main
 
 type IssueResponse struct {
-	SplitDistrict bool    `json:"splitDistrict"`
-	Issues        []Issue `json:"issues"`
+	SplitDistrict      bool    `json:"splitDistrict"`
+	NormalizedLocation string  `json:"normalizedLocation"`
+	Issues             []Issue `json:"issues"`
 }
 
 // Issue is a thing to care about and call on
