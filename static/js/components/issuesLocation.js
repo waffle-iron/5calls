@@ -54,7 +54,7 @@ module.exports = (state, prev, send) => {
         if (lat && long) {
           let geo = Math.floor(lat*10000)/10000 + ',' + Math.floor(long*10000)/10000;
           send('allowBrowserGeolocation', true);
-          send('setBroswerGeolocation', geo);
+          send('setBrowserGeolocation', geo);
         } else {
           console.log("Error: bad browser location results");
           send('fetchLocationBy', null);
