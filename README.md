@@ -87,7 +87,7 @@ Airtable database.
 
 ##### Get a Google Civic API Key
 
-Follow the instructions [here](civic-api) to get an API key for the Google Civic API.
+Follow the instructions [here](https://developers.google.com/civic-information/docs/using_api) to get an API key for the Google Civic Information API.
 
 ##### Point to Local Back End
 
