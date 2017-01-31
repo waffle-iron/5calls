@@ -7,9 +7,9 @@ const store = require('./utils/localstorage.js');
 const scrollIntoView = require('scroll-into-view');
 
 const app = choo();
-// const appURL = 'https://5calls.org';
+const appURL = 'https://5calls.org';
 const debug = false;
-const appURL = 'http://localhost:8090';
+// const appURL = 'http://localhost:8090';
 
 // get the stored zip location
 cachedAddress = '';
