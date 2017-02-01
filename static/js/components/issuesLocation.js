@@ -4,12 +4,13 @@ module.exports = (state, prev, send) => {
   return html`
     <div class="issues__location">
     ${pretext(state)}
+    ${addressForm(state)}
     </div>
   `;
 
   function pretext(state) {
     if (state.askingLocation) {
-      return html`<p><form onsubmit=${submitAddress}><input type="text" autofocus="true" name="address" placeholder="Enter an address or zip code" /> <button>Go</button></form></p>`
+      return html``;
     } else {
       if (state.address != '') {
         return html`<p>for <a href="#" onclick=${enterLocation}>${state.address}</a></p>`
@@ -19,6 +20,11 @@ module.exports = (state, prev, send) => {
         return html`<p><a href="#" onclick=${enterLocation}>Choose a location</a></p>`
       }
     }
+  }
+
+  function addressForm(state) {
+    const className = state.askingLocation ? '' : 'hidden';
+    return html`<p><form onsubmit=${submitAddress} class=${className}><input type="text" autofocus="true" id="address" name="address" placeholder="Enter an address or zip code" /> <button>Go</button></form></p>`
   }
 
   function debugText(debug) {

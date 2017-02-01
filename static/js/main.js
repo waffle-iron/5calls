@@ -129,6 +129,7 @@ app.model({
       return { geolocation: data }
     },
     enterLocation: (state, data) => {
+      scrollIntoView(document.querySelector('#address'));
       return { askingLocation: true }
     },
     resetLocation: (state, data) => {
