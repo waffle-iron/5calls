@@ -28,15 +28,6 @@ store.getAll('org.5calls.geolocation', (geo) => {
   }
 });
 
-// get the stored geo location
-cachedAllowBrowserGeo = null;
-store.getAll('org.5calls.allow_geolocation', (allowGeo) => {
-  if (allowGeo.length > 0) {
-    console.log("allowGeo get",allowGeo[0]);
-    cachedAllowBrowserGeo = allowGeo[0]
-  }
-});
-
 // get the time the geo was last fetched
 cachedGeoTime = '';
 store.getAll('org.5calls.geolocation_time', (geo) => {
@@ -73,7 +64,6 @@ app.model({
     // automatically geolocating
     geolocation: cachedGeo,
     geoCacheTime: cachedGeoTime,
-    allowBrowserGeo: cachedAllowBrowserGeo,
     cachedCity: cachedCity,
 
     // view state
@@ -81,8 +71,6 @@ app.model({
     // activeIssue: false,
     // completeIssue: false,
     askingLocation: false,
-    fetchingLocation: false,
-    locationFetchType: null,
     contactIndex: 0,
     completedIssues: completedIssues,
 
@@ -99,7 +87,8 @@ app.model({
       totals = JSON.parse(data);
       return { totalCalls: totals.count }
     },
-    receiveIPInfoLoc: (state, data) => {
+    receiveLoc: (state, data) => {
+      return
       try {
         response = JSON.parse(data)
         if (response.city != "") {
@@ -109,7 +98,7 @@ app.model({
           store.replace("org.5calls.geolocation", 0, geo, () => {});
           store.replace("org.5calls.geolocation_city", 0, city, () => {});
           store.replace("org.5calls.geolocation_time", 0, time, () => {});
-          return { geolocation: geo, cachedCity: city, geoCacheTime: time, askingLocation: false }
+          return { geolocation: geo, cachedCity: city, geoCacheTime: time }
         } else {
           Raven.captureMessage("Location with no city: "+response.loc, { level: 'warning' });
         }
@@ -137,20 +126,10 @@ app.model({
     },
     setGeolocation: (state, data) => {
       store.replace("org.5calls.geolocation", 0, data, () => {});
-      return { geolocation: data, askingLocation: false }
-    },
-    fetchingLocation: (state, data) => {
-      return { fetchingLocation: data }
-    },
-    allowBrowserGeolocation: (state, data) => {
-      store.add("org.5calls.allow_geolocation", data, () => {})
-      return { allowBrowserGeo: data }
+      return { geolocation: data }
     },
     enterLocation: (state, data) => {
       return { askingLocation: true }
-    },
-    setLocationFetchType: (state, data) => {
-      return { locationFetchType: data, askingLocation: true }
     },
     resetLocation: (state, data) => {
       store.remove("org.5calls.location", () => {});
@@ -180,7 +159,6 @@ app.model({
       const issueURL = appURL+'/issues/'+address
       // console.log("fetching url",issueURL);
       http(issueURL, (err, res, body) => {
-
         send('receiveIssues', body, done)
       })
     },
@@ -197,34 +175,24 @@ app.model({
       send('setAddress', data, done);
       send('fetch', {}, done);
     },
-    setBroswerGeolocation: (state, data, send, done) => {
-      send('setGeolocation', data, done);
-      send('fetch', {}, done);
-    },
     unsetLocation: (state, data, send, done) => {
       send('resetLocation', data, done)
-      send('startup', data, done)
-    },
-    fetchLocationBy: (state, data, send, done) => {
-      send('setLocationFetchType', data, done)
       send('startup', data, done)
     },
     startup: (state, data, send, done) => {
       // sometimes we trigger this again when reloading mainView, check for issues
       if (state.issues.length == 0 || state.geolocation == '') {
-        // Check for browser support of geolocation
-        if ((state.allowBrowserGeo !== false && navigator.geolocation) &&
-          state.locationFetchType === null && state.geolocation == '') {
-          send('setLocationFetchType', 'browserGeolocation', done);
-          send('fetch', {}, done)
-        }
-        else if (state.locationFetchType === null && state.geolocation == '') {
-          send('setLocationFetchType', 'ipAddress', done);
+        geoFetchTime = state.geoCacheTime
+        cachePlusHours = new Date(geoFetchTime)
+        cachePlusHours.setHours(cachePlusHours.getHours() + 24)
+        // console.log("geo fetch time",geoFetchTime, cachePlusHours)
+        now = new Date()
+
+        // only fetch geo if it's 24 hours old
+        if (state.geolocation == '' || now.valueOf() > cachePlusHours.valueOf()) {
           http('https://ipinfo.io/json', (err, res, body) => {
             if (res.statusCode == 200) {
-              send('receiveIPInfoLoc', body, done)
-            } else {
-              Raven.captureMessage("Non-200 from ipinfo", { level: 'info' });
+              send('receiveLoc', body, done)
             }
             send('fetch', {}, done)
           })
