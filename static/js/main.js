@@ -139,16 +139,6 @@ app.model({
       store.replace("org.5calls.geolocation", 0, data, () => {});
       return { geolocation: data, askingLocation: false }
     },
-    setCachedCity: (state, data) => {
-      response = JSON.parse(data);
-      console.log(state.cachedCity);
-      if (response.normalizedLocation && state.cachedCity == '') {
-        store.replace("org.5calls.geolocation_city", 0, response.normalizedLocation, () => {});
-        return { cachedCity: response.normalizedLocation }
-      } else {
-        return null
-      }
-    },
     fetchingLocation: (state, data) => {
       return { fetchingLocation: data }
     },
@@ -190,7 +180,7 @@ app.model({
       const issueURL = appURL+'/issues/'+address
       // console.log("fetching url",issueURL);
       http(issueURL, (err, res, body) => {
-        send('setCachedCity', body, done)
+
         send('receiveIssues', body, done)
       })
     },
@@ -207,7 +197,7 @@ app.model({
       send('setAddress', data, done);
       send('fetch', {}, done);
     },
-    setBrowserGeolocation: (state, data, send, done) => {
+    setBroswerGeolocation: (state, data, send, done) => {
       send('setGeolocation', data, done);
       send('fetch', {}, done);
     },
