@@ -80,6 +80,7 @@ app.model({
     // automatically geolocating
     geolocation: cachedGeo,
     geoCacheTime: cachedGeoTime,
+    allowBrowserGeo: cachedAllowBrowserGeo,
     cachedCity: cachedCity,
 
     // view state
@@ -187,6 +188,7 @@ app.model({
       const issueURL = appURL+'/issues/'+address
       // console.log("fetching url",issueURL);
       http(issueURL, (err, res, body) => {
+        send('setCachedCity', body, done)
         send('receiveIssues', body, done)
       })
     },
@@ -201,6 +203,10 @@ app.model({
     },
     setLocation: (state, data, send, done) => {
       send('setAddress', data, done);
+      send('fetch', {}, done);
+    },
+    setBrowserGeolocation: (state, data, send, done) => {
+      send('setGeolocation', data, done);
       send('fetch', {}, done);
     },
     unsetLocation: (state, data, send, done) => {
@@ -276,7 +282,7 @@ app.model({
         else if (state.locationFetchType === 'ipAddress' && state.geolocation == '') {
           send('fetchLocationByIP', {}, done);
         }
-        else if (state.address !== '') {
+        else if (state.address !== '' || state.geolocation !== '') {
           send('fetchingLocation', false, done);
           send('fetch', {}, done);
         }
