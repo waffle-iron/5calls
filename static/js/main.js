@@ -28,14 +28,18 @@ store.getAll('org.5calls.geolocation', (geo) => {
   }
 });
 
+let cachedFetchingLocation = (cachedGeo === '') ? true : false;
+
 // get the stored geo location
-cachedAllowBrowserGeo = null;
+cachedAllowBrowserGeo = true;
 store.getAll('org.5calls.allow_geolocation', (allowGeo) => {
   if (allowGeo.length > 0) {
     console.log("allowGeo get",allowGeo[0]);
     cachedAllowBrowserGeo = allowGeo[0]
   }
 });
+
+let cachedLocationFetchType = (cachedAllowBrowserGeo) ? 'browserGeolocation' : 'ipAddress';
 
 // get the time the geo was last fetched
 cachedGeoTime = '';
@@ -53,6 +57,9 @@ store.getAll('org.5calls.geolocation_city', (city) => {
     cachedCity = city[0]
   }
 });
+
+cachedFetchingLocation  = (cachedCity !== '') ? true : cachedFetchingLocation;
+cachedLocationFetchType = (cachedAddress !== '') ? 'address' : cachedLocationFetchType;
 
 // get the stored completed issues
 completedIssues = [];
@@ -81,8 +88,8 @@ app.model({
     // activeIssue: false,
     // completeIssue: false,
     askingLocation: false,
-    fetchingLocation: false,
-    locationFetchType: null,
+    fetchingLocation: cachedFetchingLocation,
+    locationFetchType: cachedLocationFetchType,
     contactIndex: 0,
     completedIssues: completedIssues,
 
@@ -100,23 +107,13 @@ app.model({
       return { totalCalls: totals.count }
     },
     receiveIPInfoLoc: (state, data) => {
-      try {
-        response = JSON.parse(data)
-        if (response.city != "") {
-          geo = response.loc
-          city = response.city
-          time = new Date().valueOf()
-          store.replace("org.5calls.geolocation", 0, geo, () => {});
-          store.replace("org.5calls.geolocation_city", 0, city, () => {});
-          store.replace("org.5calls.geolocation_time", 0, time, () => {});
-          return { geolocation: geo, cachedCity: city, geoCacheTime: time, askingLocation: false }
-        } else {
-          Raven.captureMessage("Location with no city: "+response.loc, { level: 'warning' });
-        }
-      } catch(e) {
-        Raven.setExtraContext({ json: data })
-        Raven.captureMessage("Couldn't parse ipinfo json", { level: 'error' });
-      }
+      geo = response.loc
+      city = response.city
+      time = new Date().valueOf()
+      store.replace("org.5calls.geolocation", 0, geo, () => {});
+      store.replace("org.5calls.geolocation_city", 0, city, () => {});
+      store.replace("org.5calls.geolocation_time", 0, time, () => {});
+      return { geolocation: geo, cachedCity: city, geoCacheTime: time, fetchingLocation: false, askingLocation: false }
     },
     changeActiveIssue: (state, issueId) => {
       return { contactIndex: 0 }
@@ -137,11 +134,10 @@ app.model({
     },
     setGeolocation: (state, data) => {
       store.replace("org.5calls.geolocation", 0, data, () => {});
-      return { geolocation: data, askingLocation: false }
+      return { geolocation: data, fetchingLocation: false }
     },
     setCachedCity: (state, data) => {
       response = JSON.parse(data);
-      console.log(state.cachedCity);
       if (response.normalizedLocation && state.cachedCity == '') {
         store.replace("org.5calls.geolocation_city", 0, response.normalizedLocation, () => {});
         return { cachedCity: response.normalizedLocation }
@@ -160,7 +156,8 @@ app.model({
       return { askingLocation: true }
     },
     setLocationFetchType: (state, data) => {
-      return { locationFetchType: data, askingLocation: true }
+      let askingLocation = (data === 'address');
+      return { locationFetchType: data, askingLocation: askingLocation, fetchingLocation: !askingLocation }
     },
     resetLocation: (state, data) => {
       store.remove("org.5calls.location", () => {});
@@ -219,27 +216,74 @@ app.model({
       send('setLocationFetchType', data, done)
       send('startup', data, done)
     },
+    fetchLocationByIP: (state, data, send, done) => {
+      http('https://ipinfo.io/json', (err, res, body) => {
+        if (res.statusCode == 200) {
+          try {
+            response = JSON.parse(body)
+            if (response.city != "") {
+              send('receiveIPInfoLoc', response, done);
+              send('fetch', {}, done);
+            } else {
+              send('fetchLocationBy', 'address', done);
+              Raven.captureMessage("Location with no city: "+response.loc, { level: 'warning' });
+            }
+          } catch(e) {
+            send('fetchLocationBy', 'address', done);
+            Raven.setExtraContext({ json: data })
+            Raven.captureMessage("Couldn't parse ipinfo json", { level: 'error' });
+          }
+
+        } else {
+          send('fetchLocationBy', 'address', done);
+          Raven.captureMessage("Non-200 from ipinfo", { level: 'info' });
+        }
+      })
+    },
+    fetchLocationByBrowswer: (state, data, send, done) => {
+      let geoSuccess = function(position) {
+
+        if (typeof position.coords !== 'undefined') {
+          let lat = position.coords.latitude;
+          let long = position.coords.longitude;
+
+          if (lat && long) {
+            let geo = Math.floor(lat*10000)/10000 + ',' + Math.floor(long*10000)/10000;
+            send('allowBrowserGeolocation', true, done);
+            send('setBrowserGeolocation', geo, done);
+          } else {
+            console.log("Error: bad browser location results");
+            send('fetchLocationBy', 'ipAddress', done);
+          }
+        } else {
+          console.log("Error: bad browser location results");
+          send('fetchLocationBy', 'ipAddress', done);
+        }
+      }
+      let geoError = function(error) {
+        if (error.code === 1) {
+          send('allowBrowserGeolocation', false, done);
+        }
+        send('fetchLocationBy', 'ipAddress', done);
+        console.log("Error with browser location (code: " + error.code + ")");
+      }
+
+      navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+    },
     startup: (state, data, send, done) => {
       // sometimes we trigger this again when reloading mainView, check for issues
       if (state.issues.length == 0 || state.geolocation == '') {
         // Check for browser support of geolocation
         if ((state.allowBrowserGeo !== false && navigator.geolocation) &&
-          state.locationFetchType === null && state.geolocation == '') {
-          send('setLocationFetchType', 'browserGeolocation', done);
-          send('fetch', {}, done)
+          state.locationFetchType === 'browserGeolocation' && state.geolocation == '') {
+          send('fetchLocationByBrowswer', {}, done);
         }
-        else if (state.locationFetchType === null && state.geolocation == '') {
-          send('setLocationFetchType', 'ipAddress', done);
-          http('https://ipinfo.io/json', (err, res, body) => {
-            if (res.statusCode == 200) {
-              send('receiveIPInfoLoc', body, done)
-            } else {
-              Raven.captureMessage("Non-200 from ipinfo", { level: 'info' });
-            }
-            send('fetch', {}, done)
-          })
-        } else {
-          send('fetch', {}, done)
+        else if (state.locationFetchType === 'ipAddress' && state.geolocation == '') {
+          send('fetchLocationByIP', {}, done);
+        }
+        else if (state.address !== '') {
+          send('fetchingLocation', false, done);
+          send('fetch', {}, done);
         }
       }
     },
