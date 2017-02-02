@@ -12,7 +12,9 @@ module.exports = (state, prev, send) => {
     if (state.askingLocation) {
       return html``;
     } else {
-      if (state.address != '') {
+      if (state.invalidAddress) {
+        return html`<p><a href="#" onclick=${enterLocation}>That address is invalid, please try again</a></p>`
+      } else if (state.address != '') {
         return html`<p>for <a href="#" onclick=${enterLocation}>${state.address}</a></p>`
       } else if (state.cachedCity != '') {
         return html`<p>for <a href="#" onclick=${enterLocation}> ${state.cachedCity}</a> ${debugText(state.debug)}</p>`
