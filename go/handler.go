@@ -34,18 +34,21 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 		civicLocationParam = address
 	}
 
+	issueResponse := IssueResponse{}
 	if len(civicLocationParam) != 0 {
 		log.Println("getting local reps for", civicLocationParam)
 
 		localReps, normalizedAddress, err = h.repFinder.GetReps(civicLocationParam)
 		if err != nil {
 			log.Println("Unable to find local reps for", zip, err)
+			if err.Error() == "400 Failed to parse address" {
+				issueResponse.InvalidAddress = true
+			}
 		}
 	} else {
 		log.Println("no address or zip")
 	}
 
-	issueResponse := IssueResponse{}
 	if localReps != nil && localReps.HouseRep == nil {
 		issueResponse.SplitDistrict = true
 	}
