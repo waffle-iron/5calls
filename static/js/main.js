@@ -107,8 +107,8 @@ app.model({
       return { totalCalls: totals.count }
     },
     receiveIPInfoLoc: (state, data) => {
-      geo = response.loc
-      city = response.city
+      geo = data.loc
+      city = data.city
       time = new Date().valueOf()
       store.replace("org.5calls.geolocation", 0, geo, () => {});
       store.replace("org.5calls.geolocation_city", 0, city, () => {});
