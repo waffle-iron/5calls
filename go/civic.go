@@ -57,30 +57,34 @@ func (ae *APIError) Error() string {
 	return buf.String()
 }
 
+type Office struct {
+	Name            string
+	DivisionId      string
+	Levels          []string
+	Roles           []string
+	OfficialIndices []int
+}
+
+type Official struct {
+	Name     string
+	Address  []Address
+	Party    string
+	Phones   []string
+	PhotoUrl string
+	Channels []struct {
+		Id   string
+		Type string
+	}
+}
+
 // apiResponse is the response from the civic API. It encapsulates valid
 // responses that set the normalized input, offices and officials,
 // as well as error responses.
 type apiResponse struct {
 	NormalizedInput *Address
-	Offices         []struct {
-		Name            string
-		DivisionId      string
-		Levels          []string
-		Roles           []string
-		OfficialIndices []int
-	}
-	Officials []struct {
-		Name     string
-		Address  []Address
-		Party    string
-		Phones   []string
-		PhotoUrl string
-		Channels []struct {
-			Id   string
-			Type string
-		}
-	}
-	Error *APIError
+	Offices         []Office
+	Officials       []Official
+	Error           *APIError
 }
 
 // toLocalReps converts an API response to a set of local reps. In addition,
