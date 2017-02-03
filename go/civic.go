@@ -104,16 +104,14 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 		}
 		for _, i := range o.OfficialIndices {
 			official := r.Officials[i]
-			var phone string
-			if len(official.Phones) > 0 {
-				phone = official.Phones[0]
-			} else {
+			phone := official.Phone()
+			if phone == "" {
 				continue
 			}
 			c := &Contact{
-				ID:       fmt.Sprintf("%s-%s", r.NormalizedInput.State, strings.Replace(official.Name, " ", "", -1)),
+				ID:       fmt.Sprintf("%s-%s", r.NormalizedInput.State, official.ID()),
 				Name:     official.Name,
-				Phone:    reformattedPhone(phone),
+				Phone:    phone,
 				PhotoURL: official.PhotoUrl,
 				Party:    official.Party,
 				State:    r.NormalizedInput.State,
@@ -149,6 +147,26 @@ func (x *Office) Area() string {
 		}
 	}
 	return ""
+}
+
+// Phone returns a properly formatted phone number for an Official.
+// If Phone returns "", no phone number is available.
+func (x *Official) Phone() string {
+	// Plans for this function:
+	// Now: just use whatever the civic API returns.
+	// Better: augment with external list of phone numbers, pick at random from them.
+	// Mo' betta: select from options based on a combination of precise location
+	// and which phone numbers are more likely to get through based on recent history.
+	if len(x.Phones) == 0 {
+		return ""
+	}
+	return reformattedPhone(x.Phones[0])
+}
+
+var spaceReplacer = strings.NewReplacer(" ", "")
+
+func (x *Official) ID() string {
+	return spaceReplacer.Replace(x.Name)
 }
 
 // civicAPI provides a semantic interface to the Google civic API.
@@ -215,6 +233,8 @@ func NewRepCache(delegate RepFinder, ttl time.Duration, gc time.Duration) RepFin
 }
 
 // reformat phone numbers that come from the google civic API
+// they come back in format (555) 987-6543.
+// convert to 555-987-6543.
 func reformattedPhone(civicPhone string) string {
 	result := phoneRegex.FindStringSubmatch(civicPhone)
 
