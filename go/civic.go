@@ -98,56 +98,57 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 	}
 	ret := &LocalReps{}
 	for _, o := range r.Offices {
-		var area string
-	AreaLoop:
-		for _, level := range o.Levels {
-			for _, role := range o.Roles {
-				switch {
-				case level == roleLevelCountry && role == roleLowerBody:
-					area = areaHouse
-					continue AreaLoop
-				case level == roleLevelCountry && role == roleUpperBody:
-					area = areaSenate
-					continue AreaLoop
-				// Civic API returns governor and deputy governor under same
-				// role level and role, comparing the name is the best we can do
-				// with this dataset
-				case level == roleLevelState && role == roleHeadOfGovernment && o.Name == "Governor":
-					area = areaGovernor
-					continue AreaLoop
-				}
-			}
+		area := o.Area()
+		if area == "" {
+			continue
 		}
-		if area != "" {
-			for _, i := range o.OfficialIndices {
-				official := r.Officials[i]
-				var phone string
-				if len(official.Phones) > 0 {
-					phone = official.Phones[0]
-				} else {
-					continue
-				}
-				c := &Contact{
-					ID:       fmt.Sprintf("%s-%s", r.NormalizedInput.State, strings.Replace(official.Name, " ", "", -1)),
-					Name:     official.Name,
-					Phone:    reformattedPhone(phone),
-					PhotoURL: official.PhotoUrl,
-					Party:    official.Party,
-					State:    r.NormalizedInput.State,
-					Area:     area,
-				}
-				switch area {
-				case areaHouse:
-					ret.HouseRep = c
-				case areaSenate:
-					ret.Senators = append(ret.Senators, c)
-				case areaGovernor:
-					ret.Governor = c
-				}
+		for _, i := range o.OfficialIndices {
+			official := r.Officials[i]
+			var phone string
+			if len(official.Phones) > 0 {
+				phone = official.Phones[0]
+			} else {
+				continue
+			}
+			c := &Contact{
+				ID:       fmt.Sprintf("%s-%s", r.NormalizedInput.State, strings.Replace(official.Name, " ", "", -1)),
+				Name:     official.Name,
+				Phone:    reformattedPhone(phone),
+				PhotoURL: official.PhotoUrl,
+				Party:    official.Party,
+				State:    r.NormalizedInput.State,
+				Area:     area,
+			}
+			switch area {
+			case areaHouse:
+				ret.HouseRep = c
+			case areaSenate:
+				ret.Senators = append(ret.Senators, c)
+			case areaGovernor:
+				ret.Governor = c
 			}
 		}
 	}
 	return ret, r.NormalizedInput, nil
+}
+
+func (x *Office) Area() string {
+	for _, level := range x.Levels {
+		for _, role := range x.Roles {
+			switch {
+			case level == roleLevelCountry && role == roleLowerBody:
+				return areaHouse
+			case level == roleLevelCountry && role == roleUpperBody:
+				return areaSenate
+			// Civic API returns governor and deputy governor under same
+			// role level and role, comparing the name is the best we can do
+			// with this dataset
+			case level == roleLevelState && role == roleHeadOfGovernment && x.Name == "Governor":
+				return areaGovernor
+			}
+		}
+	}
+	return ""
 }
 
 // civicAPI provides a semantic interface to the Google civic API.
