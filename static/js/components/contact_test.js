@@ -5,7 +5,7 @@ const expect = chai.expect;
 
 describe('contact component', () => {
   it('should render contact name', () => {
-    let rep = {
+    let contactData = {
       name: 'Big Whig',
       state: 'NZ',
       phone: '202-123-1234',
@@ -13,13 +13,13 @@ describe('contact component', () => {
       photoURL: '',
       reason: ''
     };
-    let result = contact(rep);
-    expect(result.toString()).to.contain(contact.name);
+    let result = contact(contactData);
+    expect(result.toString()).to.contain(contactData.name);
   });
 
-  it('should render first initial of party name', () => {
+  it('should render party first initial and state abbrev', () => {
     let expected = 'R';
-    let rep = {
+    let contactData = {
       name: 'Big Whig',
       state: 'QZ',
       phone: '202-123-1234',
@@ -27,12 +27,12 @@ describe('contact component', () => {
       photoURL: '',
       reason: ''
     };
-    let result = contact(rep);
-    expect(result.toString()).to.contain(expected + '-' + rep.state);
+    let result = contact(contactData);
+    expect(result.toString()).to.contain(expected + '-' + contactData.state);
   });
 
-  it('should not render state if party is missing', () => {
-    let rep = {
+  it('should not render state abbrev if party is missing', () => {
+    let contactData = {
       name: 'Big Whig',
       state: 'PZ',
       phone: '202-123-1234',
@@ -40,7 +40,7 @@ describe('contact component', () => {
       photoURL: '',
       reason: ''
     };
-    let result = contact(rep);
-    expect(result.toString()).to.not.contain(contact.state);
+    let result = contact(contactData);
+    expect(result.toString()).to.not.contain(contactData.state);
   });
 });

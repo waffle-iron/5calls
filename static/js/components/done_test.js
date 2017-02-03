@@ -17,7 +17,7 @@ describe('done component', () => {
       let state = {totalCalls, location, issues};
       let result = done(state);
       let a = result.getElementsByTagName('a');
-      // expect an three anchors
+      // expect three anchors (second and third are twitter and facebook)
       expect(a.length).to.equal(3);
     });
 
@@ -47,7 +47,7 @@ describe('done component', () => {
       let location = {params: {issueId: 88}};
       let state = {totalCalls, location};
       let result = done(state);
-      // call total value should be displated in call count comp
+      // call total value should be displated in callcount component
       let h2 = result.getElementsByTagName('h2');
       expect(h2).to.be.defined;
       // "Together we've made" is first child node, call total is second
