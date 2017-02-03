@@ -3,748 +3,750 @@
 
 package main
 
-// senateFieldPhones maps from a senator's primary phone number
-// to their field office phone numbers, keyed by the zip code of the field office.
-var senateFieldPhones = map[string]map[string]string{
+type FieldOffice struct {
+	Phone string `json:"phone"`
+	City  string `json:"city"`
+}
+
+// senateFieldOffices maps from a senator's primary phone number
+// to their field offices.
+var senateFieldOffices = map[string][]FieldOffice{
 	// Lisa Murkowski (R-AK)
-	"2022246665": map[string]string{
-		"99501": "9072713735", // Anchorage
-		"99701": "9074560233", // Fairbanks
-		"99801": "9075867277", // Juneau
-		"99654": "9073767665", // Wasilla
-		"99611": "9072835808", // Kenai
-		"99901": "9072256880", // Ketchikan
+	"2022246665": []FieldOffice{
+		FieldOffice{Phone: "907-271-3735", City: "Anchorage"},
+		FieldOffice{Phone: "907-456-0233", City: "Fairbanks"},
+		FieldOffice{Phone: "907-586-7277", City: "Juneau"},
+		FieldOffice{Phone: "907-376-7665", City: "Wasilla"},
+		FieldOffice{Phone: "907-283-5808", City: "Kenai"},
+		FieldOffice{Phone: "907-225-6880", City: "Ketchikan"},
 	},
 	// Dan Sullivan (R-AK)
-	"2022243004": map[string]string{
-		"99501": "9072715915", // Anchorage
-		"99701": "9074560261", // Fairbanks
-		"99801": "9075867277", // Juneau
-		"99654": "9073579956", // Wasilla
-		"99611": "9072834000", // Kenai
-		"99901": "9072256880", // Ketchikan
+	"2022243004": []FieldOffice{
+		FieldOffice{Phone: "907-271-5915", City: "Anchorage"},
+		FieldOffice{Phone: "907-456-0261", City: "Fairbanks"},
+		FieldOffice{Phone: "907-586-7277", City: "Juneau"},
+		FieldOffice{Phone: "907-357-9956", City: "Wasilla"},
+		FieldOffice{Phone: "907-283-4000", City: "Kenai"},
+		FieldOffice{Phone: "907-225-6880", City: "Ketchikan"},
 	},
 	// Richard C. Shelby (R-AL)
-	"2022245744": map[string]string{
-		"35203": "2057311384", // Birmingham
-		"35824": "2567720460", // Huntsville
-		"36602": "2516944164", // Mobile
-		"36104": "3342237303", // Montgomery
-		"35401": "2057595047", // Tuscaloosa
+	"2022245744": []FieldOffice{
+		FieldOffice{Phone: "205-731-1384", City: "Birmingham"},
+		FieldOffice{Phone: "256-772-0460", City: "Huntsville"},
+		FieldOffice{Phone: "251-694-4164", City: "Mobile"},
+		FieldOffice{Phone: "334-223-7303", City: "Montgomery"},
+		FieldOffice{Phone: "205-759-5047", City: "Tuscaloosa"},
 	},
 	// Jeff Sessions (R-AL)
-	"2022244124": map[string]string{
-		"35203": "2057311500", // Birmingham
-		"35801": "2565330979", // Huntsville
-		"36608": "2514143083", // Mobile
-		"36104": "3342300698", // Montgomery
-		"36303": "3347924924", // Dothan
+	"2022244124": []FieldOffice{
+		FieldOffice{Phone: "205-731-1500", City: "Birmingham"},
+		FieldOffice{Phone: "256-533-0979", City: "Huntsville"},
+		FieldOffice{Phone: "251-414-3083", City: "Mobile"},
+		FieldOffice{Phone: "334-230-0698", City: "Montgomery"},
+		FieldOffice{Phone: "334-792-4924", City: "Dothan"},
 	},
 	// John Boozman (R-AR)
-	"2022244843": map[string]string{
-		"72745": "4797250400", // Lowell
-		"72653": "8704240129", // Mountain Home
-		"72401": "8702686925", // Jonesboro
-		"72201": "5013727153", // Little Rock
-		"72901": "4795730189", // Fort Smith
-		"71730": "8708634641", // El Dorado
-		"72160": "8706726941", // Stuttgart
+	"2022244843": []FieldOffice{
+		FieldOffice{Phone: "479-725-0400", City: "Lowell"},
+		FieldOffice{Phone: "870-424-0129", City: "Mountain Home"},
+		FieldOffice{Phone: "870-268-6925", City: "Jonesboro"},
+		FieldOffice{Phone: "501-372-7153", City: "Little Rock"},
+		FieldOffice{Phone: "479-573-0189", City: "Fort Smith"},
+		FieldOffice{Phone: "870-863-4641", City: "El Dorado"},
+		FieldOffice{Phone: "870-672-6941", City: "Stuttgart"},
 	},
 	// Tom Cotton (R-AR)
-	"2022242353": map[string]string{
-		"72764": "4797510879", // Springdale
-		"72401": "8709336223", // Jonesboro
-		"72221": "5012239081", // Little Rock
-		"71730": "8708648582", // El Dorado
+	"2022242353": []FieldOffice{
+		FieldOffice{Phone: "479-751-0879", City: "Springdale"},
+		FieldOffice{Phone: "870-933-6223", City: "Jonesboro"},
+		FieldOffice{Phone: "501-223-9081", City: "Little Rock"},
+		FieldOffice{Phone: "870-864-8582", City: "El Dorado"},
 	},
 	// Jeff Flake (R-AZ)
-	"2022244521": map[string]string{
-		"85016": "6028401891", // Phoenix
-		"85704": "5205758633", // Tucson
+	"2022244521": []FieldOffice{
+		FieldOffice{Phone: "602-840-1891", City: "Phoenix"},
+		FieldOffice{Phone: "520-575-8633", City: "Tucson"},
 	},
 	// John McCain (R-AZ)
-	"2022242235": map[string]string{
-		"85016": "60209522410", // Phoenix
-		"86301": "9284450833",  // Prescott
-		"85701": "5206706334",  // Tucson
+	"2022242235": []FieldOffice{
+		FieldOffice{Phone: "602-952-2410", City: "Phoenix"},
+		FieldOffice{Phone: "928-445-0833", City: "Prescott"},
+		FieldOffice{Phone: "520-670-6334", City: "Tucson"},
 	},
 	// Dianne Feinstein (D-CA)
-	"2022243841": map[string]string{
-		"92101": "6192319712", // San Diego
-		"94104": "4153930707", // San Francisco
-		"90025": "3109147300", // Los Angeles
-		"93721": "5594857430", // Fresno
+	"2022243841": []FieldOffice{
+		FieldOffice{Phone: "619-231-9712", City: "San Diego"},
+		FieldOffice{Phone: "415-393-0707", City: "San Francisco"},
+		FieldOffice{Phone: "310-914-7300", City: "Los Angeles"},
+		FieldOffice{Phone: "559-485-7430", City: "Fresno"},
 	},
 	// Kamala D. Harris (D-CA)
-	"2022243553": map[string]string{
-		"95814": "9164482787", // Sacramento
-		"93721": "9164482787", // Fresno
-		"90012": "2138945000", // Los Angeles
-		"94102": "2138945000", // San Francisco
-		"92101": "6192393884", // San Diego
+	"2022243553": []FieldOffice{
+		FieldOffice{Phone: "916-448-2787", City: "Sacramento"},
+		FieldOffice{Phone: "916-448-2787", City: "Fresno"},
+		FieldOffice{Phone: "213-894-5000", City: "Los Angeles"},
+		FieldOffice{Phone: "213-894-5000", City: "San Francisco"},
+		FieldOffice{Phone: "619-239-3884", City: "San Diego"},
 	},
 	// Michael F. Bennet (D-CO)
-	"2022245852": map[string]string{
-		"80203": "3034557600", // Denver
-		"81101": "7195870096", // Alamosa
-		"80524": "9702242200", // Fort Collins
-		"81301": "9702591710", // Durango
-		"81003": "7195427550", // Pueblo
-		"80903": "7193281100", // Colorado Springs
-		"81501": "9702416631", // Grand Junction
+	"2022245852": []FieldOffice{
+		FieldOffice{Phone: "303-455-7600", City: "Denver"},
+		FieldOffice{Phone: "719-587-0096", City: "Alamosa"},
+		FieldOffice{Phone: "970-224-2200", City: "Fort Collins"},
+		FieldOffice{Phone: "970-259-1710", City: "Durango"},
+		FieldOffice{Phone: "719-542-7550", City: "Pueblo"},
+		FieldOffice{Phone: "719-328-1100", City: "Colorado Springs"},
+		FieldOffice{Phone: "970-241-6631", City: "Grand Junction"},
 	},
 	// Cory Gardner (R-CO)
-	"2022245941": map[string]string{
-		"80202": "3033915777", // Denver
-		"80631": "9703525546", // Greeley
-		"80526": "9704843502", // Fort Collins
-		"81303": "9702591231", // Durango
-		"81003": "7195431324", // Pueblo
-		"80903": "7196326706", // Colorado Springs
-		"81501": "9702459553", // Grand Junction
-		"80759": "9708483095", // Yuma
+	"2022245941": []FieldOffice{
+		FieldOffice{Phone: "303-391-5777", City: "Denver"},
+		FieldOffice{Phone: "970-352-5546", City: "Greeley"},
+		FieldOffice{Phone: "970-484-3502", City: "Fort Collins"},
+		FieldOffice{Phone: "970-259-1231", City: "Durango"},
+		FieldOffice{Phone: "719-543-1324", City: "Pueblo"},
+		FieldOffice{Phone: "719-632-6706", City: "Colorado Springs"},
+		FieldOffice{Phone: "970-245-9553", City: "Grand Junction"},
+		FieldOffice{Phone: "970-848-3095", City: "Yuma"},
 	},
 	// Richard Blumenthal (D-CT)
-	"2022242823": map[string]string{
-		"06604": "2033300598", // Bridgeport
-		"06103": "8602586940", // Hartford
+	"2022242823": []FieldOffice{
+		FieldOffice{Phone: "203-330-0598", City: "Bridgeport"},
+		FieldOffice{Phone: "860-258-6940", City: "Hartford"},
 	},
 	// Christopher Murphy (D-CT)
-	"2022244041": map[string]string{
-		"06106": "8605498463", // Hartford
+	"2022244041": []FieldOffice{
+		FieldOffice{Phone: "860-549-8463", City: "Hartford"},
 	},
 	// Thomas R. Carper (D-DE)
-	"2022242441": map[string]string{
-		"19801": "3025736291", // Wilmington
-		"19904": "3026743308", // Dover
-		"19947": "3028567690", // Georgetown
+	"2022242441": []FieldOffice{
+		FieldOffice{Phone: "302-573-6291", City: "Wilmington"},
+		FieldOffice{Phone: "302-674-3308", City: "Dover"},
+		FieldOffice{Phone: "302-856-7690", City: "Georgetown"},
 	},
 	// Christopher A. Coons (D-DE)
-	"2022245042": map[string]string{
-		"19801": "3025736345", // Wilmington
-		"19904": "3027365601", // Dover
+	"2022245042": []FieldOffice{
+		FieldOffice{Phone: "302-573-6345", City: "Wilmington"},
+		FieldOffice{Phone: "302-736-5601", City: "Dover"},
 	},
 	// Bill Nelson (D-FL)
-	"2022245274": map[string]string{
-		"33328": "9546934851", // Fort Lauderdale
-		"33901": "2393347760", // Fort Myers
-		"32207": "9043464500", // Jacksonville
-		"33134": "3055365999", // Coral Gables
-		"32801": "4078727161", // Orlando
-		"32301": "8509428415", // Tallahassee
-		"33602": "8132257040", // Tampa
-		"33401": "5615140189", // West Palm Beach
+	"2022245274": []FieldOffice{
+		FieldOffice{Phone: "954-693-4851", City: "Fort Lauderdale"},
+		FieldOffice{Phone: "239-334-7760", City: "Fort Myers"},
+		FieldOffice{Phone: "904-346-4500", City: "Jacksonville"},
+		FieldOffice{Phone: "305-536-5999", City: "Coral Gables"},
+		FieldOffice{Phone: "407-872-7161", City: "Orlando"},
+		FieldOffice{Phone: "850-942-8415", City: "Tallahassee"},
+		FieldOffice{Phone: "813-225-7040", City: "Tampa"},
+		FieldOffice{Phone: "561-514-0189", City: "West Palm Beach"},
 	},
 	// Marco Rubio (-FL)
-	"2022243041": map[string]string{
-		"32207": "9043988586", // Jacksonville
-		"32801": "4072542573", // Orlando
-		"32399": "8505999100", // Tallahassee
-		"33609": "8132875035", // Tampa
-		"33418": "5617753360", // Palm Beach Gardens
-		"33166": "3054188553", // Doral
-		"32502": "8504332603", // Pensacola
+	"2022243041": []FieldOffice{
+		FieldOffice{Phone: "904-398-8586", City: "Jacksonville"},
+		FieldOffice{Phone: "407-254-2573", City: "Orlando"},
+		FieldOffice{Phone: "850-599-9100", City: "Tallahassee"},
+		FieldOffice{Phone: "813-287-5035", City: "Tampa"},
+		FieldOffice{Phone: "561-775-3360", City: "Palm Beach Gardens"},
+		FieldOffice{Phone: "305-418-8553", City: "Doral"},
+		FieldOffice{Phone: "850-433-2603", City: "Pensacola"},
 	},
 	// Johnny Isakson (R-GA)
-	"2022243643": map[string]string{
-		"30339": "7706610999", // Atlanta
+	"2022243643": []FieldOffice{
+		FieldOffice{Phone: "770-661-0999", City: "Atlanta"},
 	},
 	// David Perdue (R-GA)
-	"2022243521": map[string]string{
-		"30303": "4048650087", // Atlanta
+	"2022243521": []FieldOffice{
+		FieldOffice{Phone: "404-865-0087", City: "Atlanta"},
 	},
 	// Mazie K. Hirono (D-HI)
-	"2022246361": map[string]string{
-		"96850": "8085228970", // Honolulu
+	"2022246361": []FieldOffice{
+		FieldOffice{Phone: "808-522-8970", City: "Honolulu"},
 	},
 	// Brian Schatz (D-HI)
-	"2022243934": map[string]string{
-		"96850": "8085232061", // Honolulu
+	"2022243934": []FieldOffice{
+		FieldOffice{Phone: "808-523-2061", City: "Honolulu"},
 	},
 	// Joni Ernst (R-IA)
-	"2022243254": map[string]string{
-		"50309": "5152844574", // Des Moins
-		"51101": "7122521550", // Sioux City
-		"51501": "7123521167", // Council Bluffs
-		"52401": "3193654504", // Cedar Rapids
-		"52801": "5633220677", // Davenport
+	"2022243254": []FieldOffice{
+		FieldOffice{Phone: "515-284-4574", City: "Des Moins"},
+		FieldOffice{Phone: "712-252-1550", City: "Sioux City"},
+		FieldOffice{Phone: "712-352-1167", City: "Council Bluffs "},
+		FieldOffice{Phone: "319-365-4504", City: "Cedar Rapids"},
+		FieldOffice{Phone: "563-322-0677", City: "Davenport"},
 	},
 	// Chuck Grassley (R-IA)
-	"2022243744": map[string]string{
-		"50309": "5152881145", // Des Moins
-		"51101": "7122331860", // Sioux City
-		"50701": "3192326657", // Waterloo
-		"51501": "7123227103", // Council Bluffs
-		"52401": "3193636832", // Cedar Rapids
-		"52801": "5633224331", // Davenport
+	"2022243744": []FieldOffice{
+		FieldOffice{Phone: "515-288-1145", City: "Des Moins"},
+		FieldOffice{Phone: "712-233-1860", City: "Sioux City"},
+		FieldOffice{Phone: "319-232-6657", City: "Waterloo"},
+		FieldOffice{Phone: "712-322-7103", City: "Council Bluffs "},
+		FieldOffice{Phone: "319-363-6832", City: "Cedar Rapids"},
+		FieldOffice{Phone: "563-322-4331", City: "Davenport"},
 	},
 	// James E. Risch (R-ID)
-	"2022242752": map[string]string{
-		"83702": "2083427985", // Boise
-		"83814": "2086676130", // Coeur d'Alene
-		"83402": "2085235541", // Idaho Falls
-		"83501": "2087430792", // Lewiston
-		"83201": "2082366817", // Pocatello
-		"83301": "2087346780", // Twin Falls
+	"2022242752": []FieldOffice{
+		FieldOffice{Phone: "208-342-7985", City: "Boise"},
+		FieldOffice{Phone: "208-667-6130", City: "Coeur d'Alene"},
+		FieldOffice{Phone: "208-523-5541", City: "Idaho Falls"},
+		FieldOffice{Phone: "208-743-0792", City: "Lewiston"},
+		FieldOffice{Phone: "208-236-6817", City: "Pocatello"},
+		FieldOffice{Phone: "208-734-6780", City: "Twin Falls"},
 	},
 	// Mike Crapo (R-ID)
-	"2022246142": map[string]string{
-		"83702": "2083341776", // Boise
-		"83814": "2086645490", // Coeur d'Alene
-		"83402": "2085229779", // Idaho Falls
-		"83501": "2087431492", // Lewiston
-		"83201": "2082366775", // Pocatello
-		"83301": "2087342515", // Twin Falls
+	"2022246142": []FieldOffice{
+		FieldOffice{Phone: "208-334-1776", City: "Boise"},
+		FieldOffice{Phone: "208-664-5490", City: "Coeur d'Alene"},
+		FieldOffice{Phone: "208-522-9779", City: "Idaho Falls"},
+		FieldOffice{Phone: "208-743-1492", City: "Lewiston"},
+		FieldOffice{Phone: "208-236-6775", City: "Pocatello"},
+		FieldOffice{Phone: "208-734-2515", City: "Twin Falls"},
 	},
 	// Tammy Duckworth (D-IL)
-	"2022242854": map[string]string{
-		"60604": "3128863506", // Chicago
+	"2022242854": []FieldOffice{
+		FieldOffice{Phone: "312-886-3506", City: "Chicago"},
 	},
 	// Richard J. Durbin (D-IL)
-	"2022242152": map[string]string{
-		"60604": "3123534952", // Chicago
-		"62703": "2174924062", // Springfield
-		"62901": "6183511122", // Carbondale
-		"61201": "3097865173", // Rock Island
+	"2022242152": []FieldOffice{
+		FieldOffice{Phone: "312-353-4952", City: "Chicago"},
+		FieldOffice{Phone: "217-492-4062", City: "Springfield"},
+		FieldOffice{Phone: "618-351-1122", City: "Carbondale"},
+		FieldOffice{Phone: "309-786-5173", City: "Rock Island"},
 	},
 	// Joe Donnelly (D-IN)
-	"2022244814": map[string]string{
-		"47708": "8124255813", // Evansville
-		"46802": "2604204955", // Fort Wayne
-		"46320": "2198520089", // Hammond
-		"46204": "3172265555", // Indianapolis
-		"47130": "8122842027", // Jeffersonville
-		"46601": "5742882780", // South Bend
+	"2022244814": []FieldOffice{
+		FieldOffice{Phone: "812-425-5813", City: "Evansville"},
+		FieldOffice{Phone: "260-420-4955", City: "Fort Wayne"},
+		FieldOffice{Phone: "219-852-0089", City: "Hammond"},
+		FieldOffice{Phone: "317-226-5555", City: "Indianapolis"},
+		FieldOffice{Phone: "812-284-2027", City: "Jeffersonville"},
+		FieldOffice{Phone: "574-288-2780", City: "South Bend"},
 	},
 	// Todd Young (R-IN)
-	"2022245623": map[string]string{
-		"47708": "",           // Evansville
-		"46802": "",           // Fort Wayne
-		"47150": "",           // New Albany
-		"46204": "3172266700", // Indianapolis
+	"2022245623": []FieldOffice{
+		FieldOffice{Phone: "317-226-6700", City: "Indianapolis"},
 	},
 	// Jerry Moran (R-KS)
-	"2022246521": map[string]string{
-		"67601": "7856286401", // Hays
-		"66502": "7855398973", // Manhattan
-		"66762": "6202322286", // Pittsburg
-		"67226": "3166311410", // Wichita
-		"66051": "9133930711", // Olathe
+	"2022246521": []FieldOffice{
+		FieldOffice{Phone: "785-628-6401", City: "Hays"},
+		FieldOffice{Phone: "785-539-8973", City: "Manhattan"},
+		FieldOffice{Phone: "620-232-2286", City: "Pittsburg"},
+		FieldOffice{Phone: "316-631-1410", City: "Wichita"},
+		FieldOffice{Phone: "913-393-0711", City: "Olathe"},
 	},
 	// Pat Roberts (R-KS)
-	"2022244774": map[string]string{
-		"67801": "6202272244", // Dodge City
-		"66210": "9134519343", // Overland Park
-		"66683": "7852952745", // Topeka
-		"67202": "3162630416", // Wichita
+	"2022244774": []FieldOffice{
+		FieldOffice{Phone: "620-227-2244", City: "Dodge City"},
+		FieldOffice{Phone: "913-451-9343", City: "Overland Park"},
+		FieldOffice{Phone: "785-295-2745", City: "Topeka"},
+		FieldOffice{Phone: "316-263-0416", City: "Wichita"},
 	},
 	// Mitch McConnell (R-KY)
-	"2022242541": map[string]string{
-		"40202": "5025826304", // Louisville
-		"40503": "8592248286", // Lexington
-		"41011": "8595780188", // Fort Wright
-		"40741": "6068642026", // London
-		"42101": "2707811673", // Bowling Green
-		"42001": "2704424554", // Paducah
+	"2022242541": []FieldOffice{
+		FieldOffice{Phone: "502-582-6304", City: "Louisville"},
+		FieldOffice{Phone: "859-224-8286", City: "Lexington"},
+		FieldOffice{Phone: "859-578-0188", City: "Fort Wright"},
+		FieldOffice{Phone: "606-864-2026", City: "London"},
+		FieldOffice{Phone: "270-781-1673", City: "Bowling Green"},
+		FieldOffice{Phone: "270-442-4554", City: "Paducah"},
 	},
 	// Rand Paul (R-KY)
-	"2022244343": map[string]string{
-		"40202": "5025825341", // Louisville
-		"40503": "8592192239", // Lexington
-		"41017": "8594260165", // Crescent Springs
-		"42301": "2706899085", // Owensboro
-		"42101": "2707828303", // Bowling Green
-		"42240": "2708851212", // Hopkinsville
+	"2022244343": []FieldOffice{
+		FieldOffice{Phone: "502-582-5341", City: "Louisville"},
+		FieldOffice{Phone: "859-219-2239", City: "Lexington"},
+		FieldOffice{Phone: "859-426-0165", City: "Crescent Springs"},
+		FieldOffice{Phone: "270-689-9085", City: "Owensboro"},
+		FieldOffice{Phone: "270-782-8303", City: "Bowling Green"},
+		FieldOffice{Phone: "270-885-1212", City: "Hopkinsville"},
 	},
 	// Bill Cassidy (R-LA)
-	"2022245824": map[string]string{
-		"70808": "2259297711", // Baton Rouge
-		"70629": "3374935398", // Lake Charles,
-		"71105": "3187983215", // Shreveport
-		"70002": "5048380130", // Metairie
-		"70201": "3183242111", // Monroe
-		"70508": "3372611400", // Lafayette
-		"71303": "3184487176", // Alexandria
+	"2022245824": []FieldOffice{
+		FieldOffice{Phone: "225-929-7711", City: "Baton Rouge"},
+		FieldOffice{Phone: "337-493-5398", City: "Lake Charles,"},
+		FieldOffice{Phone: "318-798-3215", City: "Shreveport"},
+		FieldOffice{Phone: "504-838-0130", City: "Metairie"},
+		FieldOffice{Phone: "318-324-2111", City: "Monroe"},
+		FieldOffice{Phone: "337-261-1400", City: "Lafayette"},
+		FieldOffice{Phone: "318-448-7176", City: "Alexandria"},
 	},
 	// John Kennedy (R-LA)
-	"2022244623": map[string]string{},
+	"2022244623": []FieldOffice{},
 	// Edward J. Markey (D-MA)
-	"2022242742": map[string]string{
-		"02203": "6175658519", // Boston
-		"02721": "5086770523", // Fall River
-		"01101": "4137854610", // Springfield
+	"2022242742": []FieldOffice{
+		FieldOffice{Phone: "617-565-8519", City: "Boston"},
+		FieldOffice{Phone: "508-677-0523", City: "Fall River"},
+		FieldOffice{Phone: "413-785-4610", City: "Springfield"},
 	},
 	// Elizabeth Warren (D-MA)
-	"2022244543": map[string]string{
-		"02203": "6175653170", // Boston
-		"01103": "4137882690", // Springfield
+	"2022244543": []FieldOffice{
+		FieldOffice{Phone: "617-565-3170", City: "Boston"},
+		FieldOffice{Phone: "413-788-2690", City: "Springfield"},
 	},
 	// Benjamin L. Cardin (D-MD)
-	"2022244524": map[string]string{
-		"21201": "4109624436", // Baltimore
-		"20720": "3018600414", // Bowie
-		"21502": "3017772957", // Cumberland
-		"20850": "3017622974", // Rockville
-		"21801": "4105464250", // Salisbury
-		"20721": "2028701164", // Bowie
+	"2022244524": []FieldOffice{
+		FieldOffice{Phone: "410-962-4436", City: "Baltimore"},
+		FieldOffice{Phone: "301-860-0414", City: "Bowie"},
+		FieldOffice{Phone: "301-777-2957", City: "Cumberland"},
+		FieldOffice{Phone: "301-762-2974", City: "Rockville"},
+		FieldOffice{Phone: "410-546-4250", City: "Salisbury"},
+		FieldOffice{Phone: "202-870-1164", City: "Bowie"},
 	},
 	// Chris Van Hollen (D-MD)
-	"2022244654": map[string]string{},
+	"2022244654": []FieldOffice{},
 	// Susan M. Collins (R-ME)
-	"2022242523": map[string]string{
-		"04330": "2076228414", // Augusta
-		"04401": "2079450417", // Bangor
-		"04005": "2072831101", // Biddeford
-		"04736": "2074937873", // Caribou
-		"04240": "2077846969", // Lewiston
-		"04101": "2077803575", // Portland
+	"2022242523": []FieldOffice{
+		FieldOffice{Phone: "207-622-8414", City: "Augusta"},
+		FieldOffice{Phone: "207-945-0417", City: "Bangor"},
+		FieldOffice{Phone: "207-283-1101", City: "Biddeford"},
+		FieldOffice{Phone: "207-493-7873", City: "Caribou"},
+		FieldOffice{Phone: "207-784-6969", City: "Lewiston"},
+		FieldOffice{Phone: "207-780-3575", City: "Portland"},
 	},
 	// Angus S. King, Jr. (I-ME)
-	"2022245344": map[string]string{
-		"04330": "2076228292", // Augusta
-		"04401": "2079458000", // Bangor
-		"04769": "2077645124", // Presque Isle
-		"04074": "2078831588", // Scarborough
+	"2022245344": []FieldOffice{
+		FieldOffice{Phone: "207-622-8292", City: "Augusta"},
+		FieldOffice{Phone: "207-945-8000", City: "Bangor"},
+		FieldOffice{Phone: "207-764-5124", City: "Presque Isle"},
+		FieldOffice{Phone: "207-883-1588", City: "Scarborough"},
 	},
 	// Gary C. Peters (D-MI)
-	"2022246221": map[string]string{
-		"49684": "2319477773", // Traverse City
-		"48226": "3132266020", // Detroit
-		"48933": "5173771508", // Lansing
-		"49503": "6162339150", // Grand Rapids
-		"48307": "2486088040", // Rochester
-		"48607": "9897540112", // Saginaw
-		"49855": "9062264554", // Marquette
+	"2022246221": []FieldOffice{
+		FieldOffice{Phone: "231-947-7773", City: "Traverse City"},
+		FieldOffice{Phone: "313-226-6020", City: "Detroit"},
+		FieldOffice{Phone: "517-377-1508", City: "Lansing"},
+		FieldOffice{Phone: "616-233-9150", City: "Grand Rapids"},
+		FieldOffice{Phone: "248-608-8040", City: "Rochester"},
+		FieldOffice{Phone: "989-754-0112", City: "Saginaw"},
+		FieldOffice{Phone: "906-226-4554", City: "Marquette"},
 	},
 	// Debbie Stabenow (D-MI)
-	"2022244822": map[string]string{
-		"49684": "2319291031", // Traverse City
-		"49855": "9062288756", // Marquette
-		"48502": "8107204172", // Flint
-		"49525": "6169750052", // Grand Rapids
-		"48226": "3139614330", // Detroit
-		"48823": "5172031760", // East Lansing
+	"2022244822": []FieldOffice{
+		FieldOffice{Phone: "231-929-1031", City: "Traverse City"},
+		FieldOffice{Phone: "906-228-8756", City: "Marquette"},
+		FieldOffice{Phone: "810-720-4172", City: "Flint"},
+		FieldOffice{Phone: "616-975-0052", City: "Grand Rapids"},
+		FieldOffice{Phone: "313-961-4330", City: "Detroit"},
+		FieldOffice{Phone: "517-203-1760", City: "East Lansing"},
 	},
 	// Al Franken (D-MN)
-	"2022245641": map[string]string{
-		"56560": "2182848721", // Moorhead
-		"55802": "2187222390", // Duluth
-		"55107": "6512211016", // Saint Paul
-		"55901": "5072882003", // Rochester
+	"2022245641": []FieldOffice{
+		FieldOffice{Phone: "218-284-8721", City: "Moorhead"},
+		FieldOffice{Phone: "218-722-2390", City: "Duluth"},
+		FieldOffice{Phone: "651-221-1016", City: "Saint Paul"},
+		FieldOffice{Phone: "507-288-2003", City: "Rochester"},
 	},
 	// Amy Klobuchar (D-MN)
-	"2022243244": map[string]string{
-		"55415": "6127275220", // Minneapolis
-		"55792": "2187419690", // Virginia
-		"56560": "2182872219", // Moorhead
-		"55901": "5072885321", // Rochester
+	"2022243244": []FieldOffice{
+		FieldOffice{Phone: "612-727-5220", City: "Minneapolis"},
+		FieldOffice{Phone: "218-741-9690", City: "Virginia"},
+		FieldOffice{Phone: "218-287-2219", City: "Moorhead"},
+		FieldOffice{Phone: "507-288-5321", City: "Rochester"},
 	},
 	// Roy Blunt (R-MO)
-	"2022245721": map[string]string{
-		"65804": "4178777814", // Springfield
-		"64106": "8164717141", // Kansas City
-		"65201": "5734428151", // Columbia
-		"63105": "3147254484", // Clayton
-		"63703": "5733347044", // Cape Girardeau,
+	"2022245721": []FieldOffice{
+		FieldOffice{Phone: "417-877-7814", City: "Springfield"},
+		FieldOffice{Phone: "816-471-7141", City: "Kansas City"},
+		FieldOffice{Phone: "573-442-8151", City: "Columbia"},
+		FieldOffice{Phone: "314-725-4484", City: "Clayton"},
+		FieldOffice{Phone: "573-334-7044", City: "Cape Girardeau,"},
 	},
 	// Claire McCaskill (D-MO)
-	"2022246154": map[string]string{
-		"63703": "5736510964", // Cape Girardeau
-		"64111": "8164211639", // Kansas City
-		"63112": "3143671364", // St. Louis
-		"65201": "5734427130", // Columbia
-		"65806": "4178688745", // Springfield
+	"2022246154": []FieldOffice{
+		FieldOffice{Phone: "573-651-0964", City: "Cape Girardeau"},
+		FieldOffice{Phone: "816-421-1639", City: "Kansas City"},
+		FieldOffice{Phone: "314-367-1364", City: "St. Louis"},
+		FieldOffice{Phone: "573-442-7130", City: "Columbia"},
+		FieldOffice{Phone: "417-868-8745", City: "Springfield"},
 	},
 	// Roger F. Wicker (R-MS)
-	"2022246253": map[string]string{
-		"39201": "6019654644", // Jackson
-		"39501": "2288717017", // Gulfport
-		"38632": "6624291002", // Hernando
-		"38804": "6628445010", // Tupelo
+	"2022246253": []FieldOffice{
+		FieldOffice{Phone: "601-965-4644", City: "Jackson"},
+		FieldOffice{Phone: "228-871-7017", City: "Gulfport"},
+		FieldOffice{Phone: "662-429-1002", City: "Hernando"},
+		FieldOffice{Phone: "662-844-5010", City: "Tupelo"},
 	},
 	// Thad Cochran (R-MS)
-	"2022245054": map[string]string{
-		"39201": "6019654459", // Jackson
-		"38655": "6622361018", // Oxford
-		"39501": "2288679710", // Gulfport
+	"2022245054": []FieldOffice{
+		FieldOffice{Phone: "601-965-4459", City: "Jackson"},
+		FieldOffice{Phone: "662-236-1018", City: "Oxford"},
+		FieldOffice{Phone: "228-867-9710", City: "Gulfport"},
 	},
 	// Steve Daines (R-MT)
-	"2022242651": map[string]string{
-		"59101": "4062456822", // Billings
-		"59401": "4064530148", // Great Falls
-		"59601": "4064433189", // Helena
-		"59718": "4065873446", // Bozeman
-		"59802": "4065498198", // Missoula
-		"59901": "4062573765", // Kalispell
-		"59270": "4064829010", // Sidney
-		"59034": "4066654126", // Hardin
+	"2022242651": []FieldOffice{
+		FieldOffice{Phone: "406-245-6822", City: "Billings"},
+		FieldOffice{Phone: "406-453-0148", City: "Great Falls"},
+		FieldOffice{Phone: "406-443-3189", City: "Helena"},
+		FieldOffice{Phone: "406-587-3446", City: "Bozeman"},
+		FieldOffice{Phone: "406-549-8198", City: "Missoula"},
+		FieldOffice{Phone: "406-257-3765", City: "Kalispell"},
+		FieldOffice{Phone: "406-482-9010", City: "Sidney"},
+		FieldOffice{Phone: "406-665-4126", City: "Hardin"},
 	},
 	// Jon Tester (D-MT)
-	"2022242644": map[string]string{
-		"59101": "4062520550", // Billings
-		"59715": "4065864450", // Bozeman
-		"59701": "4067233277", // Butte
-		"59330": "4063652391", // Glendive
-		"59401": "4064529585", // Great Falls
-		"59601": "4064495401", // Helena
-		"59901": "4062573360", // Kalispell
-		"59802": "4067283003", // Missoula
+	"2022242644": []FieldOffice{
+		FieldOffice{Phone: "406-252-0550", City: "Billings"},
+		FieldOffice{Phone: "406-586-4450", City: "Bozeman"},
+		FieldOffice{Phone: "406-723-3277", City: "Butte"},
+		FieldOffice{Phone: "406-365-2391", City: "Glendive"},
+		FieldOffice{Phone: "406-452-9585", City: "Great Falls"},
+		FieldOffice{Phone: "406-449-5401", City: "Helena"},
+		FieldOffice{Phone: "406-257-3360", City: "Kalispell"},
+		FieldOffice{Phone: "406-728-3003", City: "Missoula"},
 	},
 	// Richard Burr (R-NC)
-	"2022243154": map[string]string{
-		"28801": "8283502437", // Asheville
-		"27804": "2529779522", // Rocky Mount
-		"27104": "3366315125", // Winston-Salem
-		"28401": "9102511058", // Wilmington
+	"2022243154": []FieldOffice{
+		FieldOffice{Phone: "828-350-2437", City: "Asheville"},
+		FieldOffice{Phone: "252-977-9522", City: "Rocky Mount"},
+		FieldOffice{Phone: "336-631-5125", City: "Winston-Salem"},
+		FieldOffice{Phone: "910-251-1058", City: "Wilmington"},
 	},
 	// Thom Tillis (D-NC)
-	"2022246342": map[string]string{
-		"28269": "7045099087", // Charlotte
-		"27858": "2523290371", // Greenville
-		"28792": "8286938750", // Hendersonville
-		"27265": "3368850685", // High Point
-		"27601": "9198564630", // Raleigh
+	"2022246342": []FieldOffice{
+		FieldOffice{Phone: "704-509-9087", City: "Charlotte"},
+		FieldOffice{Phone: "252-329-0371", City: "Greenville"},
+		FieldOffice{Phone: "828-693-8750", City: "Hendersonville"},
+		FieldOffice{Phone: "336-885-0685", City: "High Point"},
+		FieldOffice{Phone: "919-856-4630", City: "Raleigh"},
 	},
 	// Heidi Heitkamp (D-ND)
-	"2022242043": map[string]string{
-		"58501": "7012584648", // Bismarck
-		"58102": "7012328030", // Fargo
-		"58601": "7012250974", // Dickinson
-		"58201": "7017759601", // Grand Forks
-		"58701": "7018520703", // Minot
+	"2022242043": []FieldOffice{
+		FieldOffice{Phone: "701-258-4648", City: "Bismarck"},
+		FieldOffice{Phone: "701-232-8030", City: "Fargo"},
+		FieldOffice{Phone: "701-225-0974", City: "Dickinson"},
+		FieldOffice{Phone: "701-775-9601", City: "Grand Forks"},
+		FieldOffice{Phone: "701-852-0703", City: "Minot"},
 	},
 	// John Hoeven (R-ND)
-	"2022242551": map[string]string{
-		"58501": "7012504618", // Bismarck
-		"58103": "7012395389", // Fargo
-		"58203": "7017468972", // Grand Forks
-		"58701": "7018381361", // Minot
-		"58801": "7015804535", // Williston
+	"2022242551": []FieldOffice{
+		FieldOffice{Phone: "701-250-4618", City: "Bismarck"},
+		FieldOffice{Phone: "701-239-5389", City: "Fargo"},
+		FieldOffice{Phone: "701-746-8972", City: "Grand Forks"},
+		FieldOffice{Phone: "701-838-1361", City: "Minot"},
+		FieldOffice{Phone: "701-580-4535", City: "Williston"},
 	},
 	// Deb Fischer (R-NE)
-	"2022246551": map[string]string{
-		"68847": "3082342361", // Kearney
-		"68508": "4024414600", // Lincoln
-		"68702": "4022008816", // Norfolk
-		"68154": "4023913411", // Omaha
-		"69361": "3086302329", // Scottsbluff
+	"2022246551": []FieldOffice{
+		FieldOffice{Phone: "308-234-2361", City: "Kearney"},
+		FieldOffice{Phone: "402-441-4600", City: "Lincoln"},
+		FieldOffice{Phone: "402-200-8816", City: "Norfolk"},
+		FieldOffice{Phone: "402-391-3411", City: "Omaha"},
+		FieldOffice{Phone: "308-630-2329", City: "Scottsbluff"},
 	},
 	// Ben Sasse (R-NE)
-	"2022244224": map[string]string{
-		"68508": "4024761400", // Lincoln
-		"68845": "3082333677", // Kearney
-		"68118": "4025508040", // Omaha
-		"69361": "3086326032", // Scottsbluff
+	"2022244224": []FieldOffice{
+		FieldOffice{Phone: "402-476-1400", City: "Lincoln"},
+		FieldOffice{Phone: "308-233-3677", City: "Kearney"},
+		FieldOffice{Phone: "402-550-8040", City: "Omaha"},
+		FieldOffice{Phone: "308-632-6032", City: "Scottsbluff"},
 	},
 	// Margaret Wood Hassan (D-NH)
-	"2022243324": map[string]string{
-		"03101": "6036222204", // Manchester
+	"2022243324": []FieldOffice{
+		FieldOffice{Phone: "603-622-2204", City: "Manchester"},
 	},
 	// Jeanne Shaheen (D-NH)
-	"2022242841": map[string]string{
-		"03101": "6036477500", // Manchester
-		"03743": "6035424872", // Claremont
-		"03820": "6037503004", // Dover
-		"03431": "6033586604", // Keene
-		"03570": "6037526300", // Berlin
-		"03060": "6038830196", // Nashua
+	"2022242841": []FieldOffice{
+		FieldOffice{Phone: "603-647-7500", City: "Manchester"},
+		FieldOffice{Phone: "603-542-4872", City: "Claremont"},
+		FieldOffice{Phone: "603-750-3004", City: "Dover"},
+		FieldOffice{Phone: "603-358-6604", City: "Keene"},
+		FieldOffice{Phone: "603-752-6300", City: "Berlin"},
+		FieldOffice{Phone: "603-883-0196", City: "Nashua"},
 	},
 	// Cory A. Booker (D-NJ)
-	"2022243224": map[string]string{
-		"08101": "8563388922", // Camden
-		"07102": "9736398700", // Newark
+	"2022243224": []FieldOffice{
+		FieldOffice{Phone: "856-338-8922", City: "Camden"},
+		FieldOffice{Phone: "973-639-8700", City: "Newark"},
 	},
 	// Robert Menendez (D-NJ)
-	"2022244744": map[string]string{
-		"07102": "9736453030", // Newark
-		"08007": "8567575353", // Barrington
+	"2022244744": []FieldOffice{
+		FieldOffice{Phone: "973-645-3030", City: "Newark"},
+		FieldOffice{Phone: "856-757-5353", City: "Barrington"},
 	},
 	// Martin Heinrich (D-NM)
-	"2022245521": map[string]string{
-		"87102": "5053466601", // Albuquerque
-		"87402": "5053255030", // Farmington
-		"88001": "5755236561", // Las Cruces
-		"88201": "5756227113", // Roswell
-		"87501": "5059886647", // Santa Fe
+	"2022245521": []FieldOffice{
+		FieldOffice{Phone: "505-346-6601", City: "Albuquerque"},
+		FieldOffice{Phone: "505-325-5030", City: "Farmington"},
+		FieldOffice{Phone: "575-523-6561", City: "Las Cruces"},
+		FieldOffice{Phone: "575-622-7113", City: "Roswell"},
+		FieldOffice{Phone: "505-988-6647", City: "Santa Fe"},
 	},
 	// Tom Udall (D-NM)
-	"2022246621": map[string]string{
-		"87102": "5053466791", // Albuquerque
-		"88220": "5752340366", // Carlsbad
-		"88130": "5753566811", // Portales
-		"88001": "5755265475", // Las Cruces
-		"87501": "5059886511", // Santa Fe
+	"2022246621": []FieldOffice{
+		FieldOffice{Phone: "505-346-6791", City: "Albuquerque"},
+		FieldOffice{Phone: "575-234-0366", City: "Carlsbad"},
+		FieldOffice{Phone: "575-356-6811", City: "Portales"},
+		FieldOffice{Phone: "575-526-5475", City: "Las Cruces"},
+		FieldOffice{Phone: "505-988-6511", City: "Santa Fe"},
 	},
 	// Dean Heller (R-NV)
-	"2022246244": map[string]string{
-		"89148": "7023886605", // Las Vegas
-		"89501": "7756865770", // Reno
+	"2022246244": []FieldOffice{
+		FieldOffice{Phone: "702-388-6605", City: "Las Vegas"},
+		FieldOffice{Phone: "775-686-5770", City: "Reno"},
 	},
 	// Catherine Cortez Masto (D-NV)
-	"2022243542": map[string]string{
-		"89101": "7023885020", // Las Vegas
-		"89501": "7756865750", // Reno
+	"2022243542": []FieldOffice{
+		FieldOffice{Phone: "702-388-5020", City: "Las Vegas"},
+		FieldOffice{Phone: "775-686-5750", City: "Reno"},
 	},
 	// Kirsten E. Gillibrand (D-NY)
-	"2022244451": map[string]string{
-		"12207": "5184310120", // Albany
-		"14210": "7168549725", // Buffalo
-		"11747": "6312492825", // Melville
-		"13367": "3153766118", // Lowville
-		"14614": "5852636250", // Rochester
-		"13261": "3154480470", // Syracuse
-		"10017": "2126886262", // New York
-		"10541": "8458754585", // Mahopac
+	"2022244451": []FieldOffice{
+		FieldOffice{Phone: "518-431-0120", City: "Albany"},
+		FieldOffice{Phone: "716-854-9725", City: "Buffalo"},
+		FieldOffice{Phone: "631-249-2825", City: "Melville"},
+		FieldOffice{Phone: "315-376-6118", City: "Lowville"},
+		FieldOffice{Phone: "585-263-6250", City: "Rochester"},
+		FieldOffice{Phone: "315-448-0470", City: "Syracuse"},
+		FieldOffice{Phone: "212-688-6262", City: "New York"},
+		FieldOffice{Phone: "845-875-4585", City: "Mahopac"},
 	},
 	// Charles E. Schumer (D-NY)
-	"2022246542": map[string]string{
-		"12207": "5184314070", // Albany
-		"13901": "6077726792", // Binghamton
-		"14202": "7168464111", // Buffalo
-		"11747": "6317530978", // Melville
-		"10017": "2124864430", // New York
-		"10566": "9147341532", // Peekskill
-		"14614": "5852635866", // Rochester
-		"13261": "3154235471", // Syracuse
+	"2022246542": []FieldOffice{
+		FieldOffice{Phone: "518-431-4070", City: "Albany"},
+		FieldOffice{Phone: "607-772-6792", City: "Binghamton"},
+		FieldOffice{Phone: "716-846-4111", City: "Buffalo"},
+		FieldOffice{Phone: "631-753-0978", City: "Melville"},
+		FieldOffice{Phone: "212-486-4430", City: "New York"},
+		FieldOffice{Phone: "914-734-1532", City: "Peekskill"},
+		FieldOffice{Phone: "585-263-5866", City: "Rochester"},
+		FieldOffice{Phone: "315-423-5471", City: "Syracuse"},
 	},
 	// Sherrod Brown (D-OH)
-	"2022242315": map[string]string{
-		"45202": "5136841021", // Cincinnati
-		"44113": "2165227272", // Cleveland
-		"43215": "6144692083", // Columbus
-		"44052": "4402424100", // Lorain
+	"2022242315": []FieldOffice{
+		FieldOffice{Phone: "513-684-1021", City: "Cincinnati"},
+		FieldOffice{Phone: "216-522-7272", City: "Cleveland"},
+		FieldOffice{Phone: "614-469-2083", City: "Columbus"},
+		FieldOffice{Phone: "440-242-4100", City: "Lorain"},
 	},
 	// Rob Portman (R-OH)
-	"2022243353": map[string]string{
-		"45202": "5136843265", // Cincinnati
-		"44199": "2165227095", // Cleveland
-		"43215": "6144696774", // Columbus
-		"43604": "4192593895", // Toledo
+	"2022243353": []FieldOffice{
+		FieldOffice{Phone: "513-684-3265", City: "Cincinnati"},
+		FieldOffice{Phone: "216-522-7095", City: "Cleveland"},
+		FieldOffice{Phone: "614-469-6774", City: "Columbus"},
+		FieldOffice{Phone: "419-259-3895", City: "Toledo"},
 	},
 	// James M. Inhofe (R-OK)
-	"2022244721": map[string]string{
-		"73118": "4056084381", // Oklahoma City
-		"74104": "9187485111", // Tulsa
-		"73701": "5802345105", // Enid
-		"74501": "9184260933", // McAlester
+	"2022244721": []FieldOffice{
+		FieldOffice{Phone: "405-608-4381", City: "Oklahoma City"},
+		FieldOffice{Phone: "918-748-5111", City: "Tulsa"},
+		FieldOffice{Phone: "580-234-5105", City: "Enid"},
+		FieldOffice{Phone: "918-426-0933", City: "McAlester"},
 	},
 	// James Lankford (R-OK)
-	"2022245754": map[string]string{
-		"73102": "4052314941", // Oklahoma City
-		"74135": "9185817651", // Tulsa
+	"2022245754": []FieldOffice{
+		FieldOffice{Phone: "405-231-4941", City: "Oklahoma City"},
+		FieldOffice{Phone: "918-581-7651", City: "Tulsa"},
 	},
 	// Jeff Merkley (D-OR)
-	"2022243753": map[string]string{
-		"97204": "5033263386", // Portland
-		"97301": "5033628102", // Salem
-		"97401": "5414656750", // Eugene
-		"97501": "5416089102", // Medford
-		"97701": "5413181298", // Bend
-		"97801": "5412781129", // Pendleton
+	"2022243753": []FieldOffice{
+		FieldOffice{Phone: "503-326-3386", City: "Portland"},
+		FieldOffice{Phone: "503-362-8102", City: "Salem"},
+		FieldOffice{Phone: "541-465-6750", City: "Eugene"},
+		FieldOffice{Phone: "541-608-9102", City: "Medford"},
+		FieldOffice{Phone: "541-318-1298", City: "Bend"},
+		FieldOffice{Phone: "541-278-1129", City: "Pendleton"},
 	},
 	// Ron Wyden (D-OR)
-	"2022245244": map[string]string{
-		"97232": "5033267525", // Portland
-		"97301": "5035894555", // Salem
-		"97401": "5414310229", // Eugene
-		"97501": "5418585122", // Medford
-		"97701": "5413309142", // Bend
-		"97850": "5419627691", // La Grande
+	"2022245244": []FieldOffice{
+		FieldOffice{Phone: "503-326-7525", City: "Portland"},
+		FieldOffice{Phone: "503-589-4555", City: "Salem"},
+		FieldOffice{Phone: "541-431-0229", City: "Eugene"},
+		FieldOffice{Phone: "541-858-5122", City: "Medford"},
+		FieldOffice{Phone: "541-330-9142", City: "Bend"},
+		FieldOffice{Phone: "541-962-7691", City: "La Grande"},
 	},
 	// Robert P. Casey, Jr. (D-PA)
-	"2022246324": map[string]string{
-		"18101": "6107829470", // Allentown
-		"18503": "5709410930", // Scranton
-		"17101": "7172317540", // Harrisburg
-		"19103": "2154059660", // Philadelphia
-		"15219": "4128037370", // Pittsburgh
-		"16823": "8143570314", // Bellefonte
-		"16501": "8148745080", // Erie
+	"2022246324": []FieldOffice{
+		FieldOffice{Phone: "610-782-9470", City: "Allentown"},
+		FieldOffice{Phone: "570-941-0930", City: "Scranton"},
+		FieldOffice{Phone: "717-231-7540", City: "Harrisburg"},
+		FieldOffice{Phone: "215-405-9660", City: "Philadelphia"},
+		FieldOffice{Phone: "412-803-7370", City: "Pittsburgh"},
+		FieldOffice{Phone: "814-357-0314", City: "Bellefonte"},
+		FieldOffice{Phone: "814-874-5080", City: "Erie"},
 	},
 	// Patrick J. Toomey (R-PA)
-	"2022244254": map[string]string{
-		"18103": "6104341444", // Allentown
-		"16501": "8144533010", // Erie
-		"17101": "7177823951", // Harrisburg
-		"19103": "2152411090", // Philadelphia
-		"15219": "4128033501", // Pittsburgh
-		"15904": "8142665970", // Johnstown
-		"18503": "5709413540", // Scranton
+	"2022244254": []FieldOffice{
+		FieldOffice{Phone: "610-434-1444", City: "Allentown"},
+		FieldOffice{Phone: "814-453-3010", City: "Erie"},
+		FieldOffice{Phone: "717-782-3951", City: "Harrisburg"},
+		FieldOffice{Phone: "215-241-1090", City: "Philadelphia"},
+		FieldOffice{Phone: "412-803-3501", City: "Pittsburgh"},
+		FieldOffice{Phone: "814-266-5970", City: "Johnstown"},
+		FieldOffice{Phone: "570-941-3540", City: "Scranton"},
 	},
 	// Sheldon Whitehouse (D-RI)
-	"2022242921": map[string]string{
-		"02903": "4014535294", // Providence
+	"2022242921": []FieldOffice{
+		FieldOffice{Phone: "401-453-5294", City: "Providence"},
 	},
 	// Jack Reed (D-RI)
-	"2022244642": map[string]string{
-		"02920": "4019433100", // Cranston
-		"02903": "4015285200", // Providence
+	"2022244642": []FieldOffice{
+		FieldOffice{Phone: "401-943-3100", City: "Cranston"},
+		FieldOffice{Phone: "401-528-5200", City: "Providence"},
 	},
 	// Lindsey Graham (R-SC)
-	"2022245972": map[string]string{
-		"29601": "8642501417", // Greenville
-		"29201": "8039330112", // Columbia
-		"29501": "8436691505", // Florence
-		"29464": "8438493887", // Mt. Pleasant
-		"29730": "8033662828", // Rock Hill
-		"29670": "8646464090", // Pendleton
+	"2022245972": []FieldOffice{
+		FieldOffice{Phone: "864-250-1417", City: "Greenville"},
+		FieldOffice{Phone: "803-933-0112", City: "Columbia"},
+		FieldOffice{Phone: "843-669-1505", City: "Florence"},
+		FieldOffice{Phone: "843-849-3887", City: "Mt. Pleasant"},
+		FieldOffice{Phone: "803-366-2828", City: "Rock Hill"},
+		FieldOffice{Phone: "864-646-4090", City: "Pendleton"},
 	},
 	// Tim Scott (R-SC)
-	"2022246121": map[string]string{
-		"29201": "8037716112", // Columbia
-		"29601": "8642335366", // Greenville
-		"29406": "8437274525", // North Charleston
+	"2022246121": []FieldOffice{
+		FieldOffice{Phone: "803-771-6112", City: "Columbia"},
+		FieldOffice{Phone: "864-233-5366", City: "Greenville"},
+		FieldOffice{Phone: "843-727-4525", City: "North Charleston"},
 	},
 	// Mike Rounds (R-SD)
-	"2022245842": map[string]string{
-		"57501": "6052241450", // Pierre
-		"57701": "6053435035", // Rapid City
-		"57104": "6053360486", // Sioux Falls
-		"57401": "6052250366", // Aberdeen
+	"2022245842": []FieldOffice{
+		FieldOffice{Phone: "605-224-1450", City: "Pierre"},
+		FieldOffice{Phone: "605-343-5035", City: "Rapid City"},
+		FieldOffice{Phone: "605-336-0486", City: "Sioux Falls"},
+		FieldOffice{Phone: "605-225-0366", City: "Aberdeen"},
 	},
 	// John Thune (R-SD)
-	"2022242321": map[string]string{
-		"57701": "6053487551", // Rapid City
-		"57108": "6053349596", // Sioux Falls
-		"57401": "6052258823", // Aberdeen
+	"2022242321": []FieldOffice{
+		FieldOffice{Phone: "605-348-7551", City: "Rapid City"},
+		FieldOffice{Phone: "605-334-9596", City: "Sioux Falls"},
+		FieldOffice{Phone: "605-225-8823", City: "Aberdeen"},
 	},
 	// Lamar Alexander (R-TN)
-	"2022244944": map[string]string{
-		"38103": "9015444224", // Memphis
-		"38305": "7316640289", // Jackson
-		"37203": "6157365129", // Nashville
-		"37902": "8655454253", // Knoxville
-		"37617": "4233256240", // Blountville
-		"37402": "4237525337", // Chattanooga
+	"2022244944": []FieldOffice{
+		FieldOffice{Phone: "901-544-4224", City: "Memphis"},
+		FieldOffice{Phone: "731-664-0289", City: "Jackson"},
+		FieldOffice{Phone: "615-736-5129", City: "Nashville"},
+		FieldOffice{Phone: "865-545-4253", City: "Knoxville"},
+		FieldOffice{Phone: "423-325-6240", City: "Blountville"},
+		FieldOffice{Phone: "423-752-5337", City: "Chattanooga"},
 	},
 	// Bob Corker (R-TN)
-	"2022243344": map[string]string{
-		"38103": "9016831910", // Memphis
-		"38305": "7316642294", // Jackson
-		"37203": "6152798125", // Nashville
-		"37902": "8656374180", // Knoxville
-		"37659": "4237532263", // Jonesborough
-		"37402": "4237562757", // Chattanooga
+	"2022243344": []FieldOffice{
+		FieldOffice{Phone: "901-683-1910", City: "Memphis"},
+		FieldOffice{Phone: "731-664-2294", City: "Jackson"},
+		FieldOffice{Phone: "615-279-8125", City: "Nashville"},
+		FieldOffice{Phone: "865-637-4180", City: "Knoxville"},
+		FieldOffice{Phone: "423-753-2263", City: "Jonesborough"},
+		FieldOffice{Phone: "423-756-2757", City: "Chattanooga"},
 	},
 	// John Cornyn (R-TX)
-	"2022242934": map[string]string{
-		"78701": "5124696034", // Austin
-		"75702": "9035930902", // Tyler
-		"75244": "9722391310", // Dallas
-		"78550": "9564230162", // Harlingen
-		"77007": "7135723337", // Houston
-		"79401": "8064727533", // Lubbock
-		"78205": "2102247485", // San Antonio
+	"2022242934": []FieldOffice{
+		FieldOffice{Phone: "512-469-6034", City: "Austin"},
+		FieldOffice{Phone: "903-593-0902", City: "Tyler"},
+		FieldOffice{Phone: "972-239-1310", City: "Dallas"},
+		FieldOffice{Phone: "956-423-0162", City: "Harlingen"},
+		FieldOffice{Phone: "713-572-3337", City: "Houston"},
+		FieldOffice{Phone: "806-472-7533", City: "Lubbock"},
+		FieldOffice{Phone: "210-224-7485", City: "San Antonio"},
 	},
 	// Ted Cruz (R-TX)
-	"2022245922": map[string]string{
-		"78701": "5129165834", // Austin
-		"75219": "2145998749", // Dallas
-		"77002": "7137183057", // Houston
-		"78230": "2103402885", // San Antonio
-		"75702": "9035935130", // Tyler
-		"78501": "9566867339", // McAllen
+	"2022245922": []FieldOffice{
+		FieldOffice{Phone: "512-916-5834", City: "Austin"},
+		FieldOffice{Phone: "214-599-8749", City: "Dallas"},
+		FieldOffice{Phone: "713-718-3057", City: "Houston"},
+		FieldOffice{Phone: "210-340-2885", City: "San Antonio"},
+		FieldOffice{Phone: "903-593-5130", City: "Tyler"},
+		FieldOffice{Phone: "956-686-7339", City: "McAllen"},
 	},
 	// Orrin G. Hatch (R-UT)
-	"2022245251": map[string]string{
-		"84720": "4355868435", // Cedar City
-		"84401": "8016255672", // Ogden
-		"84601": "8013757881", // Provo
-		"84138": "8015244380", // Salt Lake City
-		"84770": "4356341795", // St. George
+	"2022245251": []FieldOffice{
+		FieldOffice{Phone: "435-586-8435", City: "Cedar City"},
+		FieldOffice{Phone: "801-625-5672", City: "Ogden"},
+		FieldOffice{Phone: "801-375-7881", City: "Provo"},
+		FieldOffice{Phone: "801-524-4380", City: "Salt Lake City"},
+		FieldOffice{Phone: "435-634-1795", City: "St. George"},
 	},
 	// Mike Lee (R-UT)
-	"2022245444": map[string]string{
-		"84138": "8015245933", // Salt Lake City
-		"84770": "4356285514", // St. George
-		"84401": "8013929633", // Ogden
+	"2022245444": []FieldOffice{
+		FieldOffice{Phone: "801-524-5933", City: "Salt Lake City"},
+		FieldOffice{Phone: "435-628-5514", City: "St. George"},
+		FieldOffice{Phone: "801-392-9633", City: "Ogden"},
 	},
 	// Tim Kaine (D-VA)
-	"2022244024": map[string]string{
-		"24541": "4347920976", // Danville
-		"23219": "8047712221", // Richmond
-		"23462": "7575181674", // Virginia Beach
-		"24210": "2765254790", // Abingdon
-		"24011": "5406825693", // Roanoke
-		"20110": "7033613192", // Manassas
+	"2022244024": []FieldOffice{
+		FieldOffice{Phone: "434-792-0976", City: "Danville"},
+		FieldOffice{Phone: "804-771-2221", City: "Richmond"},
+		FieldOffice{Phone: "757-518-1674", City: "Virginia Beach"},
+		FieldOffice{Phone: "276-525-4790", City: "Abingdon"},
+		FieldOffice{Phone: "540-682-5693", City: "Roanoke"},
+		FieldOffice{Phone: "703-361-3192", City: "Manassas"},
 	},
 	// Mark R. Warner (D-VA)
-	"2022242023": map[string]string{
-		"24210": "2766288158", // Abingdon
-		"23219": "8047752314", // Richmond
-		"23510": "7574413079", // Norfolk
-		"24011": "5408572676", // Roanoke
-		"22182": "7034420670", // Vienna
+	"2022242023": []FieldOffice{
+		FieldOffice{Phone: "276-628-8158", City: "Abingdon"},
+		FieldOffice{Phone: "804-775-2314", City: "Richmond"},
+		FieldOffice{Phone: "757-441-3079", City: "Norfolk"},
+		FieldOffice{Phone: "540-857-2676", City: "Roanoke"},
+		FieldOffice{Phone: "703-442-0670", City: "Vienna"},
 	},
 	// Patrick J. Leahy (D-VT)
-	"2022244242": map[string]string{
-		"05401": "8028632525", // Burlington
-		"05602": "8022290569", // Montpelier
+	"2022244242": []FieldOffice{
+		FieldOffice{Phone: "802-863-2525", City: "Burlington"},
+		FieldOffice{Phone: "802-229-0569", City: "Montpelier"},
 	},
 	// Bernard Sanders (I-VT)
-	"2022245141": map[string]string{
-		"05401": "8028620697", // Burlington
-		"05819": "8003399834", // St. Johnsbury
+	"2022245141": []FieldOffice{
+		FieldOffice{Phone: "802-862-0697", City: "Burlington"},
+		FieldOffice{Phone: "800-339-9834", City: "St. Johnsbury"},
 	},
 	// Maria Cantwell (D-WA)
-	"2022243441": map[string]string{
-		"98174": "2062206400", // Seattle
-		"99201": "5093532507", // Spokane
-		"98402": "2535722281", // Tacoma
-		"98201": "4253030114", // Everett
-		"98661": "3606967838", // Vancouver
-		"99352": "5099468106", // Richland
+	"2022243441": []FieldOffice{
+		FieldOffice{Phone: "206-220-6400", City: "Seattle"},
+		FieldOffice{Phone: "509-353-2507", City: "Spokane"},
+		FieldOffice{Phone: "253-572-2281", City: "Tacoma"},
+		FieldOffice{Phone: "425-303-0114", City: "Everett"},
+		FieldOffice{Phone: "360-696-7838", City: "Vancouver"},
+		FieldOffice{Phone: "509-946-8106", City: "Richland"},
 	},
 	// Patty Murray (D-WA)
-	"2022242621": map[string]string{
-		"98174": "2065535545", // Seattle
-		"99201": "5096249515", // Spokane
-		"98402": "2535723636", // Tacoma
-		"98201": "4252596515", // Everett
-		"98661": "3606967797", // Vancouver
-		"98901": "5094537462", // Yakima
+	"2022242621": []FieldOffice{
+		FieldOffice{Phone: "206-553-5545", City: "Seattle"},
+		FieldOffice{Phone: "509-624-9515", City: "Spokane"},
+		FieldOffice{Phone: "253-572-3636", City: "Tacoma"},
+		FieldOffice{Phone: "425-259-6515", City: "Everett"},
+		FieldOffice{Phone: "360-696-7797", City: "Vancouver"},
+		FieldOffice{Phone: "509-453-7462", City: "Yakima"},
 	},
 	// Tammy Baldwin (D-WI)
-	"2022245653": map[string]string{
-		"54701": "7158328424", // Eau Claire
-		"54303": "9204982668", // Green Bay
-		"54601": "6087960045", // La Crosse
-		"53703": "6082645338", // Madison
-		"53203": "4142974451", // Milwaukee
-		"54401": "7152612611", // Wausau
+	"2022245653": []FieldOffice{
+		FieldOffice{Phone: "715-832-8424", City: "Eau Claire"},
+		FieldOffice{Phone: "920-498-2668", City: "Green Bay"},
+		FieldOffice{Phone: "608-796-0045", City: "La Crosse"},
+		FieldOffice{Phone: "608-264-5338", City: "Madison"},
+		FieldOffice{Phone: "414-297-4451", City: "Milwaukee"},
+		FieldOffice{Phone: "715-261-2611", City: "Wausau"},
 	},
 	// Ron Johnson (R-WI)
-	"2022245323": map[string]string{
-		"53202": "4142767282", // Milwaukee
-		"54901": "9202307250", // Oshkosh
+	"2022245323": []FieldOffice{
+		FieldOffice{Phone: "414-276-7282", City: "Milwaukee"},
+		FieldOffice{Phone: "920-230-7250", City: "Oshkosh"},
 	},
 	// Shelley Moore Capito (R-WV)
-	"2022246472": map[string]string{
-		"25301": "3043475372", // Charleston
-		"25401": "3042629285", // Martinsburg
-		"26501": "3042922310", // Morgantown
-		"25801": "3043475372", // Beckley
+	"2022246472": []FieldOffice{
+		FieldOffice{Phone: "304-347-5372", City: "Charleston"},
+		FieldOffice{Phone: "304-262-9285", City: "Martinsburg"},
+		FieldOffice{Phone: "304-292-2310", City: "Morgantown"},
+		FieldOffice{Phone: "304-347-5372", City: "Beckley"},
 	},
 	// Joe Manchin, III (D-WV)
-	"2022243954": map[string]string{
-		"25302": "3043425855", // Charleston
-		"25404": "3042644626", // Martinsburg
-		"26554": "3043680567", // Fairmont
+	"2022243954": []FieldOffice{
+		FieldOffice{Phone: "304-342-5855", City: "Charleston"},
+		FieldOffice{Phone: "304-264-4626", City: "Martinsburg"},
+		FieldOffice{Phone: "304-368-0567", City: "Fairmont"},
 	},
 	// John Barrasso (R-WY)
-	"2022246441": map[string]string{
-		"82501": "3078566642", // Riverton
-		"82001": "3077722451", // Cheyenne
-		"82601": "3072616413", // Casper
-		"82901": "3073625012", // Rock Springs
-		"82801": "3076726456", // Sheridan
+	"2022246441": []FieldOffice{
+		FieldOffice{Phone: "307-856-6642", City: "Riverton"},
+		FieldOffice{Phone: "307-772-2451", City: "Cheyenne"},
+		FieldOffice{Phone: "307-261-6413", City: "Casper"},
+		FieldOffice{Phone: "307-362-5012", City: "Rock Springs"},
+		FieldOffice{Phone: "307-672-6456", City: "Sheridan"},
 	},
 	// Michael B. Enzi (R-WY)
-	"2022243424": map[string]string{
-		"82601": "3072616572", // Casper
-		"82001": "3077722477", // Cheyenne
-		"82414": "3075279444", // Cody
-		"82716": "3076826268", // Gillette
-		"83002": "3077399507", // Jaskson
+	"2022243424": []FieldOffice{
+		FieldOffice{Phone: "307-261-6572", City: "Casper"},
+		FieldOffice{Phone: "307-772-2477", City: "Cheyenne"},
+		FieldOffice{Phone: "307-527-9444", City: "Cody"},
+		FieldOffice{Phone: "307-682-6268", City: "Gillette"},
+		FieldOffice{Phone: "307-739-9507", City: "Jaskson"},
 	},
 }

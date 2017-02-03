@@ -105,19 +105,19 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 		}
 		for _, i := range o.OfficialIndices {
 			official := r.Officials[i]
-			phones := official.Phone(r.NormalizedInput.Zip)
-			if phones == nil {
+			phone, fieldoffices := official.Phone()
+			if phone == "" {
 				continue
 			}
 			c := &Contact{
-				ID:       fmt.Sprintf("%s-%s", r.NormalizedInput.State, official.ID()),
-				Name:     official.Name,
-				Phone:    phones.HQ,
-				Phones:   *phones,
-				PhotoURL: official.PhotoUrl,
-				Party:    official.Party,
-				State:    r.NormalizedInput.State,
-				Area:     area,
+				ID:           fmt.Sprintf("%s-%s", r.NormalizedInput.State, official.ID()),
+				Name:         official.Name,
+				Phone:        phone,
+				FieldOffices: fieldoffices,
+				PhotoURL:     official.PhotoUrl,
+				Party:        official.Party,
+				State:        r.NormalizedInput.State,
+				Area:         area,
 			}
 			switch area {
 			case areaHouse:
@@ -152,29 +152,18 @@ func (x *Office) Area() string {
 }
 
 // Phone returns properly formatted phone numbers for an Official.
-// If Phone returns nil, no phone numbers are available.
-func (x *Official) Phone(zip string) *Phones {
+// If Phone returns "", nil, no phone numbers are available.
+func (x *Official) Phone() (hq string, fieldoffices []FieldOffice) {
 	if len(x.Phones) == 0 {
-		return nil
+		return "", nil
 	}
-	var p Phones
 	clean := cleanphone(x.Phones[0])
 	if clean == "" {
 		// can't parse the phone number from civic api?!
 		// return whatever they gave us and hope for the best.
-		p.HQ = x.Phones[0]
-		return &p
+		return x.Phones[0], nil
 	}
-	p.HQ = formatphone(clean)
-	for z, fieldPhone := range senateFieldPhones[clean] {
-		formatted := formatphone(fieldPhone)
-		if z == zip {
-			p.BestField = formatted
-			continue
-		}
-		p.AllField = append(p.AllField, formatted)
-	}
-	return &p
+	return formatphone(clean), senateFieldOffices[clean]
 }
 
 var spaceReplacer = strings.NewReplacer(" ", "")
@@ -205,7 +194,7 @@ func formatphone(p string) string {
 	if len(p) != 10 {
 		return p
 	}
-	return p[:3] + "-" + p[3:7] + "-" + p[7:]
+	return p[:3] + "-" + p[3:6] + "-" + p[6:]
 }
 
 // civicAPI provides a semantic interface to the Google civic API.
