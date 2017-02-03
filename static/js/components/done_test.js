@@ -9,7 +9,8 @@ describe('done component', () => {
     let totalCalls = {
       toLocaleString: () => val
     };
-    let state = {totalCalls};
+    let location = {params: {issueId: 88}};
+    let state = {totalCalls, location};
     let result = done(state);
     // "Together we've made" is first child node, call total is second
     // console.log('result', result.getElementsByTagName('h2')[1].childNodes[1].data);
