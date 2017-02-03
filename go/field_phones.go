@@ -286,7 +286,7 @@ var senateFieldPhones = map[string]map[string]string{
 		"21502": "3017772957", // Cumberland
 		"20850": "3017622974", // Rockville
 		"21801": "4105464250", // Salisbury
-		"20720": "2028701164", // Bowie
+		"20721": "2028701164", // Bowie
 	},
 	// Chris Van Hollen (D-MD)
 	"2022244654": map[string]string{},
