@@ -148,7 +148,6 @@ var senateFieldPhones = map[string]map[string]string{
 	// Johnny Isakson (R-GA)
 	"2022243643": map[string]string{
 		"30339": "7706610999", // Atlanta
-		"":      "4042911128", // Atlanta
 	},
 	// David Perdue (R-GA)
 	"2022243521": map[string]string{
@@ -277,17 +276,17 @@ var senateFieldPhones = map[string]map[string]string{
 	},
 	// Elizabeth Warren (D-MA)
 	"2022244543": map[string]string{
-		"02203":  "6175653170", // Boston
-		"01103 ": "4137882690", // Springfield
+		"02203": "6175653170", // Boston
+		"01103": "4137882690", // Springfield
 	},
 	// Benjamin L. Cardin (D-MD)
 	"2022244524": map[string]string{
-		"21201":     "4109624436", // Baltimore
-		"    20720": "3018600414", // Bowie
-		"21502 ":    "3017772957", // Cumberland
-		"20850":     "3017622974", // Rockville
-		"21801":     "4105464250", // Salisbury
-		"20720":     "2028701164", // Bowie
+		"21201": "4109624436", // Baltimore
+		"20720": "3018600414", // Bowie
+		"21502": "3017772957", // Cumberland
+		"20850": "3017622974", // Rockville
+		"21801": "4105464250", // Salisbury
+		"20720": "2028701164", // Bowie
 	},
 	// Chris Van Hollen (D-MD)
 	"2022244654": map[string]string{},
