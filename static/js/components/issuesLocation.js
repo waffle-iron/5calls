@@ -42,6 +42,10 @@ module.exports = (state, prev, send) => {
 
   function enterLocation(e) {
     e.preventDefault();
+    // Clear previously invalid address to reinforce entering a new one
+    if (state.invalidAddress) {
+      document.getElementById("address").value = "";
+    }
     send('enterLocation');
   }
 
