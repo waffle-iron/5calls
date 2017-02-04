@@ -4,8 +4,8 @@
 package main
 
 type FieldOffice struct {
-	Phone string `json:"phone"`
-	City  string `json:"city"`
+	Phone string `json:"phone"` // phone number of the field office, formatted like "205-731-1500"
+	City  string `json:"city"`  // city of the field office, such as "Huntsville"
 }
 
 // senateFieldOffices maps from a senator's primary phone number

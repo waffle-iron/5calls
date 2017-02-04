@@ -23,7 +23,7 @@ func (i *Issue) String() string {
 type Contact struct {
 	ID           string        `json:"id"`
 	Name         string        `json:"name"`
-	Phone        string        `json:"phone"`
+	Phone        string        `json:"phone"` // format: "555-888-1234"
 	PhotoURL     string        `json:"photoURL"`
 	Party        string        `json:"party"`
 	State        string        `json:"state"`

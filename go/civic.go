@@ -10,7 +10,6 @@ import (
 	"regexp"
 	"strings"
 	"time"
-	"unicode"
 
 	"github.com/patrickmn/go-cache"
 )
@@ -172,14 +171,14 @@ func (x *Official) ID() string {
 	return spaceReplacer.Replace(x.Name)
 }
 
-func mapDigitsOnly(r rune) rune {
-	if !unicode.IsDigit(r) {
-		return -1
-	}
-	return r
+func digitsOnly(s string) string {
+	return strings.Map(func(r rune) rune {
+		if r < '0' || r > '9' {
+			return -1
+		}
+		return r
+	}, s)
 }
-
-func digitsOnly(s string) string { return strings.Map(mapDigitsOnly, s) }
 
 func cleanphone(s string) string {
 	s = digitsOnly(s)
