@@ -9,7 +9,7 @@ module.exports = (state, prev, send) => {
       <h3 class="about__subtitle">Why Calling Works</h3>
 
       <p>Calling members of Congress is the most effective way to have your voice heard. Calls are tallied by staffers and the count is given to your representatives, informing them how strongly their constituents feel about a current issue. The sooner your reach out, the more likely it is that <strong>your voice will influence their position.</strong></p>
-      <p>Don't just take it from us:</p>
+      <p>Don’t just take it from us:</p>
       <ul>
       <li><a href="https://www.nytimes.com/2016/11/22/us/politics/heres-why-you-should-call-not-email-your-legislators.html">“Here’s Why You Should Call, Not Email, Your Legislators”</a> <span class="about__source">NY Times</span></li>
       <li><a href="http://www.vox.com/policy-and-politics/2016/11/15/13641920/trump-resist-congress">“Don’t just write to your representatives. Call them — and go to town halls.”</a> <span class="about__source">Vox</span></li>
@@ -20,8 +20,8 @@ module.exports = (state, prev, send) => {
       <p>Are we not covering an issue we should be?  <a href="mailto:make5calls@gmail.com">Please reach out.</a></p>
 
       <h3 class="about__subtitle">Calling Tips</h3>
-      <p>Calls should take less than a minute. You'll be speaking to a staffer, so make your point clearly so they can tally your opinion correctly. The provided scripts are useful but you can add your own words.</p>
-      <p>Be respectful. The staffers that pick up the phone aren't looking to challenge you and you should treat them with the same respect you expect from them, regardless of which party they work for.</p>
+      <p>Calls should take less than a minute. You’ll be speaking to a staffer, so make your point clearly so they can tally your opinion correctly. The provided scripts are useful but you can add your own words.</p>
+      <p>Be respectful. The staffers that pick up the phone aren’t looking to challenge you and you should treat them with the same respect you expect from them, regardless of which party they work for.</p>
 
       <h3 class="about__subtitle">Who made 5 Calls?</h3>
       <p>We’re a group of like-minded volunteers who want to make advocacy accessible. We hope 5 Calls will make it effortless for regular people to have a voice when it’s needed most.</p>

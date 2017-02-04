@@ -18,7 +18,7 @@ module.exports = (c, state, prev, send) => {
         <p class="call__contact__phone">
           <a href="tel:+1${c.phone}">+1 ${c.phone}</a>
         </p>
-        <h3 class="call__contact__reason__header">Why you're calling this office:</h3>
+        <h3 class="call__contact__reason__header">Why you’re calling this office:</h3>
         <p class="call__contact__reason">${reason}</p>
       </div>
 	`;
