@@ -218,7 +218,7 @@ func (c *civicAPI) GetReps(address string) (*LocalReps, *Address, error) {
 		q.Add("levels", l)
 	}
 	q.Set("key", c.key)
-	q.Set("address", url.QueryEscape(address))
+	q.Set("address", address)
 	u.RawQuery = q.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
