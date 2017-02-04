@@ -41,6 +41,7 @@ func (c *Contact) String() string {
 type LocalReps struct {
 	HouseRep *Contact   // house representative
 	Senators []*Contact // senators
+	Governor *Contact   // governor
 }
 
 // Address is a US address. It has the same structure as the normalized
