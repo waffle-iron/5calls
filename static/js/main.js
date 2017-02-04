@@ -232,7 +232,7 @@ app.model({
           } catch(e) {
             send('fetchLocationBy', 'address', done);
             Raven.setExtraContext({ json: data })
-            Raven.captureMessage("Couldn't parse ipinfo json", { level: 'error' });
+            Raven.captureMessage("Couldn’t parse ipinfo json", { level: 'error' });
           }
 
         } else {
@@ -306,7 +306,7 @@ app.model({
 
       const body = queryString.stringify({ location: state.zip, result: data.result, contactid: data.contactid, issueid: data.issueid })
       http.post(appURL+'/report', { body: body, headers: {"Content-Type": "application/x-www-form-urlencoded"} }, (err, res, body) => {
-        // don't really care about the result
+        // don’t really care about the result
       })
       send('incrementContact', data, done);
     },
