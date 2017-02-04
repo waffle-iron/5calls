@@ -93,6 +93,8 @@ app.model({
     contactIndex: 0,
     completedIssues: completedIssues,
 
+    showFieldOfficeNumbers: false,
+
     debug: debug,
   },
 
@@ -173,7 +175,9 @@ app.model({
     },
     home: (state, data) => {
       return { activeIssue: false, getInfo: false }
-    }
+    },
+    toggleFieldOfficeNumbers: (state, data) => ({ showFieldOfficeNumbers: !state.showFieldOfficeNumbers }),
+    hideFieldOfficeNumbers: (state, data) => ({ showFieldOfficeNumbers: false }),
   },
 
   effects: {
@@ -302,6 +306,7 @@ app.model({
       }
     },
     callComplete: (state, data, send, done) => {
+      send('hideFieldOfficeNumbers', data, done);
       ga('send', 'called', data.result);
 
       const body = queryString.stringify({ location: state.zip, result: data.result, contactid: data.contactid, issueid: data.issueid })
@@ -311,11 +316,12 @@ app.model({
       send('incrementContact', data, done);
     },
     skipCall: (state, data, send, done) => {
+      send('hideFieldOfficeNumbers', data, done);
       ga('send', 'called', 'skip');
-
       send('incrementContact', data, done);
     },
     activateIssue: (state, data, send, done) => {
+      send('hideFieldOfficeNumbers', data, done);
       scrollIntoView(document.querySelector('#content'));
       location.hash = "issue/" + data.id;
     }

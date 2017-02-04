@@ -10,7 +10,26 @@ module.exports = (c, state, prev, send) => {
     repID = c.party.substring(0,1) + "-" + c.state;
   }
 
-	return html`
+  let fieldOffices
+  if (!!~c.field_offices) {
+    fieldOffices = html`
+      <p class="call__contact__show-field-offices"><a onclick=${() => {send('toggleFieldOfficeNumbers')}}>Call a local office</a></p>
+    `
+    if (state.showFieldOfficeNumbers) {
+      fieldOffices = html`
+        <div>
+          <h3 class="call__contact__field-offices__header">Field offices for ${c.name}:</h3>
+          <ul class="call__contact__field-office-list">
+            ${c.field_offices.map(office => html`
+              <li><a href="tel:+1${office.phone.replace(/-/g, '')}">${office.phone}</a> - ${office.city}, ${c.state}</li>
+            `)}
+          </ul>
+        </div>
+      `
+    }
+  }
+
+  return html`
       <div class="call__contact" id="contact">
         <div class="call__contact__image"><img src="${photoURL}"/></div>
         <h3 class="call__contact__type">Call this office:</h3>
@@ -18,6 +37,7 @@ module.exports = (c, state, prev, send) => {
         <p class="call__contact__phone">
           <a href="tel:+1${c.phone}">+1 ${c.phone}</a>
         </p>
+        ${fieldOffices}
         <h3 class="call__contact__reason__header">Why you’re calling this office:</h3>
         <p class="call__contact__reason">${reason}</p>
       </div>
