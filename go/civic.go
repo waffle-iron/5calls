@@ -57,30 +57,34 @@ func (ae *APIError) Error() string {
 	return buf.String()
 }
 
+type Office struct {
+	Name            string
+	DivisionId      string
+	Levels          []string
+	Roles           []string
+	OfficialIndices []int
+}
+
+type Official struct {
+	Name     string
+	Address  []Address
+	Party    string
+	Phones   []string
+	PhotoUrl string
+	Channels []struct {
+		Id   string
+		Type string
+	}
+}
+
 // apiResponse is the response from the civic API. It encapsulates valid
 // responses that set the normalized input, offices and officials,
 // as well as error responses.
 type apiResponse struct {
 	NormalizedInput *Address
-	Offices         []struct {
-		Name            string
-		DivisionId      string
-		Levels          []string
-		Roles           []string
-		OfficialIndices []int
-	}
-	Officials []struct {
-		Name     string
-		Address  []Address
-		Party    string
-		Phones   []string
-		PhotoUrl string
-		Channels []struct {
-			Id   string
-			Type string
-		}
-	}
-	Error *APIError
+	Offices         []Office
+	Officials       []Official
+	Error           *APIError
 }
 
 // toLocalReps converts an API response to a set of local reps. In addition,
@@ -94,56 +98,102 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 	}
 	ret := &LocalReps{}
 	for _, o := range r.Offices {
-		var area string
-		AreaLoop:
-			for _, level := range o.Levels {
-				for _, role := range o.Roles {
-					switch {
-					case level == roleLevelCountry && role == roleLowerBody:
-						area = areaHouse
-						continue AreaLoop
-					case level == roleLevelCountry && role == roleUpperBody:
-						area = areaSenate
-						continue AreaLoop
-					// Civic API returns governor and deputy governor under same
-					// role level and role, comparing the name is the best we can do
-					// with this dataset
-					case level == roleLevelState && role == roleHeadOfGovernment && o.Name == "Governor":
-						area = areaGovernor
-						continue AreaLoop
-					}
-				}
+		area := o.Area()
+		if area == "" {
+			continue
+		}
+		for _, i := range o.OfficialIndices {
+			official := r.Officials[i]
+			phone, fieldoffices := official.Phone()
+			if phone == "" {
+				continue
 			}
-		if area != "" {
-			for _, i := range o.OfficialIndices {
-				official := r.Officials[i]
-				var phone string
-				if len(official.Phones) > 0 {
-					phone = official.Phones[0]
-				} else {
-					continue
-				}
-				c := &Contact{
-					ID:       fmt.Sprintf("%s-%s", r.NormalizedInput.State, strings.Replace(official.Name, " ", "", -1)),
-					Name:     official.Name,
-					Phone:    reformattedPhone(phone),
-					PhotoURL: official.PhotoUrl,
-					Party:    official.Party,
-					State:    r.NormalizedInput.State,
-					Area:     area,
-				}
-				switch area {
-				case areaHouse:
-					ret.HouseRep = c
-				case areaSenate:
-					ret.Senators = append(ret.Senators, c)
-				case areaGovernor:
-					ret.Governor = c
-				}
+			c := &Contact{
+				ID:           fmt.Sprintf("%s-%s", r.NormalizedInput.State, official.ID()),
+				Name:         official.Name,
+				Phone:        phone,
+				FieldOffices: fieldoffices,
+				PhotoURL:     official.PhotoUrl,
+				Party:        official.Party,
+				State:        r.NormalizedInput.State,
+				Area:         area,
+			}
+			switch area {
+			case areaHouse:
+				ret.HouseRep = c
+			case areaSenate:
+				ret.Senators = append(ret.Senators, c)
+			case areaGovernor:
+				ret.Governor = c
 			}
 		}
 	}
 	return ret, r.NormalizedInput, nil
+}
+
+func (x *Office) Area() string {
+	for _, level := range x.Levels {
+		for _, role := range x.Roles {
+			switch {
+			case level == roleLevelCountry && role == roleLowerBody:
+				return areaHouse
+			case level == roleLevelCountry && role == roleUpperBody:
+				return areaSenate
+			// Civic API returns governor and deputy governor under same
+			// role level and role, comparing the name is the best we can do
+			// with this dataset
+			case level == roleLevelState && role == roleHeadOfGovernment && x.Name == "Governor":
+				return areaGovernor
+			}
+		}
+	}
+	return ""
+}
+
+// Phone returns properly formatted phone numbers for an Official.
+// If Phone returns "", nil, no phone numbers are available.
+func (x *Official) Phone() (hq string, fieldoffices []FieldOffice) {
+	if len(x.Phones) == 0 {
+		return "", nil
+	}
+	clean := cleanphone(x.Phones[0])
+	if clean == "" {
+		// can't parse the phone number from civic api?!
+		// return whatever they gave us and hope for the best.
+		return x.Phones[0], nil
+	}
+	return formatphone(clean), senateFieldOffices[clean]
+}
+
+var spaceReplacer = strings.NewReplacer(" ", "")
+
+func (x *Official) ID() string {
+	return spaceReplacer.Replace(x.Name)
+}
+
+func digitsOnly(s string) string {
+	return strings.Map(func(r rune) rune {
+		if r < '0' || r > '9' {
+			return -1
+		}
+		return r
+	}, s)
+}
+
+func cleanphone(s string) string {
+	s = digitsOnly(s)
+	s = strings.TrimPrefix(s, "1") // remove leading US country code if present
+	if len(s) != 10 {
+		return ""
+	}
+	return s
+}
+
+func formatphone(p string) string {
+	if len(p) != 10 {
+		return p
+	}
+	return p[:3] + "-" + p[3:6] + "-" + p[6:]
 }
 
 // civicAPI provides a semantic interface to the Google civic API.
@@ -207,17 +257,6 @@ func NewRepCache(delegate RepFinder, ttl time.Duration, gc time.Duration) RepFin
 		delegate: delegate,
 		cache:    cache.New(ttl, gc),
 	}
-}
-
-// reformat phone numbers that come from the google civic API
-func reformattedPhone(civicPhone string) string {
-	result := phoneRegex.FindStringSubmatch(civicPhone)
-
-	if len(result) >= 3 {
-		return fmt.Sprintf("%s-%s-%s", result[1], result[2], result[3])
-	}
-
-	return civicPhone
 }
 
 // GetReps returns local representatives for the supplied address.
