@@ -8,6 +8,8 @@ import (
 )
 
 const (
+	addrFailedToParse = "400 Failed to parse address"
+	addrNoInfo        = "404 No information for this address"
 	localPlaceholder  = "LOCAL REP"
 	senatePlaceholder = "US SENATE"
 	housePlaceholder  = "US HOUSE"
@@ -41,7 +43,8 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 		localReps, normalizedAddress, err = h.repFinder.GetReps(civicLocationParam)
 		if err != nil {
 			log.Println("Unable to find local reps for", zip, err)
-			if err.Error() == "400 Failed to parse address" {
+			invalidAddress := err.Error() == addrFailedToParse || err.Error() == addrNoInfo
+			if invalidAddress {
 				issueResponse.InvalidAddress = true
 			}
 		}
