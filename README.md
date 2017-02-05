@@ -102,3 +102,17 @@ Edit the `appUrl` variable in `static/js/main.js` to be `http://localhost:8090` 
 Use the makefile in the go folder. You can `make deploy` to update the go server or `make deploy_static` to update the site.
 
 When updating the go server, remember to log in, connect to the screen instance (`screen -r`) and stop the go process before replacing it via the deploy, otherwise you get "text file busy" errors in scp.
+
+## Contributors
+ - [Nick O'Neill](https://github.com/nickoneill)
+ - [Matt Jacobs](https://github.com/capndesign)
+ - [Liam Campbell](https://github.com/liamdanger)
+ - [Josh Bleecher Snyder](https://github.com/josharian)
+ - [James Home](https://github.com/jameshome)
+ - [Beau Smith](https://github.com/beausmith)
+ - [Anthony Johnson](https://github.com/agjohnson)
+ - [All contriubtors](https://github.com/5calls/5calls/graphs/contributors)
+ 
+## Other client projects
+ - [Android](https://github.com/5calls/android)
+ - [iOS](https://github.com/5calls/ios)
