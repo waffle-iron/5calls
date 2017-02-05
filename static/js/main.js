@@ -102,7 +102,7 @@ app.model({
     receiveIssues: (state, data) => {
       response = JSON.parse(data)
       issues = response.issues //.filter((v) => { return v.contacts.length > 0 });
-      return { issues: issues, splitDistrict: response.splitDistrict }
+      return { issues: issues, splitDistrict: response.splitDistrict, invalidAddress: response.invalidAddress }
     },
     receiveTotals: (state, data) => {
       totals = JSON.parse(data);
