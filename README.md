@@ -75,7 +75,7 @@ The following environment variables can be set on the application, both with
 * **CIVIC_API_KEY** *(required)* Google Civic Information API key
 
 You will need to manually create an [Airtable][airtable] API key, a [Google
-Civic Information API][google-civic] API key, and access to the development
+Civic Information API][civic-api] API key, and access to the development
 Airtable database.
 
 ##### Set Up [Airtable][airtable]
@@ -87,7 +87,7 @@ Airtable database.
 
 ##### Get a Google Civic API Key
 
-Follow the instructions [here](https://developers.google.com/civic-information/docs/using_api) to get an API key for the Google Civic Information API.
+Follow the instructions [here][civic-api] to get an API key for the Google Civic Information API.
 
 ##### Point to Local Back End
 
