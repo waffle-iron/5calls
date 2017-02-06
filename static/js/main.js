@@ -8,8 +8,10 @@ const scrollIntoView = require('scroll-into-view');
 
 const app = choo();
 const appURL = 'https://5calls.org';
-const debug = false;
 // const appURL = 'http://localhost:8090';
+
+// use localStorage directly to set this value *before* bootstrapping the app.
+const debug = (localStorage['org.5calls.debug'] === 'true');
 
 // get the stored zip location
 cachedAddress = '';
