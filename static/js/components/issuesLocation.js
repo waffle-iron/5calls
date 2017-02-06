@@ -9,14 +9,11 @@ module.exports = (state, prev, send) => {
   `;
 
   function pretext(state) {
-    if (state.askingLocation) {
-      return html`
-        <p>
-          <form onsubmit=${submitAddress}>
-            <input type="text" autofocus="true" name="address" placeholder="Enter an address or zip code" /> 
-            <button>Go</button>
-          </form>
-        </p>`
+    if (state.fetchingLocation) {
+      return html`<p class="loadingAnimation">Getting your location</p>`;
+    }
+    else if (state.askingLocation) {
+      return html``;
     } else {
       if (state.invalidAddress) {
         return html`<p><button class="subtle-button" onclick=${enterLocation}>That address is invalid, please try again</button></p>`
