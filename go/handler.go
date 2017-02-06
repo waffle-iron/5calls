@@ -8,9 +8,12 @@ import (
 )
 
 const (
-	localPlaceholder  = "LOCAL REP"
-	senatePlaceholder = "US SENATE"
-	housePlaceholder  = "US HOUSE"
+	addrFailedToParse   = "400 Failed to parse address"
+	addrNoInfo          = "404 No information for this address"
+	localPlaceholder    = "LOCAL REP"
+	senatePlaceholder   = "US SENATE"
+	housePlaceholder    = "US HOUSE"
+	governorPlaceholder = "GOVERNOR"
 )
 
 type handler struct {
@@ -20,6 +23,7 @@ type handler struct {
 
 func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 	var localReps *LocalReps
+	var normalizedAddress *Address
 	var err error
 
 	var civicLocationParam string
@@ -33,20 +37,28 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 		civicLocationParam = address
 	}
 
+	issueResponse := IssueResponse{}
 	if len(civicLocationParam) != 0 {
 		log.Println("getting local reps for", civicLocationParam)
 
-		localReps, _, err = h.repFinder.GetReps(civicLocationParam)
+		localReps, normalizedAddress, err = h.repFinder.GetReps(civicLocationParam)
 		if err != nil {
 			log.Println("Unable to find local reps for", zip, err)
+			invalidAddress := err.Error() == addrFailedToParse || err.Error() == addrNoInfo
+			if invalidAddress {
+				issueResponse.InvalidAddress = true
+			}
 		}
 	} else {
 		log.Println("no address or zip")
 	}
 
-	issueResponse := IssueResponse{}
 	if localReps != nil && localReps.HouseRep == nil {
 		issueResponse.SplitDistrict = true
+	}
+
+	if normalizedAddress != nil {
+		issueResponse.NormalizedLocation = normalizedAddress.City
 	}
 
 	// add local reps where necessary
@@ -84,6 +96,14 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 					if localReps.HouseRep != nil {
 						c := *localReps.HouseRep
 						c.Reason = "This is your local representative in the house"
+						newContacts = append(newContacts, c)
+					}
+				}
+			} else if contact.Name == governorPlaceholder {
+				if localReps != nil {
+					if localReps.Governor != nil {
+						c := *localReps.Governor
+						c.Reason = "This is your state governor"
 						newContacts = append(newContacts, c)
 					}
 				}
