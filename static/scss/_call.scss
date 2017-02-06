@@ -44,6 +44,16 @@
       line-height: 1em;
     }
 
+    &__show-field-offices {
+      font-size: $font-small;
+    }
+
+    &__field-office-list {
+      font-size: $font-normal;
+      line-height: 1.4em;
+      margin: 0 0 16px 0;
+    }
+
     &__name, &__phone {
       font-weight: bold;
       margin: 0 150px 0 0;
@@ -59,6 +69,13 @@
     }
   }
 
+  &__nocontact {
+    h2 {
+      font-size: $font-xxlarge;
+      text-align: center;
+    }
+  }
+
   &__script {
     &__body {
       background-color: $gray-xlight;
@@ -67,7 +84,11 @@
     }
   }
 
-  &__contact__type, &__contact__reason__header, &__script__header , &__outcomes__header {
+  &__contact__type,
+  &__contact__reason__header,
+  &__contact__field-offices__header,
+  &__script__header ,
+  &__outcomes__header {
     font-weight: bold;
     font-style: italic;
     font-size: $font-large;
