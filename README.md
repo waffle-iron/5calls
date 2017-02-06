@@ -44,6 +44,13 @@ The other main Gulp task is the `deploy` task, which does not watch for
 changes, and applies additional transforms on the assets -- such as an uglify
 transform on Javascript sources.
 
+To turn on/off debug mode, which adds some reset buttons throughout the interface, run the following in your console:
+
+```
+localStorage['org.5calls.debug'] = 'true' // turn on debug mode
+localStorage['org.5calls.debug'] = 'false' // turn off debug mode
+```
+
 ### Application Server
 
 If you need to make any changes to the back end code, you'll need to set up
@@ -112,7 +119,7 @@ When updating the go server, remember to log in, connect to the screen instance 
  - [Beau Smith](https://github.com/beausmith)
  - [Anthony Johnson](https://github.com/agjohnson)
  - [All contriubtors](https://github.com/5calls/5calls/graphs/contributors)
- 
+
 ## Other client projects
  - [Android](https://github.com/5calls/android)
  - [iOS](https://github.com/5calls/ios)
