@@ -2,7 +2,7 @@ const html = require('choo/html');
 
 module.exports = (state, prev, send) => {
   return html`
-    <main role="main" class="layout__main">
+    <main role="main" class="layout__main" onload=${(e) => send('startup')}>
     <section class="about">
       <h2 class="about__title">About 5 Calls</h2>
 
@@ -25,7 +25,7 @@ module.exports = (state, prev, send) => {
 
       <h3 class="about__subtitle">Who made 5 Calls?</h3>
       <p>We’re a group of like-minded volunteers who want to make advocacy accessible. We hope 5 Calls will make it effortless for regular people to have a voice when it’s needed most.</p>
-      <p>5 Calls is brought to you by <a href="https://twitter.com/nickoneill">@nickoneill</a>, <a href="https://twitter.com/syntheticmethod">@syntheticmethod</a>, <a href="https://twitter.com/monteiro">@monteiro</a>, <a href="https://twitter.com/stewartsc">@stewartsc</a>, <a href="https://twitter.com/liamdanger">@liamdanger</a>, <a href="https://twitter.com/capndesign">@capndesign</a>, <a href="https://twitter.com/gotwarlost">@gotwarlost</a>, <a href="https://twitter.com/jameshome">@jameshome</a>, <a href="https://twitter.com/robynshhh">@robynshhh</a> and more supporters.</a>
+      <p>5 Calls is brought to you by <a href="https://twitter.com/nickoneill">@nickoneill</a>, <a href="https://twitter.com/syntheticmethod">@syntheticmethod</a>, <a href="https://twitter.com/monteiro">@monteiro</a>, <a href="https://twitter.com/stewartsc">@stewartsc</a>, <a href="https://twitter.com/liamdanger">@liamdanger</a>, <a href="https://twitter.com/capndesign">@capndesign</a>, <a href="https://twitter.com/gotwarlost">@gotwarlost</a>, <a href="https://twitter.com/jameshome">@jameshome</a>, <a href="https://twitter.com/robynshhh">@robynshhh</a> and <a href="https://github.com/5calls/5calls/graphs/contributors">more supporters.</a></p>
 
       <h3 class="about__subtitle">Join us</h3>
       <p>This project is <a href="https://github.com/5calls/5calls">open source</a> and volunteer made. If you’d like to join us in developing useful tools for citizens, please get in touch via <a href="https://twitter.com/make5calls">Twitter</a> or <a href="mailto:make5calls@gmail.com">email</a>.</p>
