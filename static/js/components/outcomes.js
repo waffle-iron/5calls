@@ -8,7 +8,7 @@ module.exports = (state, prev, send) => {
   const contactsLeft = issue.contacts.length - (state.contactIndex + 1);
   const callsPluralization = contactsLeft > 1 ? "people" : "person";
 
-  const contactsLeftText = contactsLeft > 0 ? contactsLeft + " more " + callsPluralization +" to call for this issue." : "You’ve made all the calls for this issue.";
+  const contactsLeftText = contactsLeft + " more " + callsPluralization +" to call for this issue.";
 
   function outcome(result) {
     if (result == null) {
@@ -28,7 +28,7 @@ module.exports = (state, prev, send) => {
         <button onclick=${() => outcome()}>Skip</button>
       </div>
 
-      <h3 aria-live="polite" class="call__contacts__left">${contactsLeftText}</h3>
+      ${contactsLeft > 0 ? html`<h3 aria-live="polite" class="call__contacts__left" >${contactsLeftText}</h3>` : null}
     </div>`
   } else {
     return html``
