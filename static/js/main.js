@@ -333,7 +333,10 @@ app.model({
       ga('send', 'event', 'issue_flow', 'select', 'select');
 
       scrollIntoView(document.querySelector('#content'));
-      location.hash = "issue/" + data.id;
+
+      // this strips the query string which breaks hashes, so temp workaround
+      location = location.origin + "#issue/" + data.id;
+      // location.hash = "issue/" + data.id;
     }
   },
 });
