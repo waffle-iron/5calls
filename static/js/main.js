@@ -257,11 +257,11 @@ app.model({
             send('allowBrowserGeolocation', true, done);
             send('setBrowserGeolocation', geo, done);
           } else {
-            console.log("Error: bad browser location results");
+            console.error("Error: bad browser location results");
             send('fetchLocationBy', 'ipAddress', done);
           }
         } else {
-          console.log("Error: bad browser location results");
+          console.error("Error: bad browser location results");
           send('fetchLocationBy', 'ipAddress', done);
         }
       }
@@ -270,7 +270,7 @@ app.model({
           send('allowBrowserGeolocation', false, done);
         }
         send('fetchLocationBy', 'ipAddress', done);
-        console.log("Error with browser location (code: " + error.code + ")");
+        console.error("Error with browser location (code: " + error.code + ")");
       }
 
       navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
@@ -309,7 +309,7 @@ app.model({
       send('hideFieldOfficeNumbers', data, done);
 
       if (data.result == 'unavailable') {
-        ga('send', 'event', 'call_result', 'unavailable', 'unavailable');        
+        ga('send', 'event', 'call_result', 'unavailable', 'unavailable');
       } else {
         ga('send', 'event', 'call_result', 'success', data.result);
       }
@@ -322,7 +322,7 @@ app.model({
     },
     skipCall: (state, data, send, done) => {
       send('hideFieldOfficeNumbers', data, done);
-      
+
       ga('send', 'event', 'call_result', 'skip', 'skip');
 
       send('incrementContact', data, done);
