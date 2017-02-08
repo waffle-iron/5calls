@@ -8,8 +8,14 @@ const scrollIntoView = require('scroll-into-view');
 
 const app = choo();
 const appURL = 'https://5calls.org';
-const debug = false;
 // const appURL = 'http://localhost:8090';
+
+// use localStorage directly to set this value *before* bootstrapping the app.
+const debug = (localStorage['org.5calls.debug'] === 'true');
+
+if (!debug) {
+  console.debug = () => {};
+}
 
 // get the stored zip location
 cachedAddress = '';
@@ -23,7 +29,7 @@ store.getAll('org.5calls.location', (location) => {
 cachedGeo = '';
 store.getAll('org.5calls.geolocation', (geo) => {
   if (geo.length > 0) {
-    console.log("geo get",geo[0]);
+    console.debug("geo get", geo[0]);
     cachedGeo = geo[0]
   }
 });
@@ -34,7 +40,7 @@ let cachedFetchingLocation = (cachedGeo === '') ? true : false;
 cachedAllowBrowserGeo = true;
 store.getAll('org.5calls.allow_geolocation', (allowGeo) => {
   if (allowGeo.length > 0) {
-    console.log("allowGeo get",allowGeo[0]);
+    console.debug("allowGeo get", allowGeo[0]);
     cachedAllowBrowserGeo = allowGeo[0]
   }
 });
@@ -45,7 +51,7 @@ let cachedLocationFetchType = (cachedAllowBrowserGeo) ? 'browserGeolocation' : '
 cachedGeoTime = '';
 store.getAll('org.5calls.geolocation_time', (geo) => {
   if (geo.length > 0) {
-    console.log("geo time get",geo[0]);
+    console.debug("geo time get", geo[0]);
     cachedGeoTime = geo[0]
   }
 });
@@ -53,7 +59,7 @@ store.getAll('org.5calls.geolocation_time', (geo) => {
 cachedCity = '';
 store.getAll('org.5calls.geolocation_city', (city) => {
   if (city.length > 0) {
-    console.log("city get",city[0]);
+    console.debug("city get", city[0]);
     cachedCity = city[0]
   }
 });
@@ -190,7 +196,7 @@ app.model({
       }
 
       const issueURL = appURL+'/issues/'+address
-      // console.log("fetching url",issueURL);
+      // console.debug("fetching url",issueURL);
       http(issueURL, (err, res, body) => {
         send('setCachedCity', body, done)
         send('receiveIssues', body, done)
