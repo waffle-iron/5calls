@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -75,12 +76,22 @@ type atContact struct {
 
 func (c *atContact) String() string { return asJson(c) }
 
-func (c *atContact) toContact() Contact {
+func (c *atContact) toContact(cli *AirtableClient, wg *sync.WaitGroup) Contact {
+	var photourl string
+	if u := strings.TrimSpace(c.PhotoURL); u != "" {
+		cacheid := "at-" + c.ID
+		wg.Add(1)
+		go func() {
+			cli.photocache.get(cacheid, u) // cache the image so that we have it when asked for it
+			wg.Done()
+		}()
+		photourl = cli.photocache.url(cacheid)
+	}
 	return Contact{
 		ID:       c.ID,
 		Name:     c.Name,
 		Phone:    c.Phone,
-		PhotoURL: c.PhotoURL,
+		PhotoURL: photourl,
 		Reason:   c.Reason,
 		Area:     c.Area,
 	}
@@ -94,12 +105,13 @@ type AirtableConfig struct {
 
 // AirtableClient provides a semantic API to the backend database.
 type AirtableClient struct {
-	client *airtable.Client
+	client     *airtable.Client
+	photocache *photocache
 }
 
-func NewAirtableClient(config AirtableConfig) *AirtableClient {
+func NewAirtableClient(config AirtableConfig, photocache *photocache) *AirtableClient {
 	c, _ := airtable.New(config.APIKey, config.BaseID)
-	return &AirtableClient{client: c}
+	return &AirtableClient{client: c, photocache: photocache}
 }
 
 // AllIssues returns a list of issues with standard contacts, if any, linked to them.
@@ -133,6 +145,7 @@ func (c *AirtableClient) AllIssues() ([]Issue, error) {
 		return nil, fmt.Errorf("unable to load issues, %v", err)
 	}
 	// normalize and join with contacts
+	var wg sync.WaitGroup
 	var ret []Issue
 	for _, i := range list {
 		var contacts []Contact
@@ -142,10 +155,11 @@ func (c *AirtableClient) AllIssues() ([]Issue, error) {
 				log.Println("[WARN] unable to find contact with ID", id)
 				continue
 			}
-			contacts = append(contacts, contact.toContact())
+			contacts = append(contacts, contact.toContact(c, &wg))
 		}
 		ret = append(ret, i.toIssue(contacts))
 	}
+	wg.Wait()
 	return ret, nil
 }
 

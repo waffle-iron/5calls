@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"regexp"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/patrickmn/go-cache"
@@ -89,7 +90,7 @@ type apiResponse struct {
 
 // toLocalReps converts an API response to a set of local reps. In addition,
 // it also returns the normalized address for which the response is valid.
-func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
+func (r *apiResponse) toLocalReps(c *civicAPI) (*LocalReps, *Address, error) {
 	if r.Error != nil {
 		return nil, nil, r.Error
 	}
@@ -97,6 +98,7 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 		return nil, nil, fmt.Errorf("no offices found ")
 	}
 	ret := &LocalReps{}
+	var wg sync.WaitGroup
 	for _, o := range r.Offices {
 		area := o.Area()
 		if area == "" {
@@ -108,12 +110,22 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 			if phone == "" {
 				continue
 			}
+			id := fmt.Sprintf("%s-%s", r.NormalizedInput.State, official.ID())
+			var photourl string
+			if official.PhotoUrl != "" {
+				wg.Add(1)
+				go func() {
+					c.photocache.get(id, official.PhotoUrl) // cache the image so that we have it when asked for it
+					wg.Done()
+				}()
+				photourl = c.photocache.url(id)
+			}
 			c := &Contact{
-				ID:           fmt.Sprintf("%s-%s", r.NormalizedInput.State, official.ID()),
+				ID:           id,
 				Name:         official.Name,
 				Phone:        phone,
 				FieldOffices: fieldoffices,
-				PhotoURL:     official.PhotoUrl,
+				PhotoURL:     photourl,
 				Party:        official.Party,
 				State:        r.NormalizedInput.State,
 				Area:         area,
@@ -128,6 +140,7 @@ func (r *apiResponse) toLocalReps() (*LocalReps, *Address, error) {
 			}
 		}
 	}
+	wg.Wait()
 	return ret, r.NormalizedInput, nil
 }
 
@@ -198,15 +211,17 @@ func formatphone(p string) string {
 
 // civicAPI provides a semantic interface to the Google civic API.
 type civicAPI struct {
-	key string
-	c   *http.Client
+	key        string
+	c          *http.Client
+	photocache *photocache
 }
 
 // NewCivicAPI returns an instance of the civic API.
-func NewCivicAPI(key string, client *http.Client) RepFinder {
+func NewCivicAPI(key string, client *http.Client, c *photocache) RepFinder {
 	return &civicAPI{
-		key: key,
-		c:   client,
+		key:        key,
+		c:          client,
+		photocache: c,
 	}
 }
 
@@ -238,7 +253,7 @@ func (c *civicAPI) GetReps(address string) (*LocalReps, *Address, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	return ar.toLocalReps()
+	return ar.toLocalReps(c)
 }
 
 // repCache implements a cache layer on top of a delegate rep finder.
