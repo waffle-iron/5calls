@@ -13,7 +13,7 @@ module.exports = (c, state, prev, send) => {
   let fieldOffices
   if (c.field_offices) {
     fieldOffices = html`
-      <p class="call__contact__show-field-offices">Busy line? <a onclick=${() => {send('toggleFieldOfficeNumbers')}}>Call a local office</a></p>
+      <p class="call__contact__show-field-offices">Busy line? <a onclick=${() => {send('toggleFieldOfficeNumbers')}}>Click here to see local office numbers</a></p>
     `
     if (state.showFieldOfficeNumbers) {
       fieldOffices = html`

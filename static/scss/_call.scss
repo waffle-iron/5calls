@@ -46,6 +46,10 @@
 
     &__show-field-offices {
       font-size: $font-small;
+
+      a {
+        cursor: pointer;
+      }
     }
 
     &__field-office-list {
