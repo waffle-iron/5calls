@@ -207,10 +207,6 @@ app.model({
         send('receiveTotals', body, done)
       })
     },
-    changeActiveIssueEffect: (state, issueId, send, done) => {
-      send('location:set', "/#issue/"+issueId, done)
-      send('changeActiveIssue', issueId, done)
-    },
     setLocation: (state, data, send, done) => {
       send('setAddress', data, done);
       send('fetch', {}, done);
@@ -340,9 +336,10 @@ app.model({
 
       scrollIntoView(document.querySelector('#content'));
 
-      // Use Choo's internal model to control Window.location.
-      send('location:set', "/#issue/" + data.id, done)
+      // Use Choo's internal model to control Window.location. Fixes issue #161
+      // For more information, see: https://github.com/yoshuawuyts/choo/blob/f84ec43fa58508cc20fe537d752a14901339f0cd/README.md#router
       // this strips the query string which breaks hashes, so temp workaround
+      send('location:set', "/#issue/" + data.id, done)
       // location = location.origin + "#issue/" + data.id;
       // location.hash = "issue/" + data.id;
     }
