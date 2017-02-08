@@ -340,8 +340,10 @@ app.model({
 
       scrollIntoView(document.querySelector('#content'));
 
+      // Use Choo's internal model to control Window.location.
+      send('location:set', "/#issue/" + data.id, done)
       // this strips the query string which breaks hashes, so temp workaround
-      location = location.origin + "#issue/" + data.id;
+      // location = location.origin + "#issue/" + data.id;
       // location.hash = "issue/" + data.id;
     }
   },
