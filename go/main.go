@@ -53,17 +53,18 @@ func main() {
 		log.Fatalln("No google civic API key found")
 	}
 
+	pc := new(photocache)
 	atClient := NewAirtableClient(AirtableConfig{
 		BaseID: *airtableBase,
 		APIKey: airtableKey,
-	})
+	}, pc)
 
 	issueLister, err := NewIssueCache(atClient, 30*time.Minute)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	cAPI := NewCivicAPI(civicKey, http.DefaultClient)
+	cAPI := NewCivicAPI(civicKey, http.DefaultClient, pc)
 	repFinder := NewRepCache(cAPI, time.Hour, 10*time.Minute)
 
 	// index template... unused
@@ -103,6 +104,7 @@ func main() {
 	get.HandleFunc("/admin/", a.Stats)
 	get.HandleFunc("/report/", enableCORS(rh.Stats))
 	get.HandleFunc("/report", enableCORS(rh.Stats))
+	get.HandleFunc("/photo/{key}", enableCORS(pc.serve))
 
 	// all the POSTs
 	post := r.Methods("POST").Subrouter()
