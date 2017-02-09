@@ -36,6 +36,7 @@ func main() {
 		dbfile       = flag.String("dbfile", "fivecalls.db", "filename for sqlite db")
 		airtableBase = flag.String("airtable-base", "app6dzsa26hDjI7tp", "base ID for airtable store")
 		addr         = flag.String("addr", ":8090", "[ip]:port to listen on")
+		host         = flag.String("host", "https://5calls.org", "host to prepend for some urls")
 		autoRestart  = flag.Bool("auto-restart", false, "automatically restart (by exit 0) on binary update; assumes running a supervisor")
 	)
 	flag.Parse()
@@ -54,6 +55,7 @@ func main() {
 	}
 
 	pc := new(photocache)
+	pc.host = *host
 	atClient := NewAirtableClient(AirtableConfig{
 		BaseID: *airtableBase,
 		APIKey: airtableKey,

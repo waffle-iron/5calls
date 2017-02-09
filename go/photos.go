@@ -16,6 +16,7 @@ type photocache struct {
 	// TODO: once https://go-review.googlesource.com/c/33912 goes in, use it here.
 	mu     sync.RWMutex      // guards following fields
 	photos map[string][]byte // key: key, val: cached photo
+	host   string
 }
 
 // get retrieves the photo keyed by key, downloading it from url if not cached.
@@ -68,11 +69,14 @@ func (c *photocache) serve(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
+
 	w.Write(data)
 }
 
 func (c *photocache) url(key string) string {
-	u := url.URL{Path: "/photo/" + key}
+	u := url.URL{
+		Path: "/photo/" + key,
+	}
 	// log.Printf("url for %s: %s", key, u.String())
-	return u.String()
+	return c.host + u.String()
 }

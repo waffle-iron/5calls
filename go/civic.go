@@ -178,10 +178,10 @@ func (x *Official) Phone() (hq string, fieldoffices []FieldOffice) {
 	return formatphone(clean), senateFieldOffices[clean]
 }
 
-var spaceReplacer = strings.NewReplacer(" ", "")
+var weirdStuffReplacer = strings.NewReplacer(" ", "", "\"", "", ".", "")
 
 func (x *Official) ID() string {
-	return spaceReplacer.Replace(x.Name)
+	return weirdStuffReplacer.Replace(x.Name)
 }
 
 func digitsOnly(s string) string {
