@@ -11,7 +11,7 @@ module.exports = (state, prev, send) => {
     if (state.splitDistrict && (state.address || state.cachedCity)) {
       return html`<div>
                     <p>The location you provided could be in one of two congressional districts.</p>
-                    <p><a onclick=${(e) => enterLocation(e)}>Enter your full address or Zip+4</a> to identify your representative in the House.</p>
+                    <p><a onclick=${(e) => enterLocation(e)}>Enter your address or zip+4</a> to identify your representative in the House.</p>
                   </div>`
     }
     else {
