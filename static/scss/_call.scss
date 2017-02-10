@@ -78,6 +78,13 @@
       font-size: $font-xxlarge;
       text-align: center;
     }
+    p {
+      font-size: $font-xlarge;
+      font-weight: bold;
+    }
+    a {
+       cursor: pointer;
+    }
   }
 
   &__script {
