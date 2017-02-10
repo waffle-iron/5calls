@@ -12,7 +12,7 @@ var gulp = require('gulp')
   , uglify = require('gulp-uglify')
   , http_server = require('http-server')
   , connect_logger = require('connect-logger')
-  , mocha = require('gulp-mocha');
+  , spawn = require('child_process').spawn
   ;
 
 var SRC = {
@@ -112,11 +112,28 @@ gulp.task('extra', function() {
     .pipe(gulp.dest(DEST.html));
 });
 
-gulp.task('test', function() {
-  return gulp.src(['**/*_test.js', '!./node_modules/**'], { read: false })
-    .pipe(mocha({
-      reporter: 'spec',
-    }));
+gulp.task('test', function(done) {
+  const karmaArguments = ['start'];
+  if (!process.argv.includes('--watch')) {
+    karmaArguments.push('--single-run');
+  }
+
+  // Karma has a nice public API, but has issues where it can hang when trying to shut down after completing tests, so
+  // run it as a separate process instead. See:
+  // https://github.com/karma-runner/karma/issues/1693
+  // https://github.com/karma-runner/karma/issues/1035
+  const karma = spawn('./node_modules/.bin/karma', karmaArguments, {
+    cwd: process.cwd(),
+    stdio: 'inherit'
+  });
+
+  karma.on('close', code => {
+    if (code) {
+      done(new util.PluginError('Karma', `JS unit tests failed (code ${code})`));
+      return
+    }
+    done();
+  });
 });
 
 gulp.task('default', ['html', 'html:watch', 'html:serve', 'sass', 'sass:watch', 'copy-images', 'copy-images:watch', 'scripts', 'scripts:watch', 'extra']);
