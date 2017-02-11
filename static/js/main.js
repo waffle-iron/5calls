@@ -259,11 +259,11 @@ app.model({
             send('allowBrowserGeolocation', true, done);
             send('setBrowserGeolocation', geo, done);
           } else {
-            console.error("Error: bad browser location results");
+            console.warn("Error: bad browser location results");
             send('fetchLocationBy', 'ipAddress', done);
           }
         } else {
-          console.error("Error: bad browser location results");
+          console.warn("Error: bad browser location results");
           send('fetchLocationBy', 'ipAddress', done);
         }
       }
@@ -273,7 +273,7 @@ app.model({
           send('allowBrowserGeolocation', false, done);
         }
         send('fetchLocationBy', 'ipAddress', done);
-        console.error("Error with browser location (code: " + error.code + ")");
+        console.warn("Error with browser location (code: " + error.code + ")");
       }
       let handleSlowResponse = function() {
         send('fetchLocationBy', 'ipAddress', done);
