@@ -249,7 +249,7 @@ app.model({
     },
     fetchLocationByBrowswer: (state, data, send, done) => {
       let geoSuccess = function(position) {
-
+        window.clearTimeout(slowResponseTimeout);
         if (typeof position.coords !== 'undefined') {
           let lat = position.coords.latitude;
           let long = position.coords.longitude;
@@ -268,14 +268,23 @@ app.model({
         }
       }
       let geoError = function(error) {
+        window.clearTimeout(slowResponseTimeout);
         if (error.code === 1) {
           send('allowBrowserGeolocation', false, done);
         }
         send('fetchLocationBy', 'ipAddress', done);
         console.error("Error with browser location (code: " + error.code + ")");
       }
-
+      let handleSlowResponse = function() {
+        send('fetchLocationBy', 'ipAddress', done);
+      }
+      // If necessary, this prompts a permission dialog in the browser.
       navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+
+      // Sometimes, the user ignores the prompt or the browser does not
+      // provide a response when they do not permit browser location.
+      // After 5s, try IP-based location, but let browser-based continue.
+      let slowResponseTimeout = window.setTimeout(handleSlowResponse, 5000);
     },
     startup: (state, data, send, done) => {
       // sometimes we trigger this again when reloading mainView, check for issues
