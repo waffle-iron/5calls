@@ -294,6 +294,9 @@ app.model({
         }
       }
     },
+    oldcall: (state, data, send, done) => {
+      ga('send', 'event', 'issue_flow', 'old', 'old');
+    },
     incrementContact: (state, data, send, done) => {
       const issue = find(state.issues, ['id', data.issueid]);
 
