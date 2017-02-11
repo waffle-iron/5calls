@@ -114,7 +114,6 @@ When updating the go server, remember to log in, connect to the screen instance 
  - [Nick O'Neill](https://github.com/nickoneill)
  - [Matt Jacobs](https://github.com/capndesign)
  - [Liam Campbell](https://github.com/liamdanger)
- - [Josh Bleecher Snyder](https://github.com/josharian)
  - [James Home](https://github.com/jameshome)
  - [Beau Smith](https://github.com/beausmith)
  - [Anthony Johnson](https://github.com/agjohnson)
