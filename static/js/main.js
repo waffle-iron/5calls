@@ -247,6 +247,15 @@ app.model({
         }
       })
     },
+    handleBrowserLocationError: (state, data, send, done) => {
+      // data = error from navigator.geolocation.getCurrentPosition
+      if (data.code === 1) {
+        send('allowBrowserGeolocation', false, done);
+      }
+      if (state.geolocation == '') {
+        send('fetchLocationBy', 'ipAddress', done);
+      }
+    },
     fetchLocationByBrowswer: (state, data, send, done) => {
       let geoSuccess = function(position) {
         window.clearTimeout(slowResponseTimeout);
@@ -269,10 +278,9 @@ app.model({
       }
       let geoError = function(error) {
         window.clearTimeout(slowResponseTimeout);
-        if (error.code === 1) {
-          send('allowBrowserGeolocation', false, done);
-        }
-        send('fetchLocationBy', 'ipAddress', done);
+
+        // We need the most current state, so we need another effect call.
+        send('handleBrowserLocationError', error, done)
         console.warn("Error with browser location (code: " + error.code + ")");
       }
       let handleSlowResponse = function() {
