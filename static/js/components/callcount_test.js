@@ -4,7 +4,7 @@ const chai = require('chai');
 const expect = chai.expect;
 
 describe('callcount component', () => {
-  it('should properly forma call total >=1000 with commas', () => {
+  it('should properly format call total >=1000 with commas', () => {
     let state = {totalCalls: '123456789'};
     let result = callcount(state);
     expect(result.childNodes[1].data).to.contain('123,456,789');
@@ -14,7 +14,6 @@ describe('callcount component', () => {
     const totals = '123';
     let state = {totalCalls: totals};
     let result = callcount(state);
-    // console.log('Result: ', result.childNodes);
     expect(result.childNodes[1].data).to.contain(totals);
     expect(result.childNodes[1].data).to.not.contain(',');
   });
@@ -23,8 +22,6 @@ describe('callcount component', () => {
     const totals = '0';
     let state = {totalCalls: totals};
     let result = callcount(state);
-    // console.log('Result: ', result.childNodes);
-    // expect(result.childNodes[1].data).to.contain('123');
     expect(result.childNodes[1].data).to.contain(totals);
     expect(result.childNodes[1].data).to.not.contain(',');
   });
