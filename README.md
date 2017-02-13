@@ -104,6 +104,19 @@ Edit the `appUrl` variable in `static/js/main.js` to be `http://localhost:8090` 
 [airtable-invite]: https://airtable.com/invite/l?inviteId=invo1EhjdkkkdjcxX&inviteToken=94e26833a508997c003b8908eebe4bb1
 [civic-api]: https://developers.google.com/civic-information/docs/using_api
 
+## Unit tests
+
+#### JavaScript 
+JavaScript unit tests are written using ```Mocha``` and ```Chai``` and run in the ```Karma``` test runner.
+
+Run the unit tests with:
+
+```npm test```
+
+Run the unit tests in watch mode with:
+
+```npm run test:watch```
+
 ## Deployment
 
 Use the makefile in the go folder. You can `make deploy` to update the go server or `make deploy_static` to update the site.

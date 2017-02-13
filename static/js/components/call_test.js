@@ -10,8 +10,7 @@ describe('call component', () => {
     let issues = [];
     let state = {issues, location};
     let result = call(state);
-    // use toString() for simplicity
-    expect(result.toString()).to.contain(expectSubstr);
+    expect(result.querySelector('h2.call__title').textContent).to.contain(expectSubstr);
   });
 
   describe('contactArea section', () => {
@@ -29,29 +28,29 @@ describe('call component', () => {
       let contact = {name: cname, party: 'Dem'};
       issue.contacts = [contact];
       let issues = [issue];
-      let state = {issues, location, contactIndex: 0};
+      let state = {issues, location, contactIndex: 0, showFieldOfficeNumbers: false};
       let result = call(state);
-      let h3s = result.getElementsByTagName('h3');
-      // First h3 should contain 'Call this office'
-      expect(h3s[0].childNodes[0].data).to.contain('Call this office');
+      let element = result.querySelector('.call__contact__name')
+      expect(element.textContent).to.contain(cname);
     });
 
     it('should display "Set your location" link if contact data is NOT present in state', () => {
+      const expected = 'Set your location';
       let id = 1;
       let location = {params: {issueid: id}};
       let issue = {
         id: id,
         name: 'Bozo the nominee',
         reason: 'crazy',
-        script: 'Please vote against everything'
+        script: 'Please vote against ...'
       };
       issue.contacts = [null];
       let issues = [issue];
       let state = {issues, location, contactIndex: 0};
       let result = call(state);
-      let as = result.getElementsByTagName('a');
-      // First anchor should contain 'Set your location' text content
-      expect(as[0].childNodes[0].data).to.contain('Set your location');
+      let element = result.querySelector('h2 a');
+      // Anchor should contain 'Set your location' text content
+      expect(element.textContent).to.contain(expected);
     });
   });
 });

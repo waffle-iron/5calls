@@ -4,54 +4,34 @@ const chai = require('chai');
 const expect = chai.expect;
 
 describe('done component', () => {
+
   describe('promote include', () => {
 
-    it('should display twitter and facebook links when issue is found', () => {
+    it('should display tweet link when issue is found', () => {
       let issue = {id: 88, name: 'impeach trump'};
       let issues = [issue];
-      let val = '123';
-      let totalCalls = {
-        toLocaleString: () => val
-      };
+      let totalCalls = 123;
       let location = {params: {issueid: 88}};
       let state = {totalCalls, location, issues};
       let result = done(state);
-      let a = result.getElementsByTagName('a');
-      // expect three anchors (second and third are twitter and facebook)
-      expect(a.length).to.equal(3);
+      let a = result.querySelector('div.promote a');
+      expect(a).to.be.defined;
     });
 
-    it('should NOT display twitter and facebook links when issue is NOT found', () => {
-      let issue = {id: 88, name: 'impeach trump'};
-      let issues = [issue];
-      let val = '123';
-      let totalCalls = {
-        toLocaleString: () => val
-      };
-      // 0 is not a real ids
-      let location = {params: {issueid: 0}};
-      let state = {totalCalls, location, issues};
-      let result = done(state);
-      let a = result.getElementsByTagName('a');
-      // Only 'Learn why calling' link is present
-      expect(a.length).to.equal(1);
-    });
   });
 
   describe('callcount include', () => {
+
     it('should display call count total', () => {
-      let val = '123';
-      let totalCalls = {
-        toLocaleString: () => val
-      };
+      let totalCalls = 123;
       let location = {params: {issueId: 88}};
       let state = {totalCalls, location};
       let result = done(state);
-      // call total value should be displated in callcount component
-      let h2 = result.getElementsByTagName('h2');
+      // call total value will be displated in callcount component
+      let h2 = result.querySelector('.callcount');
       expect(h2).to.be.defined;
-      // "Together we've made" is first child node, call total is second
-      expect(h2[1].childNodes[1].data).to.contain(val);
+      // "Together we've made..."
+      expect(h2.textContent).to.contain(totalCalls);
     });
   });
 });
