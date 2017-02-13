@@ -294,6 +294,14 @@ app.model({
       // After 5s, try IP-based location, but let browser-based continue.
       let slowResponseTimeout = window.setTimeout(handleSlowResponse, 5000);
     },
+    // If appropriate, focus and select the text for the location input element
+    // in the issuesLocation component.
+    focusLocation: (state, data, send, done) => {
+      let addressElement = document.querySelector('#address')
+      scrollIntoView(addressElement);
+      addressElement.focus();
+      addressElement.setSelectionRange(0,addressElement.value.length);
+    },
     startup: (state, data, send, done) => {
       // sometimes we trigger this again when reloading mainView, check for issues
       if (state.issues.length == 0 || state.geolocation == '') {

@@ -1,6 +1,10 @@
 const html = require('choo/html');
 
 module.exports = (state, prev, send) => {
+  if (state.askingLocation && !state.fetchingLocation) {
+    send('focusLocation');
+  }
+
   return html`
     <div class="issues__location">
     ${pretext(state)}
