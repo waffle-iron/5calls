@@ -110,6 +110,10 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 			} else if contact.Phone == "" {
 				// filter anyone without a phone
 			} else {
+				// Set sane default contact reason here.
+				if contact.Reason == "" {
+					contact.Reason = "This organization is driving legislation related to the issue."
+				}
 				newContacts = append(newContacts, contact)
 			}
 		}

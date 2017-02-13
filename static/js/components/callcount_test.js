@@ -4,7 +4,7 @@ const chai = require('chai');
 const expect = chai.expect;
 
 describe('callcount component', () => {
-  it('should properly forma call total >=1000 with commas', () => {
+  it('should properly format call total >=1000 with commas', () => {
     let state = {totalCalls: '123456789'};
     let result = callcount(state);
     expect(result.textContent).to.contain('123,456,789');

@@ -1,5 +1,8 @@
 package main
 
+// IssueResponse represents an issue response, comprising
+// district split status, invalid address status, a normalized
+// location and a collection of Issue values.
 type IssueResponse struct {
 	SplitDistrict      bool    `json:"splitDistrict"`
 	InvalidAddress     bool    `json:"invalidAddress"`

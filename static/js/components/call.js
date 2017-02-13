@@ -11,7 +11,7 @@ module.exports = (state, prev, send) => {
   const issue = find(state.issues, ['id', state.location.params.issueid]);
 
   if (issue == null) {
-    return html`<section class="call">
+    return html`<section class="call" onload=${(e) => send('oldcall')}>
       <div class="call_complete">
         <h2 class="call__title">No calls to make</h2>
         <p class="call__text">
@@ -46,7 +46,7 @@ module.exports = (state, prev, send) => {
 
     ${outcomes(state, prev, send)}
 
-    ${promote(state, prev, send, issue)}
+    ${promote(state, prev, send)}
 
   </section>
   `;

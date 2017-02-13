@@ -58,22 +58,24 @@ func (ae *APIError) Error() string {
 	return buf.String()
 }
 
+// Office represents a government office.
 type Office struct {
 	Name            string
-	DivisionId      string
+	DivisionID      string
 	Levels          []string
 	Roles           []string
 	OfficialIndices []int
 }
 
+// Official represents a government official.
 type Official struct {
 	Name     string
 	Address  []Address
 	Party    string
 	Phones   []string
-	PhotoUrl string
+	PhotoURL string
 	Channels []struct {
-		Id   string
+		ID   string
 		Type string
 	}
 }
@@ -112,10 +114,10 @@ func (r *apiResponse) toLocalReps(c *civicAPI) (*LocalReps, *Address, error) {
 			}
 			id := fmt.Sprintf("%s-%s", r.NormalizedInput.State, official.ID())
 			var photourl string
-			if official.PhotoUrl != "" {
+			if official.PhotoURL != "" {
 				wg.Add(1)
 				go func() {
-					c.photocache.get(id, official.PhotoUrl) // cache the image so that we have it when asked for it
+					c.photocache.get(id, official.PhotoURL) // cache the image so that we have it when asked for it
 					wg.Done()
 				}()
 				photourl = c.photocache.url(id)
@@ -144,6 +146,7 @@ func (r *apiResponse) toLocalReps(c *civicAPI) (*LocalReps, *Address, error) {
 	return ret, r.NormalizedInput, nil
 }
 
+// Area returns area information on an office.
 func (x *Office) Area() string {
 	for _, level := range x.Levels {
 		for _, role := range x.Roles {
@@ -180,6 +183,7 @@ func (x *Official) Phone() (hq string, fieldoffices []FieldOffice) {
 
 var weirdStuffReplacer = strings.NewReplacer(" ", "", "\"", "", ".", "")
 
+// ID returns the normalised ID for an official.
 func (x *Official) ID() string {
 	return weirdStuffReplacer.Replace(x.Name)
 }
@@ -267,6 +271,7 @@ type cacheItem struct {
 	addr Address
 }
 
+// NewRepCache returns a repCache value for a delegate.
 func NewRepCache(delegate RepFinder, ttl time.Duration, gc time.Duration) RepFinder {
 	return &repCache{
 		delegate: delegate,

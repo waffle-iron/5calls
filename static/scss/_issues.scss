@@ -37,6 +37,7 @@
 
   &__location {
     color: $gray;
+
     p {
       margin: 0;
       font-size: $font-small;
@@ -61,10 +62,12 @@
   border-bottom: 1px solid $gray-light;
 
   &__item {
+    display: block;
     position: relative;
     border-top: 1px solid $gray-light;
     padding: 3px 12px 3px 48px;
     margin: 0;
+    color: $blue;
 
     &__status {
       position: absolute;;
@@ -94,11 +97,13 @@
     }
 
     &__title {
+      display: block;
       font-size: $font-large;
       margin: 12px;
     }
 
     &__summary {
+      display: block;
       font-size: 0.9rem;
       text-align: right;
       display: none;

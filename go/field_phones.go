@@ -3,6 +3,7 @@
 
 package main
 
+// FieldOffice represents a field office.
 type FieldOffice struct {
 	Phone string `json:"phone"` // phone number of the field office, formatted like "205-731-1500"
 	City  string `json:"city"`  // city of the field office, such as "Huntsville"

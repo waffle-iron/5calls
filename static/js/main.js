@@ -247,9 +247,18 @@ app.model({
         }
       })
     },
+    handleBrowserLocationError: (state, data, send, done) => {
+      // data = error from navigator.geolocation.getCurrentPosition
+      if (data.code === 1) {
+        send('allowBrowserGeolocation', false, done);
+      }
+      if (state.geolocation == '') {
+        send('fetchLocationBy', 'ipAddress', done);
+      }
+    },
     fetchLocationByBrowswer: (state, data, send, done) => {
       let geoSuccess = function(position) {
-
+        window.clearTimeout(slowResponseTimeout);
         if (typeof position.coords !== 'undefined') {
           let lat = position.coords.latitude;
           let long = position.coords.longitude;
@@ -259,23 +268,31 @@ app.model({
             send('allowBrowserGeolocation', true, done);
             send('setBrowserGeolocation', geo, done);
           } else {
-            console.error("Error: bad browser location results");
+            console.warn("Error: bad browser location results");
             send('fetchLocationBy', 'ipAddress', done);
           }
         } else {
-          console.error("Error: bad browser location results");
+          console.warn("Error: bad browser location results");
           send('fetchLocationBy', 'ipAddress', done);
         }
       }
       let geoError = function(error) {
-        if (error.code === 1) {
-          send('allowBrowserGeolocation', false, done);
-        }
-        send('fetchLocationBy', 'ipAddress', done);
-        console.error("Error with browser location (code: " + error.code + ")");
-      }
+        window.clearTimeout(slowResponseTimeout);
 
+        // We need the most current state, so we need another effect call.
+        send('handleBrowserLocationError', error, done)
+        console.warn("Error with browser location (code: " + error.code + ")");
+      }
+      let handleSlowResponse = function() {
+        send('fetchLocationBy', 'ipAddress', done);
+      }
+      // If necessary, this prompts a permission dialog in the browser.
       navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+
+      // Sometimes, the user ignores the prompt or the browser does not
+      // provide a response when they do not permit browser location.
+      // After 5s, try IP-based location, but let browser-based continue.
+      let slowResponseTimeout = window.setTimeout(handleSlowResponse, 5000);
     },
     startup: (state, data, send, done) => {
       // sometimes we trigger this again when reloading mainView, check for issues
@@ -293,6 +310,9 @@ app.model({
           send('fetch', {}, done);
         }
       }
+    },
+    oldcall: (state, data, send, done) => {
+      ga('send', 'event', 'issue_flow', 'old', 'old');
     },
     incrementContact: (state, data, send, done) => {
       const issue = find(state.issues, ['id', data.issueid]);

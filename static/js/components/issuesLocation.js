@@ -16,13 +16,13 @@ module.exports = (state, prev, send) => {
       return html``;
     } else {
       if (state.invalidAddress) {
-        return html`<p><a href="#" onclick=${enterLocation}>That address is invalid, please try again</a></p>`
+        return html`<p><button class="subtle-button" onclick=${enterLocation}>That address is invalid, please try again</button></p>`
       } else if (state.address != '') {
-        return html`<p>for <a href="#" onclick=${enterLocation}>${state.address}</a></p>`
+        return html`<p>for <button class="subtle-button" onclick=${enterLocation}>${state.address}</button></p>`
       } else if (state.cachedCity != '') {
-        return html`<p>for <a href="#" onclick=${enterLocation}> ${state.cachedCity}</a> ${debugText(state.debug)}</p>`
+        return html`<p>for <button class="subtle-button" onclick=${enterLocation}> ${state.cachedCity}</button> ${debugText(state.debug)}</p>`
       } else {
-        return html`<p><a href="#" onclick=${enterLocation}>Choose a location</a></p>`
+        return html`<p><button class="subtle-button" onclick=${enterLocation}>Choose a location</button></p>`
       }
     }
   }
@@ -33,7 +33,7 @@ module.exports = (state, prev, send) => {
   }
 
   function debugText(debug) {
-    return debug ? html`<a href="#" onclick=${unsetLocation}>reset</a>` : html``;
+    return debug ? html`<button onclick=${unsetLocation}>reset</button>` : html``;
   }
 
   function submitAddress(e) {
