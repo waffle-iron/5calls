@@ -7,23 +7,26 @@ describe('callcount component', () => {
   it('should properly format call total >=1000 with commas', () => {
     let state = {totalCalls: '123456789'};
     let result = callcount(state);
-    expect(result.childNodes[1].data).to.contain('123,456,789');
+    expect(result.textContent).to.contain('123,456,789');
   });
 
   it('should properly format call total < 1000 without commas', () => {
     const totals = '123';
     let state = {totalCalls: totals};
     let result = callcount(state);
-    expect(result.childNodes[1].data).to.contain(totals);
-    expect(result.childNodes[1].data).to.not.contain(',');
+    // console.log('Result: ', result.childNodes);
+    expect(result.textContent).to.contain(totals);
+    expect(result.textContent).to.not.contain(',');
   });
 
   it('should not format zero call total', () => {
     const totals = '0';
     let state = {totalCalls: totals};
     let result = callcount(state);
-    expect(result.childNodes[1].data).to.contain(totals);
-    expect(result.childNodes[1].data).to.not.contain(',');
+    // console.log('Result: ', result.childNodes);
+    // expect(result.childNodes[1].data).to.contain('123');
+    expect(result.textContent).to.contain(totals);
+    expect(result.textContent).to.not.contain(',');
   });
 
 });
