@@ -33,7 +33,7 @@ module.exports = (c, state, prev, send) => {
 
   return html`
       <div class="call__contact" id="contact">
-        <div class="call__contact__image"><img src="${photoURL}"/></div>
+        <div class="call__contact__image"><img alt="" src="${photoURL}"/></div>
         <h3 class="call__contact__type">Call this office:</h3>
         <p class="call__contact__name">${c.name} ${repID}</p>
         <p class="call__contact__phone">
@@ -43,5 +43,5 @@ module.exports = (c, state, prev, send) => {
         <h3 class="call__contact__reason__header">Why you’re calling this office:</h3>
         <p class="call__contact__reason">${c.reason}</p>
       </div>
-	`;
+  `;
 }

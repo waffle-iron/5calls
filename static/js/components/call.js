@@ -46,7 +46,7 @@ module.exports = (state, prev, send) => {
 
     ${outcomes(state, prev, send)}
 
-    ${promote(state, prev, send, issue)}
+    ${promote(state, prev, send)}
 
   </section>
   `;

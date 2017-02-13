@@ -28,7 +28,7 @@ module.exports = (state, prev, send) => {
         <button onclick=${() => outcome()}>Skip</button>
       </div>
 
-      ${contactsLeft > 0 ? html`<h3 class="call__contacts__left" >${contactsLeftText}</h3>` : null}
+      ${contactsLeft > 0 ? html`<h3 aria-live="polite" class="call__contacts__left" >${contactsLeftText}</h3>` : null}
     </div>`
   } else {
     return html``
