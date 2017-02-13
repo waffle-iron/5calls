@@ -24,7 +24,7 @@ type IssueLister interface {
 	AllIssues() ([]Issue, error)
 }
 
-func asJson(data interface{}) string {
+func asJSON(data interface{}) string {
 	b, err := json.Marshal(data)
 	if err != nil {
 		return fmt.Sprint(data)
@@ -47,7 +47,7 @@ type atIssue struct {
 	Contacts    []*atContact `json:"contacts"`
 }
 
-func (i *atIssue) String() string { return asJson(i) }
+func (i *atIssue) String() string { return asJSON(i) }
 
 func (i *atIssue) toIssue(contacts []Contact) Issue {
 	return Issue{
@@ -109,6 +109,7 @@ type AirtableClient struct {
 	photocache *photocache
 }
 
+// NewAirtableClient is the AirTableClient factory function.
 func NewAirtableClient(config AirtableConfig, photocache *photocache) *AirtableClient {
 	c, _ := airtable.New(config.APIKey, config.BaseID)
 	return &AirtableClient{client: c, photocache: photocache}
