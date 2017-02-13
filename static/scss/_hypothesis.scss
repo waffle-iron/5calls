@@ -40,4 +40,20 @@
       margin-bottom: 12px;
     }
   }
+
+  &__apps {
+    list-style: none;
+
+    li {
+      float: left;
+    }
+
+    .ios {
+      padding: 12px 0 0 0;
+      width: 174px;
+    }
+    .play {
+      width: 200px;
+    }
+  }
 }
