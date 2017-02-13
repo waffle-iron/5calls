@@ -1,10 +1,10 @@
 const html = require('choo/html');
-const script = require('./script');
+const outcomes = require('./outcomes');
 const chai = require('chai');
 const expect = chai.expect;
 
-describe('script component', () => {
-  it('should display script if current contact exists', () => {
+describe('outcomes component', () => {
+  it('should display outcomes div if current contact exists', () => {
       let cname = 'Senator Blowhart';
       let id = 1;
       let location = {params: {issueid: id}};
@@ -22,12 +22,12 @@ describe('script component', () => {
         location,
         contactIndex: 0,
       };
-      let result = script(state);
-      let content = result.querySelector('div.call__script__body');
-      expect(content.textContent).to.contain(issue.script);
+      let result = outcomes(state);
+      let content = result.querySelector('div.call__outcomes');
+      expect(content).to.be.defined;
   });
 
-  it('should NOT display script div if current contact does not exists', () => {
+  it('should NOT display outcomes div if current contact does not exists', () => {
       let cname = 'Senator Blowhart';
       let id = 1;
       let location = {params: {issueid: id}};
@@ -46,7 +46,7 @@ describe('script component', () => {
         // contactIndex 1 does not exist
         contactIndex: 1
       };
-      let result = script(state);
+      let result = outcomes(state);
       expect(result).to.be.undefined;
   });
 
