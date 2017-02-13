@@ -74,12 +74,12 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 				if localReps != nil {
 					if localReps.HouseRep != nil {
 						c := *localReps.HouseRep
-						c.Reason = "This is your local representative in the house"
+						c.Reason = "This is your local representative in the House"
 						newContacts = append(newContacts, c)
 					}
 					for _, s := range localReps.Senators {
 						c := *s
-						c.Reason = "This is one of your two senators"
+						c.Reason = "This is one of your two Senators"
 						newContacts = append(newContacts, c)
 					}
 				}
@@ -87,7 +87,7 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 				if localReps != nil {
 					for _, s := range localReps.Senators {
 						c := *s
-						c.Reason = "This is one of your two senators"
+						c.Reason = "This is one of your two Senators"
 						newContacts = append(newContacts, c)
 					}
 				}
@@ -95,7 +95,7 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 				if localReps != nil {
 					if localReps.HouseRep != nil {
 						c := *localReps.HouseRep
-						c.Reason = "This is your local representative in the house"
+						c.Reason = "This is your local representative in the House"
 						newContacts = append(newContacts, c)
 					}
 				}
@@ -103,7 +103,7 @@ func (h *handler) GetIssues(w http.ResponseWriter, r *http.Request) {
 				if localReps != nil {
 					if localReps.Governor != nil {
 						c := *localReps.Governor
-						c.Reason = "This is your state governor"
+						c.Reason = "This is your state Governor"
 						newContacts = append(newContacts, c)
 					}
 				}
