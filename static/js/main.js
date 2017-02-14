@@ -161,7 +161,6 @@ app.model({
       return { allowBrowserGeo: data }
     },
     enterLocation: (state, data) => {
-      scrollIntoView(document.querySelector('#address'));
       return { askingLocation: true }
     },
     setLocationFetchType: (state, data) => {
@@ -300,7 +299,9 @@ app.model({
       let addressElement = document.querySelector('#address')
       scrollIntoView(addressElement);
       addressElement.focus();
-      addressElement.setSelectionRange(0,addressElement.value.length);
+      // Clear previous address to show placeholder text to
+      // reinforce entering a new one.
+      addressElement.value = "";
     },
     startup: (state, data, send, done) => {
       // sometimes we trigger this again when reloading mainView, check for issues
