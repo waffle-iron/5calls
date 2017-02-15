@@ -19,52 +19,52 @@ module.exports = function (configuration) {
       platform: 'Windows 10',
       version: 'latest'
     },
-    // sauce_firefox: {
-    //   base: 'SauceLabs',
-    //   browserName: 'firefox',
-    //   version: 'latest'
-    // },
-    //
-    // // Edge is evergreen-ish
-    // sauce_edge: {
-    //   base: 'SauceLabs',
-    //   browserName: 'MicrosoftEdge',
-    //   platform: 'Windows 10',
-    //   version: 'latest'
-    // },
-    //
-    // // Cover the latest two versions of IE on Windows 7 and 10
-    // sauce_ie: {
-    //   base: 'SauceLabs',
-    //   browserName: 'internet explorer',
-    //   platform: 'Windows 10',
-    //   version: 'latest'
-    // },
-    // sauce_ie_11_windows_7: {
-    //   base: 'SauceLabs',
-    //   browserName: 'internet explorer',
-    //   platform: 'Windows 7',
-    //   version: '11.0'
-    // },
-    // sauce_ie_10_windows_7: {
-    //   base: 'SauceLabs',
-    //   browserName: 'internet explorer',
-    //   platform: 'Windows 7',
-    //   version: '10.0'
-    // },
-    //
-    // // Latest two Safaris
-    // sauce_safari: {
-    //   base: 'SauceLabs',
-    //   browserName: 'Safari',
-    //   version: 'latest'
-    // },
-    // sauce_safari: {
-    //   base: 'SauceLabs',
-    //   browserName: 'Safari',
-    //   platform: 'OS X 10.11',
-    //   version: '9.0'
-    // },
+    sauce_firefox: {
+      base: 'SauceLabs',
+      browserName: 'firefox',
+      version: 'latest'
+    },
+
+    // Edge is evergreen-ish
+    sauce_edge: {
+      base: 'SauceLabs',
+      browserName: 'MicrosoftEdge',
+      platform: 'Windows 10',
+      version: 'latest'
+    },
+
+    // Cover the latest two versions of IE on Windows 7 and 10
+    sauce_ie: {
+      base: 'SauceLabs',
+      browserName: 'internet explorer',
+      platform: 'Windows 10',
+      version: 'latest'
+    },
+    sauce_ie_11_windows_7: {
+      base: 'SauceLabs',
+      browserName: 'internet explorer',
+      platform: 'Windows 7',
+      version: '11.0'
+    },
+    sauce_ie_10_windows_7: {
+      base: 'SauceLabs',
+      browserName: 'internet explorer',
+      platform: 'Windows 7',
+      version: '10.0'
+    },
+
+    // Latest two Safaris
+    sauce_safari: {
+      base: 'SauceLabs',
+      browserName: 'Safari',
+      version: 'latest'
+    },
+    sauce_safari: {
+      base: 'SauceLabs',
+      browserName: 'Safari',
+      platform: 'OS X 10.11',
+      version: '9.0'
+    },
     
     // Disable device simulators for now as they are slow and flakey :\
     // sauce_ios_safari: {
