@@ -1,134 +1,116 @@
-// Karma configuration for running tests in sauce labs when on CI.
+/**
+ * Karma configuration for running tests in Sauce Labs when on CI.
+ * To use, ensure the following environment vars are set:
+ * SAUCE_USERNAME: Your username on Sauce Labs
+ * SAUCE_ACCESS_KEY: A generated access key for your Sauce Labs account
+ *                   Go to the "My Account" panel in Sauce and scroll down
+ *                   "Access Key". Click the "show" button to see your key.
+ */
 
-module.exports = function (config) {
-  config.set({
-     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
-
-    // frameworks to use
-    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'browserify'],
-
-    // list of files / patterns to load in the browser
-    files: [
-      'static/js/**/*_test.js'
-    ],
-
-    // list of files to exclude
-    exclude: [
-      'app/**/*'
-    ],
-
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-      '!(node_modules)/**/*.js': ['browserify'],
+module.exports = function (configuration) {
+  // Configure browsers to test in on Sauce Labs. For values, use the
+  // Platform Configurator:
+  // https://wiki.saucelabs.com/display/DOCS/Platform+Configurator
+  const browserConfiguration = {
+    // Just the latest versions for evergreen browsers
+    sauce_chrome: {
+      base: 'SauceLabs',
+      browserName: 'chrome',
+      platform: 'Windows 10',
+      version: 'latest'
     },
-
-    browserify: {
-      debug: true,
-      transform: ['es2040'],
-    },
-
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['mocha', 'saucelabs'],
-
-    // web server port
-    port: 9876,
-
-    // enable / disable colors in the output (reporters and logs)
-    colors: true,
-
-    // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
-
-    // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
-
+    // sauce_firefox: {
+    //   base: 'SauceLabs',
+    //   browserName: 'firefox',
+    //   version: 'latest'
+    // },
+    //
+    // // Edge is evergreen-ish
+    // sauce_edge: {
+    //   base: 'SauceLabs',
+    //   browserName: 'MicrosoftEdge',
+    //   platform: 'Windows 10',
+    //   version: 'latest'
+    // },
+    //
+    // // Cover the latest two versions of IE on Windows 7 and 10
+    // sauce_ie: {
+    //   base: 'SauceLabs',
+    //   browserName: 'internet explorer',
+    //   platform: 'Windows 10',
+    //   version: 'latest'
+    // },
+    // sauce_ie_11_windows_7: {
+    //   base: 'SauceLabs',
+    //   browserName: 'internet explorer',
+    //   platform: 'Windows 7',
+    //   version: '11.0'
+    // },
+    // sauce_ie_10_windows_7: {
+    //   base: 'SauceLabs',
+    //   browserName: 'internet explorer',
+    //   platform: 'Windows 7',
+    //   version: '10.0'
+    // },
+    //
+    // // Latest two Safaris
+    // sauce_safari: {
+    //   base: 'SauceLabs',
+    //   browserName: 'Safari',
+    //   version: 'latest'
+    // },
+    // sauce_safari: {
+    //   base: 'SauceLabs',
+    //   browserName: 'Safari',
+    //   platform: 'OS X 10.11',
+    //   version: '9.0'
+    // },
+    
+    // Disable device simulators for now as they are slow and flakey :\
+    // sauce_ios_safari: {
+    //   base: 'SauceLabs',
+    //   deviceName: 'iPhone 7 Simulator',
+    //   deviceOrientation: 'portrait',
+    //   platformVersion: '10.0',
+    //   platformName: 'iOS',
+    //   browserName: 'Safari'
+    // },
+    // sauce_android: {
+    //   base: 'SauceLabs',
+    //   deviceName: 'Android Emulator',
+    //   deviceOrientation: 'portrait',
+    //   platformVersion: '5.1',
+    //   platformName: 'Android',
+    //   browserName: 'Browser'
+    // },
+    // sauce_android_4: {
+    //   base: 'SauceLabs',
+    //   deviceName: 'Android Emulator',
+    //   deviceOrientation: 'portrait',
+    //   platformVersion: '4.4',
+    //   platformName: 'Android',
+    //   browserName: 'Browser'
+    // }
+  };
+  
+  const browsers = Object.keys(browserConfiguration);
+  
+  // start with basic karma config
+  require('./karma.conf.js')(configuration);
+  
+  // and override for CI/Sauce-specific settings
+  configuration.set({
     sauceLabs: {
       testName: '5calls Tests'
     },
-
-    customLaunchers: {
-      sauce_chrome: {
-        base: 'SauceLabs',
-        browserName: 'chrome',
-        platform: 'Windows 10',
-        version: 'latest'
-      },
-      sauce_firefox: {
-        base: 'SauceLabs',
-        browserName: 'firefox',
-        version: 'latest'
-      },
-      sauce_ie: {
-        base: 'SauceLabs',
-        browserName: 'internet explorer',
-        platform: 'Windows 10',
-        version: 'latest'
-      },
-      sauce_edge: {
-        base: 'SauceLabs',
-        browserName: 'MicrosoftEdge',
-        platform: 'Windows 10',
-        version: 'latest'
-      },
-      sauce_safari: {
-        base: 'SauceLabs',
-        browserName: 'Safari',
-        version: 'latest'
-      },
-      sauce_ios_safari: {
-        base: 'SauceLabs',
-        deviceName: 'iPhone 7 Simulator',
-        deviceOrientation: 'portrait',
-        platformVersion: '10.0',
-        platformName: 'iOS',
-        browserName: 'Safari'
-      },
-      sauce_android: {
-        base: 'SauceLabs',
-        deviceName: 'Android Emulator',
-        deviceOrientation: 'portrait',
-        platformVersion: '5.1',
-        platformName: 'Android',
-        browserName: 'Browser'
-      },
-      sauce_android_4: {
-        base: 'SauceLabs',
-        deviceName: 'Android Emulator',
-        deviceOrientation: 'portrait',
-        platformVersion: '4.4',
-        platformName: 'Android',
-        browserName: 'Browser'
-      }
-    },
-
-    // start these browsers
-    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [
-      'sauce_chrome',
-      'sauce_firefox',
-      'sauce_ie',
-      'sauce_edge',
-      'sauce_safari',
-      // Sauce simulators are *very* slow and flaky
-      // 'sauce_ios_safari',
-      // 'sauce_android',
-      // 'sauce_android_4',
-    ],
-
-    captureTimeout: 300000,
-
-    // Continuous Integration mode
-    // if true, Karma captures browsers, runs the tests and exits
+    customLaunchers: browserConfiguration,
+    browsers,
+    frameworks: ['mocha', 'browserify'],
+    reporters: ['mocha', 'saucelabs'],
     singleRun: true,
-
-    // Concurrency level
-    // how many browser should be started simultaneous
-    concurrency: Infinity,
+    
+    // Since tests are remote, give a little extra time
+    captureTimeout: 300000,
+    browserNoActivityTimeout: 30000
   });
 };
