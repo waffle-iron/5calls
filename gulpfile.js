@@ -112,14 +112,14 @@ gulp.task('extra', function() {
     .pipe(gulp.dest(DEST.html));
 });
 
-function runKarmaTests ({singleRun, configFile}) {
+function runKarmaTests ({singleRun, configFile} = {}) {
   return new Promise((resolve, reject) => {
     const karmaArguments = ['start'];
-    
+
     if (configFile) {
       karmaArguments.push(configFile);
     }
-    
+
     if (singleRun) {
       karmaArguments.push('--single-run');
     }
