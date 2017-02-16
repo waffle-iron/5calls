@@ -149,10 +149,13 @@ gulp.task('test', function() {
 });
 
 gulp.task('test:watch', function() {
-  return runKarmaTests();
+  return runKarmaTests({singleRun: false});
 });
 
-gulp.task('test:continuous-integration', function() {
+// Designed for running tests in continuous integration. The main difference
+// here is that browser tests are run across a gamut of browsers/platforms via
+// Sauce Labs instead of just a few locally.
+gulp.task('test:ci', function() {
   return runKarmaTests({configFile: 'karma.ci.conf.js'});
 });
 
