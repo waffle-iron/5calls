@@ -46,14 +46,12 @@ module.exports = function (configuration) {
       platform: 'Windows 7',
       version: '11.0'
     },
-    
-    // FIXME: temporarily disable IE 10 because of console.log calls
-    // sauce_ie_10_windows_7: {
-    //   base: 'SauceLabs',
-    //   browserName: 'internet explorer',
-    //   platform: 'Windows 7',
-    //   version: '10.0'
-    // },
+    sauce_ie_10_windows_7: {
+      base: 'SauceLabs',
+      browserName: 'internet explorer',
+      platform: 'Windows 7',
+      version: '10.0'
+    },
 
     // Latest two Safaris
     sauce_safari: {

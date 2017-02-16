@@ -2,6 +2,7 @@ const choo = require('choo');
 const html = require('choo/html');
 const http = require('xhr');
 const find = require('lodash/find');
+const logger = require('loglevel');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
 const scrollIntoView = require('scroll-into-view');
@@ -14,7 +15,7 @@ const appURL = 'https://5calls.org';
 const debug = (localStorage['org.5calls.debug'] === 'true');
 
 if (!debug) {
-  console.debug = () => {};
+  logger.setDefaultLevel(logger.levels.WARN);
 }
 
 // get the stored zip location
@@ -29,7 +30,7 @@ store.getAll('org.5calls.location', (location) => {
 cachedGeo = '';
 store.getAll('org.5calls.geolocation', (geo) => {
   if (geo.length > 0) {
-    console.debug("geo get", geo[0]);
+    logger.debug("geo get", geo[0]);
     cachedGeo = geo[0]
   }
 });
@@ -40,7 +41,7 @@ let cachedFetchingLocation = (cachedGeo === '') ? true : false;
 cachedAllowBrowserGeo = true;
 store.getAll('org.5calls.allow_geolocation', (allowGeo) => {
   if (allowGeo.length > 0) {
-    console.debug("allowGeo get", allowGeo[0]);
+    logger.debug("allowGeo get", allowGeo[0]);
     cachedAllowBrowserGeo = allowGeo[0]
   }
 });
@@ -51,7 +52,7 @@ let cachedLocationFetchType = (cachedAllowBrowserGeo) ? 'browserGeolocation' : '
 cachedGeoTime = '';
 store.getAll('org.5calls.geolocation_time', (geo) => {
   if (geo.length > 0) {
-    console.debug("geo time get", geo[0]);
+    logger.debug("geo time get", geo[0]);
     cachedGeoTime = geo[0]
   }
 });
@@ -59,7 +60,7 @@ store.getAll('org.5calls.geolocation_time', (geo) => {
 cachedCity = '';
 store.getAll('org.5calls.geolocation_city', (city) => {
   if (city.length > 0) {
-    console.debug("city get", city[0]);
+    logger.debug("city get", city[0]);
     cachedCity = city[0]
   }
 });
@@ -196,7 +197,7 @@ app.model({
       }
 
       const issueURL = appURL+'/issues/'+address
-      // console.debug("fetching url",issueURL);
+      logger.debug("fetching url",issueURL);
       http(issueURL, (err, res, body) => {
         send('setCachedCity', body, done)
         send('receiveIssues', body, done)
@@ -268,11 +269,11 @@ app.model({
             send('allowBrowserGeolocation', true, done);
             send('setBrowserGeolocation', geo, done);
           } else {
-            console.warn("Error: bad browser location results");
+            logger.warn("Error: bad browser location results");
             send('fetchLocationBy', 'ipAddress', done);
           }
         } else {
-          console.warn("Error: bad browser location results");
+          logger.warn("Error: bad browser location results");
           send('fetchLocationBy', 'ipAddress', done);
         }
       }
@@ -281,7 +282,7 @@ app.model({
 
         // We need the most current state, so we need another effect call.
         send('handleBrowserLocationError', error, done)
-        console.warn("Error with browser location (code: " + error.code + ")");
+        logger.warn("Error with browser location (code: " + error.code + ")");
       }
       let handleSlowResponse = function() {
         send('fetchLocationBy', 'ipAddress', done);

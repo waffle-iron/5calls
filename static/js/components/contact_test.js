@@ -19,7 +19,6 @@ describe('contact component', () => {
       showFieldOfficeNumbers: false
     };
     let result = contact(contactData, state);
-    // console.log("RESULT", result);
     expect(result.querySelector('.call__contact__name').textContent).to.contain(contactData.name);
   });
 
