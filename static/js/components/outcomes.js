@@ -3,9 +3,10 @@ const find = require('lodash/find');
 
 module.exports = (state, prev, send) => {
   const issue = find(state.issues, ['id', state.location.params.issueid]);
-  const currentContact = issue.contacts[state.contactIndex];
+  const currentIndex = state.contactIndices[issue.id];
+  const currentContact = issue.contacts[currentIndex];
 
-  const contactsLeft = issue.contacts.length - (state.contactIndex + 1);
+  const contactsLeft = issue.contacts.length - (currentIndex + 1);
   const callsPluralization = contactsLeft > 1 ? "people" : "person";
 
   const contactsLeftText = contactsLeft + " more " + callsPluralization +" to call for this issue.";
