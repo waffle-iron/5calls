@@ -17,10 +17,12 @@ describe('outcomes component', () => {
       let contact = {name: cname, party: 'Dem'};
       issue.contacts = [contact];
       let issues = [issue];
+      let contactIndices = {};
+      contactIndices[id] = 0;
       let state = {
         issues,
         location,
-        contactIndex: 0,
+        contactIndices: contactIndices,
       };
       let result = outcomes(state);
       let content = result.querySelector('div.call__outcomes');
@@ -40,11 +42,12 @@ describe('outcomes component', () => {
       let contact = {name: cname, party: 'Dem'};
       issue.contacts = [contact];
       let issues = [issue];
+      let contactIndices = {};
+      contactIndices[id] = 1; // contactIndex 1 does not exist
       let state = {
         issues,
         location,
-        // contactIndex 1 does not exist
-        contactIndex: 1
+        contactIndices: contactIndices,
       };
       let result = outcomes(state);
       expect(result).to.be.undefined;
