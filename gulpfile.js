@@ -112,9 +112,14 @@ gulp.task('extra', function() {
     .pipe(gulp.dest(DEST.html));
 });
 
-function runKarmaTests (singleRun) {
+function runKarmaTests ({singleRun, configFile}) {
   return new Promise((resolve, reject) => {
     const karmaArguments = ['start'];
+    
+    if (configFile) {
+      karmaArguments.push(configFile);
+    }
+    
     if (singleRun) {
       karmaArguments.push('--single-run');
     }
@@ -140,11 +145,15 @@ function runKarmaTests (singleRun) {
 }
 
 gulp.task('test', function() {
-  return runKarmaTests(true);
+  return runKarmaTests({singleRun: true});
 });
 
 gulp.task('test:watch', function() {
-  return runKarmaTests(false);
+  return runKarmaTests();
+});
+
+gulp.task('test:continuous-integration', function() {
+  return runKarmaTests({configFile: 'karma.ci.conf.js'});
 });
 
 gulp.task('default', ['html', 'html:watch', 'html:serve', 'sass', 'sass:watch', 'copy-images', 'copy-images:watch', 'scripts', 'scripts:watch', 'extra']);
