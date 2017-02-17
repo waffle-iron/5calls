@@ -128,13 +128,11 @@ app.model({
       return { geolocation: geo, cachedCity: city, geoCacheTime: time, fetchingLocation: false, askingLocation: false }
     },
     setContactIndices: (state, data) => {
+      contactIndices = state.contactIndices;
       if (data.newIndex != 0) {
-        contactIndices = state.contactIndices;
         contactIndices[data.issueid] = data.newIndex;
         return { contactIndices: contactIndices }
       } else {
-        store.add("org.5calls.completed", data.issueid, () => {})
-        contactIndices = state.contactIndices;
         contactIndices[data.issueid] = 0;
         return { contactIndices: contactIndices, completedIssues: state.completedIssues.concat(data.issueid) }
       }
