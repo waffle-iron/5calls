@@ -22,7 +22,7 @@ describe('outcomes component', () => {
       let state = {
         issues,
         location,
-        contactIndices: contactIndices,
+        contactIndices
       };
       let result = outcomes(state);
       let content = result.querySelector('div.call__outcomes');
@@ -47,19 +47,19 @@ describe('outcomes component', () => {
       let state = {
         issues,
         location,
-        contactIndices: contactIndices,
+        contactIndices
       };
       let result = outcomes(state);
       expect(result).to.be.undefined;
   });
 
-  it('should have contacts left if last contact', () => {
+  it('should have contacts left if not last contact', () => {
       let cname1 = 'Senator Blowhart';
       let cname2 = 'Senator Hartblow';
       let id = 1;
       let location = {params: {issueid: id}};
       let issue = {
-        id: id, // does not match location issue id
+        id: id,
         name: 'Bozo the nominee',
         reason: 'crazy',
         script: 'Please vote against nominee Bozo'
@@ -73,7 +73,7 @@ describe('outcomes component', () => {
       let state = {
         issues,
         location,
-        contactIndices: contactIndices,
+        contactIndices
       };
       let result = outcomes(state);
       expect(result.textContent).to.contain('1 more');
@@ -85,7 +85,7 @@ describe('outcomes component', () => {
       let id = 1;
       let location = {params: {issueid: id}};
       let issue = {
-        id: id, // does not match location issue id
+        id: id,
         name: 'Bozo the nominee',
         reason: 'crazy',
         script: 'Please vote against nominee Bozo'
@@ -99,7 +99,7 @@ describe('outcomes component', () => {
       let state = {
         issues,
         location,
-        contactIndices: contactIndices,
+        contactIndices
       };
       let result = outcomes(state);
       expect(result.textContent).to.not.contain('1 more');

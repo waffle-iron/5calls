@@ -22,7 +22,7 @@ describe('script component', () => {
       let state = {
         issues,
         location,
-        contactIndices: contactIndices,
+        contactIndices
       };
       let result = script(state);
       let content = result.querySelector('div.call__script__body');
@@ -47,7 +47,7 @@ describe('script component', () => {
       let state = {
         issues,
         location,
-        contactIndices: contactIndices,
+        contactIndices
       };
       let result = script(state);
       expect(result).to.be.undefined;
