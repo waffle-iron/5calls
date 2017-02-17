@@ -4,12 +4,12 @@ const chai = require('chai');
 const expect = chai.expect;
 
 // Skip a test if the browser does not support locale-based number formatting
-function ifLocaleSupportedIt (test) {
+function ifLocaleSupportedIt (name, test) {
   if (window.Intl && window.Intl.NumberFormat) {
-    it(test);
+    it(name, test);
   }
   else {
-    it.skip(test);
+    it.skip(name, test);
   }
 }
 
