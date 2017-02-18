@@ -5,7 +5,8 @@
   "main": "gulpfile.js",
   "scripts": {
     "test": "gulp test",
-    "test:watch": "gulp test:watch"
+    "test:watch": "gulp test:watch",
+    "test:e2e": "mocha ./e2e-tests/*.js"
   },
   "repository": {
     "type": "git",
