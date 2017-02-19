@@ -96,7 +96,7 @@ app.model({
     askingLocation: false,
     fetchingLocation: cachedFetchingLocation,
     locationFetchType: cachedLocationFetchType,
-    contactIndex: 0,
+    contactIndices: {},
     completedIssues: completedIssues,
 
     showFieldOfficeNumbers: false,
@@ -108,7 +108,11 @@ app.model({
     receiveIssues: (state, data) => {
       response = JSON.parse(data)
       issues = response.issues //.filter((v) => { return v.contacts.length > 0 });
-      return { issues: issues, splitDistrict: response.splitDistrict, invalidAddress: response.invalidAddress }
+      contactIndices = {};
+      issues.forEach(function(item, index) {
+         contactIndices[item.id] = 0;
+      });
+      return { issues: issues, splitDistrict: response.splitDistrict, invalidAddress: response.invalidAddress, contactIndices: contactIndices }
     },
     receiveTotals: (state, data) => {
       totals = JSON.parse(data);
@@ -123,15 +127,14 @@ app.model({
       store.replace("org.5calls.geolocation_time", 0, time, () => {});
       return { geolocation: geo, cachedCity: city, geoCacheTime: time, fetchingLocation: false, askingLocation: false }
     },
-    changeActiveIssue: (state, issueId) => {
-      return { contactIndex: 0 }
-    },
-    setContactIndex: (state, data) => {
+    setContactIndices: (state, data) => {
+      contactIndices = state.contactIndices;
       if (data.newIndex != 0) {
-        return { contactIndex: data.newIndex }
+        contactIndices[data.issueid] = data.newIndex;
+        return { contactIndices: contactIndices }
       } else {
-        store.add("org.5calls.completed", data.issueid, () => {})
-        return { contactIndex: 0, completedIssues: state.completedIssues.concat(data.issueid) }
+        contactIndices[data.issueid] = 0;
+        return { contactIndices: contactIndices, completedIssues: state.completedIssues.concat(data.issueid) }
       }
     },
     setAddress: (state, address) => {
@@ -317,14 +320,15 @@ app.model({
     incrementContact: (state, data, send, done) => {
       const issue = find(state.issues, ['id', data.issueid]);
 
-      if (state.contactIndex < issue.contacts.length - 1) {
+      currentIndex = state.contactIndices[issue.id];
+      if (currentIndex < issue.contacts.length - 1) {
         scrollIntoView(document.querySelector('#contact'));
-        send('setContactIndex', { newIndex: state.contactIndex + 1, issueid: issue.id }, done)
+        send('setContactIndices', { newIndex: currentIndex + 1, issueid: issue.id }, done);
       } else {
         scrollIntoView(document.querySelector('#content'));
         store.add("org.5calls.completed", issue.id, () => {})
         send('location:set', "/#done/" + issue.id, done)
-        send('setContactIndex', { newIndex: 0, issueid: issue.id }, done)
+        send('setContactIndices', { newIndex: 0, issueid: issue.id }, done);
       }
     },
     callComplete: (state, data, send, done) => {

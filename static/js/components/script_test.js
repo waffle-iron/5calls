@@ -17,10 +17,12 @@ describe('script component', () => {
       let contact = {name: cname, party: 'Dem'};
       issue.contacts = [contact];
       let issues = [issue];
+      let contactIndices = {};
+      contactIndices[id] = 0;
       let state = {
         issues,
         location,
-        contactIndex: 0,
+        contactIndices
       };
       let result = script(state);
       let content = result.querySelector('div.call__script__body');
@@ -40,11 +42,12 @@ describe('script component', () => {
       let contact = {name: cname, party: 'Dem'};
       issue.contacts = [contact];
       let issues = [issue];
+      let contactIndices = {};
+      contactIndices[id] = 1; // contactIndex 1 does not exist
       let state = {
         issues,
         location,
-        // contactIndex 1 does not exist
-        contactIndex: 1
+        contactIndices
       };
       let result = script(state);
       expect(result).to.be.undefined;

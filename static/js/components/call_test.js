@@ -26,11 +26,13 @@ describe('call component', () => {
         script: 'Please vote against everything'
       };
       let contact = {name: cname, party: 'Dem'};
+      let contactIndices = {};
+      contactIndices[id] = 0;
       issue.contacts = [contact];
       let issues = [issue];
-      let state = {issues, location, contactIndex: 0, showFieldOfficeNumbers: false};
+      let state = {issues, location, contactIndices, showFieldOfficeNumbers: false};
       let result = call(state);
-      let element = result.querySelector('.call__contact__name')
+      let element = result.querySelector('.call__contact__name');
       expect(element.textContent).to.contain(cname);
     });
 
@@ -46,7 +48,9 @@ describe('call component', () => {
       };
       issue.contacts = [null];
       let issues = [issue];
-      let state = {issues, location, contactIndex: 0};
+      let contactIndices = {};
+      contactIndices[id] = 0;
+      let state = {issues, location, contactIndices};
       let result = call(state);
       let element = result.querySelector('h2 a');
       // Anchor should contain 'Set your location' text content
