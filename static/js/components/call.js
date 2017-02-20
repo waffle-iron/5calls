@@ -23,7 +23,8 @@ module.exports = (state, prev, send) => {
       </div>
     </section>`;
   }
-  const currentContact = issue.contacts[state.contactIndex];
+  const currentIndex = state.contactIndices[issue.id];
+  const currentContact = issue.contacts[currentIndex];
 
   function contactArea() {
     if (currentContact != null) {
