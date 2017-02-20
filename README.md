@@ -6,7 +6,7 @@ Currently this repo contains both frontend and backend development pieces.
 
 ## Running the app for local development
 
-* Site front end, written in Javascript, using Choo
+* Site front end, written in Javascript, using [Choo](https://choo.io/)
 * Application server back end, for data processing, written in Go
 
 To make display changes, you likely won't need to handle the application
@@ -55,9 +55,9 @@ localStorage['org.5calls.debug'] = 'false' // turn off debug mode
 
 If you'd like to help us work on the backend code as well (written in Go), please reach out to join our Slack!
 
-## Unit tests
+## Testing
 
-#### JavaScript 
+#### JavaScript Unit Tests
 
 JavaScript unit tests are written using ```Mocha``` and ```Chai``` and run in the ```Karma``` test runner. You must have the Google Chrome browser installed to run them.
 
@@ -69,9 +69,17 @@ If you are working on JavaScript code, you can make the tests automatically re-r
 
 ```npm run test:watch```
 
+#### End-to-end Integration Tests
+
+End-to-end (e2e) integration testing is done using ```Selenium``` with ```Mocha``` and ```Chai```.
+
+To run the e2e tests:
+1. Start the front end application in a command window with the ```gulp``` command.
+2. In a second command window run the tests using the command ```npm run e2e```.
+
 ## Deployment
 
-Use the makefile in the go folder. You can `make deploy` to update the go server or `make deploy_static` to update the site.
+Use the makefile in the go project's folder. You can `make deploy` to update the go server or `make deploy_static` to update the site.
 
 When updating the go server, remember to log in, connect to the screen instance (`screen -r`) and stop the go process before replacing it via the deploy, otherwise you get "text file busy" errors in scp.
 
@@ -82,7 +90,7 @@ When updating the go server, remember to log in, connect to the screen instance 
  - [James Home](https://github.com/jameshome)
  - [Beau Smith](https://github.com/beausmith)
  - [Anthony Johnson](https://github.com/agjohnson)
- - [All contriubtors](https://github.com/5calls/5calls/graphs/contributors)
+ - [All contributors](https://github.com/5calls/5calls/graphs/contributors)
 
 ## Other client projects
  - [Android](https://github.com/5calls/android)
