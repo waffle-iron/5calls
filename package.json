@@ -6,10 +6,7 @@
   "scripts": {
     "test": "gulp test",
     "test:watch": "gulp test:watch",
-    "e2e": "mocha ./e2e-tests/*.js",
-    "backend": "cd go && make run AIRTABLE_DATABASE=appZ8ITCpRa5YCCN7 CIVIC_API_KEY=$CIVIC_KEY AIRTABLE_API_KEY=$AIRTABLE_KEY &",
-    "frontend": "gulp &",
-    "start": "npm run backend && npm run frontend"
+    "e2e": "mocha ./e2e-tests/*.js"
   },
   "repository": {
     "type": "git",
@@ -20,7 +17,6 @@
   "devDependencies": {
     "browserify": "^13.1.1",
     "chai": "^3.5.0",
-    "chai-as-promised": "^6.0.0",
     "chromedriver": "^2.27.3",
     "es2040": "^1.2.4",
     "gulp": "^3.9.1",
