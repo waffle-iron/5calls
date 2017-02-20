@@ -3,12 +3,9 @@
  *
  * To run tests:
  * 1. In a command window:
- *    cd go
- *    make run
- * 2. In a second command window:
  *    gulp
- * 3. In a third command window:
- *    npm run test:e2e
+ * 2. In a second command window:
+ *    npm run e2e
  */
 const webdriver = require('selenium-webdriver');
 const test = require('selenium-webdriver/testing');
