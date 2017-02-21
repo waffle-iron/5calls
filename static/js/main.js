@@ -164,7 +164,6 @@ app.model({
       return { allowBrowserGeo: data }
     },
     enterLocation: (state, data) => {
-      scrollIntoView(document.querySelector('#address'));
       return { askingLocation: true }
     },
     setLocationFetchType: (state, data) => {
@@ -296,6 +295,16 @@ app.model({
       // provide a response when they do not permit browser location.
       // After 5s, try IP-based location, but let browser-based continue.
       let slowResponseTimeout = window.setTimeout(handleSlowResponse, 5000);
+    },
+    // If appropriate, focus and select the text for the location input element
+    // in the issuesLocation component.
+    focusLocation: (state, data, send, done) => {
+      let addressElement = document.querySelector('#address')
+      scrollIntoView(addressElement);
+      addressElement.focus();
+      // Clear previous address to show placeholder text to
+      // reinforce entering a new one.
+      addressElement.value = "";
     },
     startup: (state, data, send, done) => {
       // sometimes we trigger this again when reloading mainView, check for issues
