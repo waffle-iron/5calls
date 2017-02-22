@@ -26,4 +26,17 @@ describe('callcount component', () => {
     expect(result.textContent).to.not.contain(',');
   });
 
+  it('should properly handle undefined state', () => {
+    let state = {totalCalls: undefined};
+    let result = callcount(state);
+    expect(result.textContent).to.contain('0');
+    expect(result.textContent).not.to.not.contain('NaN');
+  });
+
+  it('should properly handle empty state', () => {
+    let state = {totalCalls: ""};
+    let result = callcount(state);
+    expect(result.textContent).to.contain('0');
+    expect(result.textContent).not.to.not.contain('NaN');
+  });
 });

@@ -8,9 +8,12 @@ module.exports = (state, prev, send) => {
   `;
 
   function callCount(state) {
-    const calls = Number(state.totalCalls);
+    let calls = Number(state.totalCalls);
+    // Handle undefined input.
+    // Number(undefined) is NaN, while Number("") is 0
+    calls = isNaN(calls) ? 0 : calls;
     // Number.toLocaleString() doesn't work on Safari 9 (see https://github.com/5calls/5calls/issues/197)
-    if (!!window.Intl && typeof Intl.NumberFormat == 'function') {
+    if (window.Intl && typeof Intl.NumberFormat == 'function') {
       return calls.toLocaleString();
     } else {
       // As a fallback, use a quick-and-dirty regex to insert commas.
