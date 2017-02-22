@@ -5,7 +5,7 @@ const find = require('lodash/find');
 const logger = require('loglevel');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
-const scrollIntoView = require('scroll-into-view');
+const scrollIntoView = require('./utils/scrollIntoView.js');
 
 const app = choo();
 const appURL = 'https://5calls.org';
