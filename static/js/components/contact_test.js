@@ -81,4 +81,25 @@ describe('contact component', () => {
     expect(content).to.contain(field_offices[0].phone);
     expect(content).to.contain(field_offices[0].city);
   });
+
+  it('should display field office data without city if present', () => {
+    let field_offices = [
+      {phone: '212-123-1234', city: ''}
+    ];
+    let contactData = {
+      name: 'Big Whig',
+      state: 'PZ',
+      phone: '202-123-1234',
+      party: '',
+      photoURL: '',
+      reason: '',
+      field_offices: field_offices
+    };
+    let state = {
+      showFieldOfficeNumbers: true
+    };
+    let result = contact(contactData, state);
+    let content = result.querySelectorAll('ul.call__contact__field-office-list li a')[0].textContent;
+    expect(content).to.equal(field_offices[0].phone);
+  });
 });
