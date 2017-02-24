@@ -30,7 +30,7 @@ module.exports = (state, prev, send) => {
         <li><a href="https://play.google.com/store/apps/details?id=org.a5calls.android.a5calls&hl=en"><img class="play" src="/img/google-play-badge.png" alt="5 Calls on Google Play" /></a></li>
         </ul>
       </div>
-      
+
       ${callcount(state, prev, send)}
 
     </div>
