@@ -144,7 +144,7 @@ function runKarmaTests ({singleRun, configFile} = {}) {
   });
 }
 
-gulp.task('test', function() {
+gulp.task('test:js-unit', function() {
   return runKarmaTests({singleRun: true});
 });
 
@@ -155,9 +155,31 @@ gulp.task('test:watch', function() {
 // Designed for running tests in continuous integration. The main difference
 // here is that browser tests are run across a gamut of browsers/platforms via
 // Sauce Labs instead of just a few locally.
-gulp.task('test:ci', function() {
+gulp.task('test:ci', ['eslint'], function() {
   return runKarmaTests({configFile: 'karma.ci.conf.js'});
 });
+
+gulp.task('eslint', function() {
+  const eslint = require('eslint');
+  const linter = new eslint.CLIEngine();
+  const report = linter.executeOnFiles(['./static']);
+  
+  // customize messages to be a little more helpful/friendly
+  report.results.forEach(result => {
+    result.messages.forEach(message => {
+      if (message.ruleId === 'no-console') {
+        message.message = 'Please use the `loglevel` module for logging instead of the browser `console` object';
+      }
+    });
+  });
+
+  process.stdout.write(linter.getFormatter()(report.results));
+  if (report.errorCount) {
+    throw new util.PluginError('ESLint', 'Found problems with JS coding style.');
+  }
+});
+
+gulp.task('test', ['eslint', 'test:js-unit']);
 
 gulp.task('default', ['html', 'html:watch', 'html:serve', 'sass', 'sass:watch', 'copy-images', 'copy-images:watch', 'scripts', 'scripts:watch', 'extra']);
 gulp.task('deploy', ['html', 'sass', 'build-scripts', 'extra', 'copy-images']);
