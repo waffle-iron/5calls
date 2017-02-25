@@ -175,8 +175,7 @@ gulp.task('eslint', function() {
 
   process.stdout.write(linter.getFormatter()(report.results));
   if (report.errorCount) {
-    return Promise.reject(
-      new util.PluginError('ESLint', 'Found problems with JS coding style.'));
+    throw new util.PluginError('ESLint', 'Found problems with JS coding style.');
   }
 });
 
