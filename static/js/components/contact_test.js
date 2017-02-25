@@ -80,6 +80,7 @@ describe('contact component', () => {
     let content = result.querySelectorAll('ul.call__contact__field-office-list li')[0].textContent;
     expect(content).to.contain(field_offices[0].phone);
     expect(content).to.contain(field_offices[0].city);
+    expect(content).to.contain(contactData.state);
   });
 
   it('should display field office data without city if present', () => {
@@ -99,7 +100,8 @@ describe('contact component', () => {
       showFieldOfficeNumbers: true
     };
     let result = contact(contactData, state);
-    let content = result.querySelectorAll('ul.call__contact__field-office-list li a')[0].textContent;
-    expect(content).to.equal(field_offices[0].phone);
+    let content = result.querySelectorAll('ul.call__contact__field-office-list li')[0].textContent;
+    expect(content).to.contain(field_offices[0].phone);
+    expect(content).to.not.contain(contactData.state);
   });
 });

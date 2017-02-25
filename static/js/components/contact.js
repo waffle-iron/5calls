@@ -32,7 +32,7 @@ module.exports = (c, state, prev, send) => {
   }
 
   function cityFormat(office, c) {
-    if (office.city != "") {
+    if (office.city) {
       return "- " + office.city + ", " + c.state
     } else {
       return ""
