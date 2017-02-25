@@ -14,8 +14,9 @@ const appURL = 'https://5calls.org';
 // use localStorage directly to set this value *before* bootstrapping the app.
 const debug = (localStorage['org.5calls.debug'] === 'true');
 
-if (!debug) {
-  logger.setDefaultLevel(logger.levels.WARN);
+if (debug) {
+  // we don't need loglevel's built-in persistence; we do it ourselves above ^
+  logger.setLevel(logger.levels.TRACE, false);
 }
 
 // get the stored zip location
