@@ -23,11 +23,19 @@ module.exports = (c, state, prev, send) => {
           <h3 class="call__contact__field-offices__header">Local office numbers:</h3>
           <ul class="call__contact__field-office-list">
             ${c.field_offices.map(office => html`
-              <li><a href="tel:+1${office.phone.replace(/-/g, '')}">${office.phone}</a> - ${office.city}, ${c.state}</li>
+              <li><a href="tel:+1${office.phone.replace(/-/g, '')}">${office.phone}</a> ${cityFormat(office,c)}</li>
             `)}
           </ul>
         </div>
       `
+    }
+  }
+
+  function cityFormat(office, c) {
+    if (office.city) {
+      return "- " + office.city + ", " + c.state
+    } else {
+      return ""
     }
   }
 
