@@ -381,7 +381,7 @@ app.model({
   },
 });
 
-app.router({ default: '/404' }, [
+app.router({ default: '/' }, [
   ['/', require('./pages/mainView.js')],
   ['/issue', require('./pages/mainView.js'),
     [':issueid', require('./pages/mainView.js')]
