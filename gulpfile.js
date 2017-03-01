@@ -13,6 +13,7 @@ var gulp = require('gulp')
   , http_server = require('http-server')
   , connect_logger = require('connect-logger')
   , spawn = require('child_process').spawn
+  , mocha = require('gulp-mocha')
   ;
 
 var SRC = {
@@ -150,6 +151,11 @@ gulp.task('test', function() {
 
 gulp.task('test:watch', function() {
   return runKarmaTests({singleRun: false});
+});
+
+gulp.task('test:e2e', function() {
+  return gulp.src(['./e2e-tests/**/*.js'])
+    .pipe(mocha({reporter: 'spec'}));
 });
 
 // Designed for running tests in continuous integration. The main difference
