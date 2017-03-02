@@ -74,7 +74,7 @@ If you are working on JavaScript code, you can make the tests automatically re-r
 End-to-end (e2e) integration testing is done using ```Selenium``` with ```Mocha``` and ```Chai```.
 
 To run the e2e tests:
-1. Start the front end application in a command window with the ```gulp``` command.
+1. Start the front end application in a command window with the ```npm start``` command.
 2. In a second command window run the tests using the command ```npm run test:e2e```.
 
 ## Deployment

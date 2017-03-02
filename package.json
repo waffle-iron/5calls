@@ -6,7 +6,8 @@
   "scripts": {
     "test": "gulp test",
     "test:watch": "gulp test:watch",
-    "test:e2e": "gulp test:e2e"
+    "test:e2e": "gulp test:e2e",
+    "start": "gulp"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   "devDependencies": {
     "browserify": "^13.1.1",
     "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
     "chromedriver": "^2.27.3",
     "es2040": "^1.2.4",
     "gulp": "^3.9.1",

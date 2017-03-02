@@ -155,7 +155,10 @@ gulp.task('test:watch', function() {
 
 gulp.task('test:e2e', function() {
   return gulp.src(['./e2e-tests/**/*.js'])
-    .pipe(mocha({reporter: 'spec'}));
+    .pipe(mocha({
+      reporter: 'spec',
+      require: 'e2e-tests/support/setupEndToEndTests.js'
+    }));
 });
 
 // Designed for running tests in continuous integration. The main difference

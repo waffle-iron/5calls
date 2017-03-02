@@ -5,33 +5,22 @@
  */
 const test = require('selenium-webdriver/testing');
 const chai = require('chai');
-const setup = require('../static/test/setupEndToEndTests');
-
 const expect = chai.expect;
+const chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+const config = require('./support/e2e-tests.config.js');
 
-const url = setup.BASE_URL;
+const url = config.baseUrl;
 
-test.describe('home page', () => {
-  let driver;
+test.describe('home page', function() {
 
-  test.before(() => {
-    driver = setup.beforeTests();
+  test.beforeEach(function() {
+    this.driver.get(url);
   });
 
-  test.after(() => {
-    setup.afterTests(driver);
-  });
-
-  test.beforeEach(() => {
-    driver.get(url);
-  });
-
-  test.it('should show correct page title', (done) => {
+  test.it('should show correct page title', function() {
     let expected = '5 Calls: Make your voice heard';
-    return driver.getTitle().then((title) => {
-      expect(title).to.equal(expected);
-      done();
-    });
+    return expect(this.driver.getTitle()).to.eventually.equal(expected);
   });
 
 });

@@ -14,10 +14,8 @@ const chrome = require('selenium-webdriver/chrome');
 const chromedriver = require('chromedriver');
 chrome.setDefaultService(new chrome.ServiceBuilder(chromedriver.path).build());
 
-const BASE_URL = 'http://localhost:8000/';
-
-const beforeTests = () => {
-  let driver = new webdriver.Builder()
+test.before(function() {
+  this.driver = new webdriver.Builder()
     .withCapabilities({
       'browserName': 'chrome',
       'timeout': '20000',
@@ -28,17 +26,10 @@ const beforeTests = () => {
       }
     })
     .build();
-  return driver;
-};
+});
 
-const afterTests = (driver) => {
-  if (driver) {
-    driver.quit();
+test.after(function() {
+  if (this.driver) {
+    this.driver.quit();
   }
-};
-
-module.exports = {
-  beforeTests,
-  afterTests,
-  BASE_URL
-}
+});
