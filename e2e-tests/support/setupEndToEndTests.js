@@ -1,12 +1,7 @@
 /**
- * Sets up mocha webdriver end-to-end tests.
+ * Included into each e2e test via the mocha require
+ * option (see test:e2e task in gulpfile.js).
  *
- * The beforeTests() function should be run inside a before() block
- * with the return value assigned to a local variable.
- *
- * The afterTests() function should be run inside an after() block
- * with its argument being the assigned value that was returned by
- * beforeTests().
  */
 const webdriver = require('selenium-webdriver');
 const test = require('selenium-webdriver/testing');
