@@ -1,9 +1,9 @@
 const html = require('choo/html');
 
 module.exports = (state, prev, send, issue) => {
-  let url = "https://5calls.org?utm_campaign=twshare"
-  let additionalComps = "&via=make5calls"
-  let tweet = "try a make5calls today"
+  let url = encodeURIComponent("https://5calls.org?utm_campaign=twshare")
+  let additionalComps = encodeURIComponent("&via=make5calls")
+  let tweet = encodeURIComponent("try a make5calls today")
   let twitterTitle = "Share on Twitter"
   let facebookTitle = "Share on Facebook"
 
