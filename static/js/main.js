@@ -6,7 +6,6 @@ const logger = require('loglevel');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
 const scrollIntoView = require('scroll-into-view');
-const issueCacheMinutes = 30;
 
 const app = choo();
 const appURL = 'https://5calls.org';
@@ -82,8 +81,6 @@ app.model({
     issues: [],
     activeIssues: [],
     inactiveIssues: [],
-    lastActiveIssueFetchDate: null,
-    lastInactiveIssueFetchDate: null,
     totalCalls: 0,
     splitDistrict: false,
 
@@ -214,43 +211,33 @@ app.model({
 
   effects: {
     fetchActiveIssues: (state, data, send, done) => {
-      if (((Date.now() - Number(state.lastActiveIssueFetchDate)) / 1000 / 60) < issueCacheMinutes && !!state.activeIssues.length) {
-        return
-      } else {
-        send('setCacheDate', 'lastActiveIssueFetchDate', done)
-        address = "?address="
-        if (state.address !== '') {
-          address += state.address
-        } else if (state.geolocation !== "") {
-          address += state.geolocation
-        }
-        const issueURL = appURL+'/issues/'+address
-        logger.debug("fetching url", issueURL);
-        http(issueURL, (err, res, body) => {
-          send('setCachedCity', body, done)
-          send('receiveActiveIssues', body, done)
-          send('mergeIssues', body, done)
-        })
+      address = "?address="
+      if (state.address !== '') {
+        address += state.address
+      } else if (state.geolocation !== "") {
+        address += state.geolocation
       }
+      const issueURL = appURL+'/issues/'+address
+      logger.debug("fetching url", issueURL);
+      http(issueURL, (err, res, body) => {
+        send('setCachedCity', body, done)
+        send('receiveActiveIssues', body, done)
+        send('mergeIssues', body, done)
+      })
     },
     fetchInactiveIssues: (state, data, send, done) => {
-      if (((Date.now() - Number(state.lastInactiveIssueFetchDate)) / 1000 / 60) < issueCacheMinutes && !!state.activeIssues.length) {
-        return
-      } else {
-        send('setCacheDate', 'lastInactiveIssueFetchDate', done)
-        address = "?inactive=true&address="
-        if (state.address !== '') {
-          address += state.address
-        } else if (state.geolocation !== "") {
-          address += state.geolocation
-        }
-        const issueURL = appURL+'/issues/'+address
-        logger.debug("fetching url", issueURL);
-        http(issueURL, (err, res, body) => {
-          send('receiveInactiveIssues', body, done)
-          send('mergeIssues', body, done)
-        })
+      address = "?inactive=true&address="
+      if (state.address !== '') {
+        address += state.address
+      } else if (state.geolocation !== "") {
+        address += state.geolocation
       }
+      const issueURL = appURL+'/issues/'+address
+      logger.debug("fetching url", issueURL);
+      http(issueURL, (err, res, body) => {
+        send('receiveInactiveIssues', body, done)
+        send('mergeIssues', body, done)
+      })
     },
     getTotals: (state, data, send, done) => {
       http(appURL+'/report/', (err, res, body) => {
