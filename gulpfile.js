@@ -154,10 +154,13 @@ gulp.task('test:watch', function() {
 });
 
 gulp.task('test:e2e', function() {
-  return gulp.src(['./e2e-tests/**/*.js'])
+  return gulp.src([
+    './e2e-tests/support/setupEndToEndTests.js',
+    './e2e-tests/{*,!(support)/*}.js'
+  ])
     .pipe(mocha({
       reporter: 'spec',
-      require: 'e2e-tests/support/setupEndToEndTests.js'
+      timeout: 6000
     }));
 });
 
