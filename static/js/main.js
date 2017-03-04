@@ -6,6 +6,8 @@ const logger = require('loglevel');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
 const scrollIntoView = require('scroll-into-view');
+const i18n = require('i18next');
+const XHR = require('i18next-xhr-backend');
 
 const app = choo();
 const appURL = 'https://5calls.org';
@@ -13,6 +15,18 @@ const appURL = 'https://5calls.org';
 
 // use localStorage directly to set this value *before* bootstrapping the app.
 const debug = (localStorage['org.5calls.debug'] === 'true');
+
+i18n.use(XHR)
+    .init({
+    'debug': true,
+    'lng': 'en',
+    'backend': {
+      'loadPath': 'locales/{{lng}}.json'
+    },
+    'fallbackLng' : 'en'
+}, function (t) {
+});
+
 
 if (debug) {
   // we don't need loglevel's built-in persistence; we do it ourselves above ^

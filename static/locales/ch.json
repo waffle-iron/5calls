@@ -1,0 +1,49 @@
+{
+    "common": {
+      "openSource": "open source",
+      "twitter": "twitter",
+      "github": "github",
+      "email": "email",
+      "or": "or",
+      "and": "and",
+      "thisProjectIs": "This project is",
+      "volunteerMade": "volunteer made",
+      "pleaseReachOut": "Please reach out."
+    },
+    "about": {
+      "title": "chinese title",
+      "whyCallingWorks": {
+        "title": "Why Calling Works",
+        "justificationForCalling": "Calling members of Congress is the most effective way to have your voice heard. Calls are tallied by staffers and the count is given to your representatives, informing them how strongly their constituents feel about a current issue. The sooner your reach out, the more likely it is that your voice will influence their position.",
+        "justificationArticlesListHeader": "Don’t just take it from us:",
+        "weDoTheResearch": "5 Calls does the research for each issue, determining out which representatives are most influential for which topic, collecting phone numbers for those offices and writing scripts that clearly articulate a progressive position. You just have to call.",
+        "sendYourIssues": "Are we not covering an issue we should be?"
+      },
+      "callingTips": {
+        "title": "Calling Tips",
+        "callTechnique": "Calls should take less than a minute. You’ll be speaking to a staffer, so make your point clearly so they can tally your opinion correctly. The provided scripts are useful but you can add your own words.",
+        "callEtiquette": "Be respectful. The staffers that pick up the phone aren’t looking to challenge you and you should treat them with the same respect you expect from them, regardless of which party they work for."
+      },
+      "whoIs5Calls": {
+        "title": "Who made 5 Calls?",
+        "whyWeWorkOnIt": "We’re a group of like-minded volunteers who want to make advocacy accessible. We hope 5 Calls will make it effortless for regular people to have a voice when it’s needed most.",
+        "broughtToYouBy": "5 Calls is brought to you by ",
+        "andMoreSupporters": " and more supporters."
+      },
+      "joinUs": {
+        "title": "Join us",
+        "contactInvite": "If you’d like to join us in developing useful tools for citizens, please get in touch via "
+      }
+    },
+    "hypothesis": {
+      "title": "Make your voice heard",
+      "p1": "Turn your passive participation into active resistance. Facebook likes and Twitter retweets can’t create the change you want to see. Calling your Government on the phone can.",
+      "p2": "Spend 5 minutes, make 5 calls.",
+      "p3": "Calling is the most effective way to influence your representative.",
+      "learnWhyCallingWorks": "Learn why calling works.",
+      "featuresTitle": "5 Calls:",
+      "feature1": "provides phone numbers and scripts so calling is quick and easy",
+      "feature2": "uses your location to find your local representatives so your calls have more impact"
+    },
+  "callcount": "Together we’ve made {callCount} calls"
+}
