@@ -16,11 +16,21 @@ module.exports = (state, prev, send, issue) => {
     facebookTitle = "Share this issue"
   }
 
+  function tweetShare(e) {
+    e.preventDefault();
+    window.open("https://twitter.com/share?url="+url+additionalComps+"&text="+tweet, 'sharewindow', 'width=500, height=350');
+  }
+
+  function fbShare(e) {
+    e.preventDefault();
+    window.open("https://www.facebook.com/sharer/sharer.php?u=http://bit.ly/2iJb5nH", 'sharewindow', 'width=500, height=350');
+  }
+
   return html`
     <div class="promote">
       <p>
-        <a target="_blank"
-          href="https://twitter.com/share?url=${url}${additionalComps}&text=${tweet}"><i class="fa fa-twitter" aria-hidden="true"></i> ${twitterTitle}</a> <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://bit.ly/2iJb5nH"><i class="fa fa-facebook" aria-hidden="true"></i> ${facebookTitle}</a>
+        <a target="_blank" onclick=${(e) => tweetShare(e)}><i class="fa fa-twitter" aria-hidden="true"></i> ${twitterTitle}</a>
+        <a target="_blank" onclick=${(e) => fbShare(e)}><i class="fa fa-facebook" aria-hidden="true"></i> ${facebookTitle}</a>
       </p>
     </div>
   `;  
