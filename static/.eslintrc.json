@@ -5,9 +5,14 @@
   },
   "env": {
     "browser": true,
-    "commonjs": true
+    "commonjs": true,
+    "node": true,
+    "mocha": true
   },
+  "extends": "eslint:recommended",
   "rules": {
-    "no-console": "error"
+      "no-unused-vars": "warn",
+      "no-undef":  "warn",
+      "no-console": "error"
   }
 }
