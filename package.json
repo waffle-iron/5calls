@@ -4,7 +4,7 @@
   "description": "",
   "main": "gulpfile.js",
   "scripts": {
-    "develop": "gulp",
+    "start": "gulp",
     "deploy": "gulp deploy",
     "test": "gulp test",
     "test:watch": "gulp test:watch"

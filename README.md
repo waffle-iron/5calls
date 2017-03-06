@@ -29,7 +29,7 @@ Front end requirements must first be installed with:
 
 To start developing:
 
-`npm run develop`
+`npm start`
 
 This command will:
 
@@ -41,7 +41,7 @@ To package assets for deployment:
 
 `npm run deploy`
 
-This command also builds the assets, but does not watch for changes, and applies additional transforms on the assets -- such as an uglify transform on Javascript sources.
+This command also builds the assets, applies additional transforms on the assets (such as minification of the JavaScript sources), but does not watch for changes.
 
 To turn on/off debug mode, which adds some reset buttons throughout the interface, run the following in your console:
 
