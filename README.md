@@ -27,22 +27,21 @@ Front end requirements must first be installed with:
 
 `npm install`
 
-Gulp is used to compile front end static assets. If you do not have Gulp
-installed globally, you can install this with:
+To start developing:
 
-`npm install -g gulp`
+`npm start`
 
-Gulp is configured, by default, to watch and recompile front end files when
-any changes are detected. You can run Gulp in this mode with:
+This command will:
 
-`gulp`
+* compile front end static assets
+* spin up an HTTP server for serving the site files on port `tcp/8000`.
+* watch and recompile front end files when any changes are detected
 
-This default command will also spin up an HTTP server for serving the site
-files on port `tcp/8000`.
+To package assets for deployment:
 
-The other main Gulp task is the `deploy` task, which does not watch for
-changes, and applies additional transforms on the assets -- such as an uglify
-transform on Javascript sources.
+`npm run deploy`
+
+This command also builds the assets, applies additional transforms on the assets (such as minification of the JavaScript sources), but does not watch for changes.
 
 To turn on/off debug mode, which adds some reset buttons throughout the interface, run the following in your console:
 
