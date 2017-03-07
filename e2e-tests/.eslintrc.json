@@ -12,7 +12,6 @@
   "extends": "eslint:recommended",
   "rules": {
     "no-unused-vars": "warn",
-    "no-undef":  "warn",
-    "no-console": "error"
+    "no-undef":  "warn"
   }
 }
