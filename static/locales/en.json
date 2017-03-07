@@ -1,4 +1,35 @@
 {
+    "noCalls": {
+      "title": "No calls to make",
+      "reason": "This issue is no longer relevant, or the URL you used to get here was wrong. If you clicked a link on this site to get here, <a href='mailto:{{contactEmail}}'>please tell us</a> so we can fix it!",
+      "nextStep":"Next choose a different issue from the list to make calls about."
+    },
+    "callCount": {
+      "callCountPhrase": "Together we’ve made {{totalCalls}} calls"
+    },
+    "contact": {
+      "localOfficeNumbers": "Local office numbers:",
+      "busyLine": "Busy Line",
+      "busyLineGuidance": "Click here to see local office numbers",
+      "callThisOffice": "Call this office:",
+      "whyYouAreCallingThisOffice": "Why you’re calling this office:"
+    },
+    "callComplete": {
+      "title":"Great work!",
+      "pickAnotherIssue": "Pick another issue to keep calling, or spread the word by sharing your work with friends:",
+      "learnWhyCallingIsGreat":"<a href='#about'>Learn why calling</a> representatives is the most effective way of making your voice heard."
+    },
+    "hypothesis": {
+      "title": "Make your voice heard",
+      "p1": "Turn your passive participation into active resistance. Facebook likes and Twitter retweets can’t create the change you want to see. Calling your Government on the phone can.",
+      "p2": "Spend 5 minutes, make 5 calls.",
+      "p3": "Calling is the most effective way to influence your representative.   Read more about <a href='#about'>why calling works.",
+      "featuresTitle": "5 Calls:",
+      "feature1": "provides phone numbers and scripts so calling is quick and easy",
+      "feature2": "uses your location to find your local representatives so your calls have more impact",
+      "getApp": "Get the 5 Calls app:"
+    },
+
     "about": {
       "title": "About 5 Calls",
       "whyCallingWorks": {
