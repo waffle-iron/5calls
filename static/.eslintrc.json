@@ -1,17 +1,9 @@
 {
-  "parserOptions": {
-    "ecmaVersion": 7,
-    "sourceType": "module"
-  },
   "env": {
     "browser": true,
     "commonjs": true,
-    "mocha": true
-  },
-  "extends": "eslint:recommended",
-  "rules": {
-    "no-unused-vars": "warn",
-    "no-undef":  "warn",
-    "no-console": "error"
+    "mocha": true,
+    // turn node off in this directory because this content is all browser-only
+    "node": false
   }
 }
