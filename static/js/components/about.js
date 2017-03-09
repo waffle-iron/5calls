@@ -11,6 +11,8 @@ module.exports = (state, prev, send) => {
       <h3 class="about__subtitle">${t.getText("about.whyCallingWorks.title")}</h3>
 
       <p>${t.getText('about.whyCallingWorks.justificationForCalling')}</p>
+
+      <p>${t.getText('about.whyCallingWorks.justificationForCalling')}</p>
       <p>${t.getText("about.whyCallingWorks.justificationArticlesListHeader")}</p>
       <ul>
           <li>${t.getText('about.whyCallingWorks.article1')}</li>
@@ -33,6 +35,7 @@ module.exports = (state, prev, send) => {
 
       <h3 class="about__subtitle">${t.getText("about.joinUs.title")}</h3>
       <p>${t.getText("about.joinUs.contactInvite", { contactEmail: constants.contact.email})}</p>
+
     </section>
     </main>
   `;
