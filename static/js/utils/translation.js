@@ -3,10 +3,8 @@ const h = require('choo/html');
 
 module.exports = {
     getText : (key, variableObject) => {
-        const template = i18n.t(key, variableObject);
-        if (template.indexOf('h`')>-1){
-            return eval(template);
-        }
-        else return template;
+        let template = i18n.t(key, variableObject);
+        template = "h`<span>" + template + "</span>`";    
+        return eval(template);
     }
 }
