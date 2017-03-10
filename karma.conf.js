@@ -14,7 +14,7 @@ module.exports = function (config) {
     files: [
       'static/test/setupUnitTests.js',
       'static/js/**/*_test.js',
-      'static/js/**/*.js'
+      'static/js/*/*.js'
     ],
 
     // list of files to exclude
