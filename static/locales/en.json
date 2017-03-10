@@ -1,6 +1,7 @@
 {
     "common": {
       "reset": "reset",
+      "go": "Go",
       "5calls": "5 Calls",
       "done": "Done",
       "call": "call",
