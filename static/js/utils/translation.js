@@ -2,9 +2,21 @@ const i18n = require('i18next');
 const html = require('choo/html');
 
 module.exports = {
-    getText : (key, variableObject) => {
+
+    // key - the localization key in the locale file
+    // variableObject - a json object having variables that will be interpolated into the localized string
+    // justText - if true, the object will be returned as just a text string and not turned into a choo fragment.
+    //      there is at least one use case where this is required(a placeholder in a text input cannot have text within a span)
+    getText : (key, variableObject, justText) => {
+        variableObject = variableObject || {};
+        justText = justText || false;
+
         // get the localized string from the i18n cache
         let template = i18n.t(key, variableObject);
+
+        if (justText){
+            return template;
+        }    
 
         // wrap it in the choo literal.  It also needs to be in a single node.
         //  Using span here.  Could also be div.
