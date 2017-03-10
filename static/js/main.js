@@ -428,7 +428,4 @@ app.router({ default: '/' }, [
 
 const tree = app.start();
 const rootNode = document.getElementById('root');
-
-if (rootNode) {
-  document.body.replaceChild(tree, rootNode);
-}
+document.body.replaceChild(tree, rootNode);
