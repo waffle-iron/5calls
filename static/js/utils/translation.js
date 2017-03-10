@@ -1,8 +1,10 @@
 const i18n = require('i18next');
 const html = require('choo/html');
 
-module.exports = {
+const find = require('lodash/find');
 
+
+module.exports = {
     // key - the localization key in the locale file
     // variableObject - a json object having variables that will be interpolated into the localized string
     // justText - if true, the object will be returned as just a text string and not turned into a choo fragment.
@@ -27,5 +29,16 @@ module.exports = {
 
         // evaluate/run the code.  Choo will render the text/html into dom nodes
         return func(html);
+    },
+
+    getLocaleFromBrowserLanguage : (browserLanguage) => {
+        const acceptedLocales = ['en', 'es'];
+        const fallbackLocale = 'en';
+        let locale = find(acceptedLocales, (l) => l === browserLanguage.substring(0,2))
+        if (!locale){
+            locale = fallbackLocale;
+        }    
+
+        return locale;
     }
 }

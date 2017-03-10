@@ -6,6 +6,7 @@ const logger = require('loglevel');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
 const scrollIntoView = require('scroll-into-view');
+const t = require('./utils/translation');
 const i18n = require('i18next');
 const XHR = require('i18next-xhr-backend');
 
@@ -15,18 +16,6 @@ const appURL = 'https://5calls.org';
 
 // use localStorage directly to set this value *before* bootstrapping the app.
 const debug = (localStorage['org.5calls.debug'] === 'true');
-
-i18n.use(XHR)
-    .init({
-    'debug': true,
-    'lng': 'en',
-    'backend': {
-      'loadPath': 'locales/{{lng}}.json'
-    },
-    'fallbackLng' : 'en'
-}, function (t) {
-});
-
 
 if (debug) {
   // we don't need loglevel's built-in persistence; we do it ourselves above ^
@@ -406,6 +395,25 @@ app.router({ default: '/' }, [
   ['/about', require('./pages/aboutView.js')],
 ]);
 
-const tree = app.start();
-const rootNode = document.getElementById('root');
-document.body.replaceChild(tree, rootNode);
+let startApp = () => {
+  const tree = app.start();
+  const rootNode = document.getElementById('root');
+  document.body.replaceChild(tree, rootNode);
+}
+
+var locale = t.getLocaleFromBrowserLanguage(navigator.language || navigator.userLanguage);
+
+// need to get the localization resource file before bootstrapping the app's rendering process
+i18n.use(XHR)
+    .init({
+    'debug': true,
+    'lng': locale,
+    'backend': {
+      'loadPath': 'locales/{{lng}}.json'
+    },
+    'fallbackLng' : 'en'
+}, (t) => {
+  startApp();
+});
+
+
