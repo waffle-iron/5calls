@@ -1,4 +1,5 @@
 const html = require('choo/html');
+const t = require('../utils/translation');
 
 module.exports = (issue, state, prev, send) => {
   function classString(state, baseAddition) {
@@ -31,7 +32,7 @@ module.exports = (issue, state, prev, send) => {
 
   let statusText = "";
   if(issueIsCompleted(state, issue)) {
-    statusText = "Done";
+    statusText = t.getText("common.Done");
   }
 
   return html`

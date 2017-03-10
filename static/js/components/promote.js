@@ -1,4 +1,5 @@
 const html = require('choo/html');
+const t = require('../utils/translation');
 
 module.exports = (state, prev, send, issue) => {
   if (issue) {

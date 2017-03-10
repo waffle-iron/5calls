@@ -1,4 +1,6 @@
 const html = require('choo/html');
+const t = require('../utils/translation');
+
 const find = require('lodash/find');
 
 module.exports = (state, prev, send) => {
@@ -10,12 +12,12 @@ module.exports = (state, prev, send) => {
   function noContactsMessage(state) {
     if (state.splitDistrict && (state.address || state.cachedCity)) {
       return html`<div>
-                    <p>The location you provided could be in one of two congressional districts.</p>
-                    <p><a onclick=${(e) => enterLocation(e)}>Enter your address</a> to identify your representative in the House.</p>
+                    <p>${t.getText("noContact.oneOfTwoDistricts")}</p>
+                    <p>${t.getText("noContact.enterYourLocation")}</p>
                   </div>`
     }
     else {
-      return html`<h2><a onclick=${(e) => enterLocation(e)}>Set your location</a> to find your representatives</h2>`
+      return html`<h2>${t.getText("noContact.setYourLocation")}</h2>`
     }
   }
 

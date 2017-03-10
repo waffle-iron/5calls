@@ -1,4 +1,9 @@
 {
+    "common": {
+      "reset": "reset",
+      "5calls": "5 Calls",
+      "done": "Done"
+    },
     "noCalls": {
       "title": "No calls to make",
       "reason": "This issue is no longer relevant, or the URL you used to get here was wrong. If you clicked a link on this site to get here, <a href='mailto:{{contactEmail}}'>please tell us</a> so we can fix it!`",
@@ -29,7 +34,31 @@
       "feature2": "uses your location to find your local representatives so your calls have more impact",
       "getApp": "Get the 5 Calls app:"
     },
-
+    "issuesHeader":{
+      "whatsImportantToYou": "What’s important to you?"
+    },
+    "location": {
+      "gettingYourLocation": "Getting your location",
+      "invalidAddress": "That address is invalid, please try again",
+      "chooseALocation": "Choose a location",
+      "enterAnAddressOrZipCode": "Enter an address or zip code"
+    },
+    "noContact":{
+      "oneOfTwoDistricts":"The location you provided could be in one of two congressional districts.",
+      "enterYourLocation":"<a onclick=${(e) => enterLocation(e)}>Enter your address</a> to identify your representative in the House.",
+      "setYourLocation":"<a onclick=${(e) => enterLocation(e)}>Set your location</a> to find your representatives"
+    },
+    "outcomes":{
+      "enterYourCallResult":"Enter your call result to get the next call:",
+      "unavailable":"Unavailable",
+      "voicemail":"Left Voicemail",
+      "madeContact":"Made Contact",
+      "skip":"Skip",
+      "contactsLeft": "{{contactsLeft}} more {{callsPluralization}} to call for this issue."
+    },
+    "script": {
+      "yourScript": "Your script:"
+    }
     "about": {
       "title": "About 5 Calls",
       "whyCallingWorks": {
