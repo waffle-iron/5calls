@@ -18,7 +18,7 @@ module.exports = (c, state, prev, send) => {
   let fieldOffices
   if (c.field_offices) {
     fieldOffices = html`
-      <p class="call__contact__show-field-offices">${t.getText('contact.busyLine')}<a onclick=${() => {send('toggleFieldOfficeNumbers')}}>${t.getText('contact.busyLineGuidance')}</a></p>
+      <p class="call__contact__show-field-offices">${t.getText('contact.busyLine')}  <a onclick=${() => {send('toggleFieldOfficeNumbers')}}>${t.getText('contact.busyLineGuidance')}</a></p>
     `
     if (state.showFieldOfficeNumbers) {
       fieldOffices = html`

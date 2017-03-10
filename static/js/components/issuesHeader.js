@@ -16,7 +16,7 @@ module.exports = (state, prev, send) => {
 
   function issueExplain(state) {
     if (state.issues.length > 0) {
-      return html`<h2>${t.getText("issuesHeader.whatsImportantToYou")}</h2>`
+      return html`<h2>${t.getText("issues.whatsImportantToYou")}</h2>`
     } else {
       return html``
     }

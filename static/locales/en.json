@@ -2,7 +2,11 @@
     "common": {
       "reset": "reset",
       "5calls": "5 Calls",
-      "done": "Done"
+      "done": "Done",
+      "call": "call",
+      "call_plural": "calls",
+      "callWithCount": "{{count}} call",
+      "callWithCount_plural": "{{count}} calls"
     },
     "about": {
       "title": "About 5 Calls",
@@ -58,8 +62,9 @@
       "feature2": "uses your location to find your local representatives so your calls have more impact",
       "getApp": "Get the 5 Calls app:"
     },
-    "issuesHeader":{
-      "whatsImportantToYou": "What’s important to you?"
+    "issues":{
+      "whatsImportantToYou": "What’s important to you?",
+      "issuesListItemSummary": "$t(common.callWithCount,{'count': {{callsToMake}}}) to make"
     },
     "location": {
       "gettingYourLocation": "Getting your location",
