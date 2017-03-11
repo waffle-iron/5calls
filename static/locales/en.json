@@ -7,7 +7,8 @@
       "call": "call",
       "call_plural": "calls",
       "callWithCount": "{{count}} call",
-      "callWithCount_plural": "{{count}} calls"
+      "callWithCount_plural": "{{count}} calls",
+      "openSource":  "Open Source"
     },
     "about": {
       "title": "About 5 Calls",
@@ -93,5 +94,15 @@
     },
     "script": {
       "yourScript": "Your script:"
+    },
+    "footer": {
+      "getEmailAlerts": "Get email alerts once a week",
+      "subscribe": "Subscribe",
+      "updatesOnTwitter": "Updates on Twitter",
+      "ipGeolocation": "IP geolocation by ipinfo.io",
+      "about": "About",
+      "privacy": "Privacy",
+      "faq": "FAQ",
+      "contact": "Contact"
     }
 }
