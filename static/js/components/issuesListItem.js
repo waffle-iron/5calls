@@ -32,7 +32,7 @@ module.exports = (issue, state, prev, send) => {
 
   let statusText = "";
   if(issueIsCompleted(state, issue)) {
-    statusText = t.getText("common.Done");
+    statusText = t.getText("common.done");
   }
 
   return html`

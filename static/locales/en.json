@@ -20,13 +20,13 @@
         "article2":"<a href='http://www.vox.com/policy-and-politics/2016/11/15/13641920/trump-resist-congress'>'Don’t just write to your representatives. Call them — and go to town halls.'</a> <span class='about__source'>Vox</span>",
         "article3":"<a href='https://www.washingtonpost.com/powerpost/a-day-of-chaos-at-the-capitol-as-house-republicans-back-down-on-ethics-changes/2017/01/03/50e392ac-d1e6-11e6-9cb0-54ab630851e8_story.html?utm_term=.86c8d3a06832'>'I can tell you the calls we’ve gotten in my district office and here in Washington surprised me, meaning the numbers of calls.'</a> <span class='about__source'> Washington Post</span>",
         "article4":"<a href='https://twitter.com/costareports/status/816373917900161024'>'Most members tell me blizzard of angry constituent calls were most impt factor in getting the House to sideline the amdt'</a> <span class='about__source'>Robert Costa</span>",
-        "weDoTheResearch": "5 Calls does the research for each issue, determining out which representatives are most influential for which topic, collecting phone numbers for those offices and writing scripts that clearly articulate a progressive position. You just have to call.",
+        "weDoTheResearch": "5 Calls does the research for each issue, determining which representatives are most influential for which topic, collecting phone numbers for those offices and writing scripts that clearly articulate a progressive position. You just have to call.",
         "sendYourIssues": "Are we not covering an issue we should be? <a href='mailto:{{contactEmail}}'>Please reach out.</a>"
       },
       "callingTips": {
         "title": "Calling Tips",
         "callTechnique": "Calls should take less than a minute. You’ll be speaking to a staffer, so make your point clearly so they can tally your opinion correctly. The provided scripts are useful but you can add your own words.",
-        "callEtiquette": "Be respectful. The staffers that pick up the phone aren’t looking to challenge you and you should treat them with the same respect you expect from them, regardless of which party they work for."
+        "callEtiquette": "Be respectful. The staffers that pick up the phone are not looking to challenge you and you should treat them with the same respect you expect from them, regardless of which party they work for."
       },
       "whoIs5Calls": {
         "title": "Who made 5 Calls?",
@@ -40,7 +40,7 @@
       }
     },    
     "callCount": {
-      "callCountPhrase": "Together we’ve made {{totalCalls}} calls"
+      "callCountPhrase": "Together we’ve made $t(common.callWithCount,{'count': {{totalCalls}}})"
     },
     "contact": {
       "localOfficeNumbers": "Local office numbers:",
