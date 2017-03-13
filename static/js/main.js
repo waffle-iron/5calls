@@ -401,7 +401,12 @@ let startApp = () => {
   document.body.replaceChild(tree, rootNode);
 }
 
-var locale = t.getLocaleFromBrowserLanguage(navigator.language || navigator.userLanguage);
+let locale = t.getLocaleFromBrowserLanguage(navigator.language || navigator.userLanguage);
+locale = 'es';
+
+// put i18n on the window object so that we can get the localized strings for the footer on index html 
+// and for the privacy page.
+window.i18n = i18n;
 
 // need to get the localization resource file before bootstrapping the app's rendering process
 i18n.use(XHR)
@@ -414,6 +419,7 @@ i18n.use(XHR)
     'fallbackLng' : 'en'
 }, (t) => {
   startApp();
+  translateFooter(i18n);
 });
 
 

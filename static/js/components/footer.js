@@ -15,7 +15,7 @@ module.exports = (state, prev, send) => {
       </div>
       <div class="colophon">
         <a href="https://github.com/5calls/5calls">
-          <i class="fa fa-github" aria-hidden="true"></i>${t.getText('common.openSource')}
+          <i class="fa fa-github" aria-hidden="true"></i>${t.getText('footer.openSource')}
         </a>
         <a href="https://twitter.com/make5calls">
           <i class="fa fa-twitter" aria-hidden="true"></i>${t.getText('footer.updatesOnTwitter')}

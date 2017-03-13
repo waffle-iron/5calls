@@ -2,13 +2,16 @@
     "common": {
       "reset": "reset",
       "go": "Go",
-      "5calls": "5 Calls",
+      "5Calls": "$t(common.callWithCount, {'count': 5})",
       "done": "Done",
       "call": "call",
       "call_plural": "calls",
       "callWithCount": "{{count}} call",
       "callWithCount_plural": "{{count}} calls",
-      "openSource":  "Open Source"
+      "person": "person",
+      "person_plural": "people",
+      "personWithCount": "{{count}} person",
+      "personWithCount_plural": "{{count}} people"
     },
     "about": {
       "title": "About 5 Calls",
@@ -59,7 +62,7 @@
       "p1": "Turn your passive participation into active resistance. Facebook likes and Twitter retweets can’t create the change you want to see. Calling your Government on the phone can.",
       "p2": "Spend 5 minutes, make 5 calls.",
       "p3": "Calling is the most effective way to influence your representative.   Read more about <a href='#about'>why calling works.",
-      "featuresTitle": "5 Calls:",
+      "featuresTitle": "$t(common.5Calls):",
       "feature1": "provides phone numbers and scripts so calling is quick and easy",
       "feature2": "uses your location to find your local representatives so your calls have more impact",
       "getApp": "Get the 5 Calls app:"
@@ -79,7 +82,7 @@
       "reason": "This issue is no longer relevant, or the URL you used to get here was wrong. If you clicked a link on this site to get here, <a href='mailto:{{contactEmail}}'>please tell us</a> so we can fix it!`",
       "nextStep":"Next choose a different issue from the list to make calls about."
     },
-    "noContact":{
+    "noContact":{      
       "oneOfTwoDistricts":"The location you provided could be in one of two congressional districts.",
       "enterYourLocation":"<a onclick=${(e) => enterLocation(e)}>Enter your address</a> to identify your representative in the House.",
       "setYourLocation":"<a onclick=${(e) => enterLocation(e)}>Set your location</a> to find your representatives"
@@ -103,6 +106,7 @@
       "about": "About",
       "privacy": "Privacy",
       "faq": "FAQ",
-      "contact": "Contact"
+      "contact": "Contact",
+      "openSource":  "Open Source"
     }
 }

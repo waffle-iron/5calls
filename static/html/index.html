@@ -54,8 +54,7 @@
 
     <header class="logo__header" role="banner"></header>
 
-    <div id="root">
-      <div class="layout">
+    <div id="root" class="layout">
       <aside id="nav" role="contentinfo" class="layout__side">
         <div class="issues">
           <header class="issues__header" role="banner">
@@ -89,41 +88,40 @@
 
         </div>
       </main>
-      <footer>
-        <div class="tinyletter__form">
-          <form action="https://my.sendinblue.com/users/subscribe/js_id/2p22o/id/1" method="get" target="popupwindow" onsubmit="window.open('https://my.sendinblue.com/users/subscribe/js_id/2p22o/id/1', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
-            <label for="email">Get email alerts once a week</label>
-            <span class="emailform">
-              <input type="text" style="width:140px" name="email" id="email" />
-              <input type="submit" value="Subscribe" />
-            </span>
-          </form>
-        </div>
-        <div class="colophon">
-          <a href="https://github.com/5calls/5calls">
-            <i class="fa fa-github" aria-hidden="true"></i> Open Source
-          </a>
-          <a href="https://twitter.com/make5calls">
-            <i class="fa fa-twitter" aria-hidden="true"></i> Updates on Twitter
-          </a>
-          <a href="https://5calls.org/privacy.html" data-no-routing>
-            <i class="fa fa-shield" aria-hidden="true"></i> Privacy
-          </a>
-          <a href="mailto:make5calls@gmail.com">
-            <i class="fa fa-envelope" aria-hidden="true"></i> Contact
-          </a>
-          <a href="#about">
-            <i class="fa fa-heart" aria-hidden="true"></i> About
-          </a>
-          <a href="https://5calls.zendesk.com/hc/en-us/sections/115000760947-FAQ">
-            <i class="fa fa-question-circle" aria-hidden="true"></i> FAQ
-          </a>
-          <br />
-          <a href="http://ipinfo.io">IP geolocation by ipinfo.io</a>
-        </div>
-      </footer>
-      </div>
     </div>
+    <footer>
+      <div class="tinyletter__form">
+        <form action="https://my.sendinblue.com/users/subscribe/js_id/2p22o/id/1" method="get" target="popupwindow" onsubmit="window.open('https://my.sendinblue.com/users/subscribe/js_id/2p22o/id/1', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+          <label for="email" id="footerEmailLabel">Get email alerts once a week</label>
+          <span class="emailform">
+            <input type="text" style="width:140px" name="email" id="email" />
+            <input type="submit" value="Subscribe" id="footerBtnSubscribe" />
+          </span>
+        </form>
+      </div>
+      <div class="colophon">
+        <a href="https://github.com/5calls/5calls">
+          <i class="fa fa-github" aria-hidden="true"></i> <span id="footerOpenSource">openSource<span>
+        </a>
+        <a href="https://twitter.com/make5calls">
+          <i class="fa fa-twitter" aria-hidden="true"></i> <span id="footerTwitter">Updates on Twitter<span>
+        </a>
+        <a href="https://5calls.org/privacy.html" data-no-routing>
+          <i class="fa fa-shield" aria-hidden="true"></i> <span id="footePrivacy">Privacy<span>
+        </a>
+        <a href="mailto:make5calls@gmail.com">
+          <i class="fa fa-envelope" aria-hidden="true"></i> <span id="footerContact">Contact<span>
+        </a>
+        <a href="#about">
+          <i class="fa fa-heart" aria-hidden="true"></i> <span id="footerAbout">About<span>
+        </a>
+        <a href="https://5calls.zendesk.com/hc/en-us/sections/115000760947-FAQ">
+          <i class="fa fa-question-circle" aria-hidden="true"></i> <span id="footerFAQ">FAQ<span>
+        </a>
+        <br />
+        <a href="http://ipinfo.io"><span id="footerIpGeoLocation">IP geolocation by ipinfo.io<span></a>
+      </div>
+    </footer>
 
     <script src="/js/app.js"></script>
     <script src="https://cdn.ravenjs.com/3.9.1/raven.min.js"></script>
@@ -140,5 +138,46 @@
       ga('send', 'pageview');
 
     </script>
+    <script>
+      function translateFooter(i18n){
+        var el = document.getElementById('footerOpenSource');
+        if (el){
+          el.innerText = i18n.t('footer.openSource');
+        }
+        el = document.getElementById('footerTwitter');
+        if (el){
+          el.innerText = i18n.t('footer.updatesOnTwitter');
+        }
+        el = document.getElementById('footerPrivacy');
+        if (el){
+          el.innerText = i18n.t('footer.privacy');
+        }
+        el = document.getElementById('footerContact');
+        if (el){
+          el.innerText = i18n.t('footer.contact');
+        }
+        el = document.getElementById('footerAbout');
+        if (el){
+          el.innerText = i18n.t('footer.about');
+        }
+        el = document.getElementById('footerFAQ');
+        if (el){
+          el.innerText = i18n.t('footer.faq');
+        }
+        el = document.getElementById('footerIpGeoLocation');
+        if (el){
+          el.innerText = i18n.t('footer.ipGeolocation');
+        }
+        el = document.getElementById('footerEmailLabel');
+        if (el){
+          el.innerText = i18n.t('footer.getEmailAlerts');
+        }
+        el = document.getElementById('footerBtnSubscribe');
+        if (el){
+          el.value = i18n.t('footer.subscribe');
+        }
+      }
+    </script>
+
   </body>
 </html>

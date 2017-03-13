@@ -2,20 +2,19 @@
     "common": {
       "reset": "reiniciar",
       "go": "Go",
-      "5calls": "$t(callWithCount, {'count': 5})",
+      "5Calls": "$t(common.callWithCount, {'count': 5})",
       "done": "Terminado",
       "call": "llamada",
       "call_plural": "llamadas",
       "callWithCount": "{{count}} llamada",
-      "callWithCount_plural": "{{count}} llamadas",
-      "openSource":  "Fuente Abierta"
+      "callWithCount_plural": "{{count}} llamadas"
     },
     "about": {
       "title": "Alrededor de 5 Calls",
       "whyCallingWorks": {
         "title": "Por qué la llamada funciona",
-        "justificationForCalling": "Llamar a los miembros del Congreso es la forma más efectiva de hacerse escuchar. Las llamadas son contadas por los miembros del personal y el recuento se da a sus representantes, informándoles de la intensidad con que sus electores se sienten acerca de un tema actual. Cuanto antes te metas, más probable es que <strong> tu voz influya en su posición </ strong>.",
-        "justificationArticlesListHeader": "Don’t just take it from us:",
+        "justificationForCalling": "",
+        "justificationArticlesListHeader": "No lo tome de nosotros:",
         "article1":"<a href='https://www.nytimes.com/2016/11/22/us/politics/heres-why-you-should-call-not-email-your-legislators.html'>'Here’s Why You Should Call, Not Email, Your Legislators'</a> <span class='about__source'>NY Times</span>",
         "article2":"<a href='http://www.vox.com/policy-and-politics/2016/11/15/13641920/trump-resist-congress'>'Don’t just write to your representatives. Call them — and go to town halls.'</a> <span class='about__source'>Vox</span>",
         "article3":"<a href='https://www.washingtonpost.com/powerpost/a-day-of-chaos-at-the-capitol-as-house-republicans-back-down-on-ethics-changes/2017/01/03/50e392ac-d1e6-11e6-9cb0-54ab630851e8_story.html?utm_term=.86c8d3a06832'>'I can tell you the calls we’ve gotten in my district office and here in Washington surprised me, meaning the numbers of calls.'</a> <span class='about__source'> Washington Post</span>",
@@ -36,7 +35,7 @@
       },
       "joinUs": {
         "title": "Únete a nosotros",
-        "contactInvite": "Este proyecto es <a href='https://github.com/5calls'>$t(common.openSource)</a> y realizado por voluntarios. Si quieres unirte a nosotros para desarrollar herramientas útiles para los ciudadanos, ponte en contacto con <a href='https://twitter.com/make5calls'> Twitter </a> o <a href = 'mailto: { {ContactEmail} '> correo electrónico </a>."
+        "contactInvite": "Este proyecto es <a href='https://github.com/5calls'>Fuente Abierta</a> y realizado por voluntarios. Si quieres unirte a nosotros para desarrollar herramientas útiles para los ciudadanos, ponte en contacto con <a href='https://twitter.com/make5calls'> Twitter </a> o <a href = 'mailto: { {ContactEmail} '> correo electrónico </a>."
       }
     },    
     "callCount": {
@@ -59,7 +58,7 @@
       "p1": "Convierta su participación pasiva en resistencia activa. Facebook le gusta y Twitter retweets no puede crear el cambio que desea ver. Llamar a su Gobierno en el teléfono puede.",
       "p2": "Pase 5 minutos, haga 5 llamadas.",
       "p3": "Llamar es la forma más efectiva de influir en su representante. Lea más sobre <a href='#about'> por qué la llamada funciona.",
-      "featuresTitle": "$t(common.5Calls)",
+      "featuresTitle": "$t(common.5Calls):",
       "feature1": "Proporciona números de teléfono y secuencias de comandos para llamar es rápido y fácil",
       "feature2": "Utiliza su ubicación para encontrar a sus representantes locales para que sus llamadas tengan más impacto",
       "getApp": "Obtenga la aplicación de 5 llamadas:"
@@ -90,7 +89,7 @@
       "voicemail":"Dejé un buzón de voz",
       "madeContact":"Contacto hecho",
       "skip":"Omitir",
-      "contactsLeft": "{{ContactsLeft}} más {{callsPluralization}} para llamar a este problema."
+      "contactsLeft": "{{contactsLeft}} más {{callsPluralization}} para llamar a este problema."
     },
     "script": {
       "yourScript": "Su guión:"
@@ -103,6 +102,7 @@
       "about": "Acerca de",
       "privacy": "Privada",
       "faq": "Preguntas más frecuentes",
-      "contact": "Contacto"
+      "contact": "Contacto",
+      "openSource":  "Fuente Abierta"
     }
 }
