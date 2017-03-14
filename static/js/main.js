@@ -6,9 +6,10 @@ const logger = require('loglevel');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
 const scrollIntoView = require('scroll-into-view');
-const t = require('./utils/translation');
 const i18n = require('i18next');
 const XHR = require('i18next-xhr-backend');
+const constants = require('./constants');
+const t = require('./utils/translation');
 
 const app = choo();
 const appURL = 'https://5calls.org';
@@ -401,22 +402,18 @@ let startApp = () => {
   document.body.replaceChild(tree, rootNode);
 }
 
+// get the user's locale
 let locale = t.getLocaleFromBrowserLanguage(navigator.language || navigator.userLanguage);
-locale = 'es';
-
-// put i18n on the window object so that we can get the localized strings for the footer on index html 
-// and for the privacy page.
-window.i18n = i18n;
 
 // need to get the localization resource file before bootstrapping the app's rendering process
 i18n.use(XHR)
     .init({
-    'debug': true,
+    //'debug': true,
     'lng': locale,
     'backend': {
       'loadPath': 'locales/{{lng}}.json'
     },
-    'fallbackLng' : 'en'
+    'fallbackLng' : constants.localization.fallbackLocale
 }, (t) => {
   startApp();
   translateFooter(i18n);

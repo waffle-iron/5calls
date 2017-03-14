@@ -3,7 +3,6 @@ const store = require('../utils/localstorage.js');
 
 const sidebar = require('../components/sidebar.js');
 const content = require('../components/content.js');
-const footer = require('../components/footer.js');
 
 module.exports = (state, prev, send) => {
   return html`

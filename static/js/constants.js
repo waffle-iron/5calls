@@ -4,4 +4,8 @@ module.exports = {
     github: 'https://github.com/5calls',
     twitter: 'https://twitter.com/make5calls'
   },
+  localization: {
+    supportedLocales: ['en', 'es'],
+    fallbackLocale: 'en'
+  }
 }

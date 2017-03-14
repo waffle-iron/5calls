@@ -1,5 +1,6 @@
 const i18n = require('i18next');
 const html = require('choo/html');
+const constants = require('../constants');
 
 const find = require('lodash/find');
 
@@ -37,12 +38,18 @@ module.exports = {
         return func(html);
     },
 
+    // Get the user's locale.  
+    // If the user's locale is not supported, we fall back to "en"
+    // Currently, the supported locales are hardcoded.
+    //  Shall we check the back end for supported locales? or keep a config file in the front end?
     getLocaleFromBrowserLanguage : (browserLanguage) => {
-        const acceptedLocales = ['en', 'es'];
-        const fallbackLocale = 'en';
-        let locale = find(acceptedLocales, (l) => l === browserLanguage.substring(0,2))
+        if (!browserLanguage){
+            return constants.localization.fallbackLocale;
+        }
+
+        let locale = find(constants.localization.supportedLocales, (l) => l === browserLanguage.substring(0,2))
         if (!locale){
-            locale = fallbackLocale;
+            locale = constants.localization.fallbackLocale;
         }    
 
         return locale;
