@@ -43,7 +43,7 @@
       }
     },    
     "callCount": {
-      "callCountPhrase": "Together we’ve made {{formattedCallsTotal}} $t(common.call,{count: {{totalCalls}}})"
+      "callCountPhrase": "Together we’ve made {{formattedCallsTotal}} $t(common.call,{'count': {{totalCalls}}})"
     },
     "contact": {
       "localOfficeNumbers": "Local office numbers:",
