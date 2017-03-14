@@ -1,5 +1,4 @@
 const choo = require('choo');
-const html = require('choo/html');
 const http = require('xhr');
 const find = require('lodash/find');
 const logger = require('loglevel');

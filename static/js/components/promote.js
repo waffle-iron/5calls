@@ -8,9 +8,9 @@ module.exports = (state, prev, send) => {
   // if no issue is selected, use these default parameters
   let url = encodeURIComponent("https://5calls.org")
   let additionalTwitterComps = "&via=make5calls"
-  let tweet = encodeURIComponent("Spend 5 minutes. Make 5 calls. Make your voice heard.")
-  let twitterTitle = "Share on Twitter"
-  let facebookTitle = "Share on Facebook"
+  let tweet = encodeURIComponent(t.getText("promote.motto", null, true))
+  let twitterTitle = t.getText("promote.shareOnTwitter", null, true)
+  let facebookTitle = t.getText("promote.shareOnTwitter", null, true)
 
   const issue = find(state.issues, ['id', state.location.params.issueid]);
 

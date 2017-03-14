@@ -1,8 +1,6 @@
-const html = require('choo/html');
 const t = require('./translation.js');
 const chai = require('chai');
 const expect = chai.expect;
-const i18n = require('i18next');
 
 describe('translation', () => {
   describe('arguments to getText method', () => {
