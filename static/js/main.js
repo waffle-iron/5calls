@@ -83,6 +83,8 @@ app.model({
   state: {
     // remote data
     issues: [],
+    activeIssues: [],
+    inactiveIssues: [],
     totalCalls: 0,
     splitDistrict: false,
 
@@ -111,14 +113,30 @@ app.model({
   },
 
   reducers: {
-    receiveIssues: (state, data) => {
+    receiveActiveIssues: (state, data) => {
       response = JSON.parse(data)
-      issues = response.issues //.filter((v) => { return v.contacts.length > 0 });
-      contactIndices = {};
-      issues.forEach(function(item, index) {
-         contactIndices[item.id] = 0;
-      });
-      return { issues: issues, splitDistrict: response.splitDistrict, invalidAddress: response.invalidAddress, contactIndices: contactIndices }
+      return {
+        activeIssues: response.issues,
+        splitDistrict: response.splitDistrict,
+        invalidAddress: response.invalidAddress,
+      }
+    },
+    receiveInactiveIssues: (state, data) => {
+      response = JSON.parse(data)
+      return {
+        inactiveIssues: response.issues,
+      }
+    },
+    mergeIssues: (state, data) => {
+      issues = state.activeIssues.concat(state.inactiveIssues)
+      contactIndices = state.contactIndices
+      issues.forEach(issue => {
+        contactIndices[issue.id] = contactIndices[issue.id] || 0;
+      })
+      return {
+        issues,
+        contactIndices,
+      }
     },
     receiveTotals: (state, data) => {
       totals = JSON.parse(data);
@@ -192,22 +210,37 @@ app.model({
     },
     toggleFieldOfficeNumbers: (state, data) => ({ showFieldOfficeNumbers: !state.showFieldOfficeNumbers }),
     hideFieldOfficeNumbers: (state, data) => ({ showFieldOfficeNumbers: false }),
+    setCacheDate: (state, data) => ({ [data]: Date.now() })
   },
 
   effects: {
-    fetch: (state, data, send, done) => {
+    fetchActiveIssues: (state, data, send, done) => {
       address = "?address="
       if (state.address !== '') {
         address += state.address
       } else if (state.geolocation !== "") {
         address += state.geolocation
       }
-
       const issueURL = appURL+'/issues/'+address
-      logger.debug("fetching url",issueURL);
+      logger.debug("fetching url", issueURL);
       http(issueURL, (err, res, body) => {
         send('setCachedCity', body, done)
-        send('receiveIssues', body, done)
+        send('receiveActiveIssues', body, done)
+        send('mergeIssues', body, done)
+      })
+    },
+    fetchInactiveIssues: (state, data, send, done) => {
+      address = "?inactive=true&address="
+      if (state.address !== '') {
+        address += state.address
+      } else if (state.geolocation !== "") {
+        address += state.geolocation
+      }
+      const issueURL = appURL+'/issues/'+address
+      logger.debug("fetching url", issueURL);
+      http(issueURL, (err, res, body) => {
+        send('receiveInactiveIssues', body, done)
+        send('mergeIssues', body, done)
       })
     },
     getTotals: (state, data, send, done) => {
@@ -217,11 +250,11 @@ app.model({
     },
     setLocation: (state, data, send, done) => {
       send('setAddress', data, done);
-      send('fetch', {}, done);
+      send('fetchActiveIssues', {}, done);
     },
     setBrowserGeolocation: (state, data, send, done) => {
       send('setGeolocation', data, done);
-      send('fetch', {}, done);
+      send('fetchActiveIssues', {}, done);
     },
     unsetLocation: (state, data, send, done) => {
       send('resetLocation', data, done)
@@ -238,7 +271,7 @@ app.model({
             response = JSON.parse(body)
             if (response.city != "") {
               send('receiveIPInfoLoc', response, done);
-              send('fetch', {}, done);
+              send('fetchActiveIssues', {}, done);
             } else {
               send('fetchLocationBy', 'address', done);
               Raven.captureMessage("Location with no city: "+response.loc, { level: 'warning' });
@@ -314,7 +347,7 @@ app.model({
     },
     startup: (state, data, send, done) => {
       // sometimes we trigger this again when reloading mainView, check for issues
-      if (state.issues.length == 0 || state.geolocation == '') {
+      if (state.activeIssues.length == 0 || state.geolocation == '') {
         // Check for browser support of geolocation
         if ((state.allowBrowserGeo !== false && navigator.geolocation) &&
           state.locationFetchType === 'browserGeolocation' && state.geolocation == '') {
@@ -325,7 +358,7 @@ app.model({
         }
         else if (state.address !== '' || state.geolocation !== '') {
           send('fetchingLocation', false, done);
-          send('fetch', {}, done);
+          send('fetchActiveIssues', {}, done);
         }
       }
     },
@@ -394,6 +427,7 @@ app.router({ default: '/' }, [
     [':issueid', require('./pages/doneView.js')]
   ],
   ['/about', require('./pages/aboutView.js')],
+  ['/issues', require('./pages/issuesView.js')],
 ]);
 
 let startApp = () => {

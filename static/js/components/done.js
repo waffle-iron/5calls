@@ -15,7 +15,7 @@ module.exports = (state, prev, send) => {
       <div class="call_complete">
         <h2 class="call__title">${t.getText('callComplete.title')}</h2>
         <p class="call__text">${t.getText('callComplete.pickAnotherIssue')}</p>
-        ${promote(state, prev, send, issue)}
+        ${promote(state, prev, send)}
 
         <p class="call__text"> ${t.getText('callComplete.learnWhyCallingIsGreat')}</p>
 

@@ -2,6 +2,7 @@ const html = require('choo/html');
 const t = require('../utils/translation');
 
 const callcount = require('./callcount.js');
+const promote = require('./promote.js');
 
 module.exports = (state, prev, send) => {
   // TODO: separate this out into straight up content and stats
@@ -11,6 +12,8 @@ module.exports = (state, prev, send) => {
         <h2 class="hypothesis__title">${t.getText('hypothesis.title')}</h2>
         <p>${t.getText('hypothesis.p1')}</p>
         <p><strong>${t.getText('hypothesis.p2')}</strong></p>
+
+        ${promote(state, prev, send)}
       </header>
 
       <div class="hypothesis__text">
@@ -29,7 +32,7 @@ module.exports = (state, prev, send) => {
         <li><a href="https://play.google.com/store/apps/details?id=org.a5calls.android.a5calls&hl=en"><img class="play" src="/img/google-play-badge.png" alt="5 Calls on Google Play" /></a></li>
         </ul>
       </div>
-      
+
       ${callcount(state, prev, send)}
 
     </div>

@@ -13,6 +13,7 @@ var gulp = require('gulp')
   , http_server = require('http-server')
   , connect_logger = require('connect-logger')
   , spawn = require('child_process').spawn
+  , mocha = require('gulp-mocha')
   ;
 
 var SRC = {
@@ -166,6 +167,17 @@ gulp.task('test:js-unit-windows', function() {
     new Server({configFile: path.join(__dirname, "/karma.conf.js")}).start();
 });
 
+gulp.task('test:e2e', function() {
+  return gulp.src([
+    './e2e-tests/support/setupEndToEndTests.js',
+    './e2e-tests/{*,!(support)/*}.js'
+  ])
+    .pipe(mocha({
+      reporter: 'spec',
+      timeout: 6000
+    }));
+});
+
 // Designed for running tests in continuous integration. The main difference
 // here is that browser tests are run across a gamut of browsers/platforms via
 // Sauce Labs instead of just a few locally.
@@ -176,8 +188,8 @@ gulp.task('test:ci', ['eslint'], function() {
 gulp.task('eslint', function() {
   const eslint = require('eslint');
   const linter = new eslint.CLIEngine();
-  const report = linter.executeOnFiles(['./static']);
-  
+  const report = linter.executeOnFiles(['./']);
+
   // customize messages to be a little more helpful/friendly
   report.results.forEach(result => {
     result.messages.forEach(message => {
