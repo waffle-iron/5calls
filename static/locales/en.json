@@ -1,5 +1,5 @@
 {
-    "common": {
+    "common":{
       "reset": "reset",
       "go": "Go",
       "5Calls": "$t(common.callWithCount, {'count': 5})",
@@ -93,7 +93,7 @@
       "voicemail":"Left Voicemail",
       "madeContact":"Made Contact",
       "skip":"Skip",
-      "contactsLeft": "{{contactsLeft}} more {{callsPluralization}} to call for this issue."
+      "contactsLeft": "{{contactsRemaining}} more $t(common.person, 'count': {{contactsRemaining}}) to call for this issue."
     },
     "script": {
       "yourScript": "Your script:"

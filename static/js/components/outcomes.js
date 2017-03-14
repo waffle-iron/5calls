@@ -8,9 +8,9 @@ module.exports = (state, prev, send) => {
   const currentContact = issue.contacts[currentIndex];
 
   const contactsLeft = issue.contacts.length - (currentIndex + 1);
-  const callsPluralization = contactsLeft > 1 ? "people" : "person";
+  //const callsPluralization = contactsLeft > 1 ? "people" : "person";
 
-  const contactsLeftText =  t.getText("outcomes.contactsLeft", { contactsLeft: contactsLeft, callsPluralization: callsPluralization}) //contactsLeft + " more " + callsPluralization +" to call for this issue.";
+  const contactsLeftText =  t.getText("outcomes.contactsLeft", { contactsRemaining: contactsLeft}); //contactsLeft + " more " + callsPluralization +" to call for this issue.";
 
   function outcome(result) {
     if (result == null) {

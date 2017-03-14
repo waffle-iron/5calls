@@ -1,13 +1,17 @@
 {
     "common": {
       "reset": "reiniciar",
-      "go": "Go",
+      "go": "Vaya",
       "5Calls": "$t(common.callWithCount, {'count': 5})",
       "done": "Terminado",
       "call": "llamada",
       "call_plural": "llamadas",
       "callWithCount": "{{count}} llamada",
-      "callWithCount_plural": "{{count}} llamadas"
+      "callWithCount_plural": "{{count}} llamadas",
+      "person": "persona",
+      "person_plural": "gente",
+      "personWithCount": "{{count}} persona",
+      "personWithCount_plural": "{{count}} gente"
     },
     "about": {
       "title": "Alrededor de 5 Calls",
