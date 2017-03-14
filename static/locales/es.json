@@ -110,9 +110,9 @@
       "openSource":  "Fuente Abierta"
     }, 
     "promote": {
-      "iJustCalled": "I just called my rep to ",
-      "youShouldDo": " -- you should too:",
-      "tweetThisIssue": "Tweet this issue",
-      "shareThisIssue": "Share this issue"
+      "iJustCalled": "Acabo de llamar a mi representante para ",
+      "youShouldToo": " -- tu también deberías:",
+      "tweetThisIssue": "Tweet esta cuestión",
+      "shareThisIssue": "Comparte esta cuestión"
     }
 }

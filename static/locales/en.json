@@ -111,7 +111,7 @@
     }, 
     "promote": {
       "iJustCalled": "I just called my rep to ",
-      "youShouldDo": " -- you should too:",
+      "youShouldToo": " -- you should too:",
       "tweetThisIssue": "Tweet this issue",
       "shareThisIssue": "Share this issue"
     }
