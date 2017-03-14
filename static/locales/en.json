@@ -108,5 +108,11 @@
       "faq": "FAQ",
       "contact": "Contact",
       "openSource":  "Open Source"
+    }, 
+    "promote": {
+      "iJustCalled": "I just called my rep to ",
+      "youShouldDo": " -- you should too:",
+      "tweetThisIssue": "Tweet this issue",
+      "shareThisIssue": "Share this issue"
     }
 }

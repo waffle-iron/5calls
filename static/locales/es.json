@@ -108,5 +108,11 @@
       "faq": "Preguntas más frecuentes",
       "contact": "Contacto",
       "openSource":  "Fuente Abierta"
+    }, 
+    "promote": {
+      "iJustCalled": "I just called my rep to ",
+      "youShouldDo": " -- you should too:",
+      "tweetThisIssue": "Tweet this issue",
+      "shareThisIssue": "Share this issue"
     }
 }

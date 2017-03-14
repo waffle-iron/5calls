@@ -59,6 +59,19 @@ describe('translation', () => {
     expect(result).to.contain(expected);
   });
 
+  it('should change the language and get key', () => {
+    i18next.changeLanguage('es', (err, t) => {
+      let key = 'common.reset';
+      let expected = 'iniciar';
+      let result = t.getText(key, null, true);
+      expect(result).to.contain(expected);
+
+      //reset back to primary language
+      i18next.changeLanguage('en', (err, t) => {});
+    });
+  });
+
+
 });
 
 

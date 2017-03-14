@@ -9,12 +9,16 @@ logger.setLevel(logger.levels.TRACE, false);
 // initialize i18n cache
 const i18n = require('i18next');
 const en = require('../locales/en.json');
+const es = require('../locales/es.json');
 
 // put the locale into the correct namespace for the i18n cache.
 // Because we are adding it to the cache manually, we have to give it the hierarchy manually
 const namespacedLocaleObject = {
     "en": {
         "translation": en
+    },
+    "es": {
+        "translation": es
     }
 }
 
