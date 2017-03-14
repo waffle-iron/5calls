@@ -2,28 +2,29 @@ const html = require('choo/html');
 const t = require('./translation.js');
 const chai = require('chai');
 const expect = chai.expect;
+const i18n = require('i18next');
 
 describe('translation', () => {
   describe('arguments to getText method', () => {
-    it('should return the localized phrase when no interpolation or pluraliation arguments are passed in the second, or options, argument', () => {
+    it('should return the localized phrase in a span when no interpolation or pluraliation arguments are passed in the second, or options, argument', () => {
       let key = 'common.reset';
       let expected = '<span>reset</span>';
       let result = t.getText(key);
-      expect(result).to.equal(expected);
+      expect(result.outerHTML).to.equal(expected);      
     });
 
     it('should return the localized phrase when null is passed for the second, or options, argument', () => {
       let key = 'common.reset';
       let expected = '<span>reset</span>';
       let result = t.getText(key, null);
-      expect(result).to.equal(expected);
+      expect(result.outerHTML).to.equal(expected);      
     });
 
     it('should return the localized phrase when an empty object is passed for the second, or options, argument', () => {
       let key = 'common.reset';
       let expected = '<span>reset</span>';
       let result = t.getText(key, {});
-      expect(result).to.equal(expected);
+      expect(result.outerHTML).to.equal(expected);      
     });
 
     it('should return the localized phrase when properties that are not used are passed in the object for the second, or options, argument', () => {
@@ -31,21 +32,21 @@ describe('translation', () => {
       let options = { notUsed: 1};
       let expected = '<span>reset</span>';
       let result = t.getText(key, options);
-      expect(result).to.equal(expected);
+      expect(result.outerHTML).to.equal(expected);      
     });
 
     it('should return the localized phrase in a "span" tag when third argument to getText() is missing', () => {
       let key = 'common.reset';
       let expected = '<span>reset</span>';
       let result = t.getText(key, null);
-      expect(result).to.equal(expected);
+      expect(result.outerHTML).to.equal(expected);      
     });
 
     it('should return the phrase in a "span" tag when third argument to getText() is missing', () => {
       let key = 'common.reset';
       let expected = '<span>reset</span>';
       let result = t.getText(key, null, false);
-      expect(result).to.equal(expected);
+      expect(result.outerHTML).to.equal(expected);      
     });
 
     it('should not return the phrase in a "span" tag when third argument is true', () => {
@@ -111,20 +112,6 @@ describe('translation', () => {
     let result = t.getText(key, options, true);
     expect(result).to.contain(expected);
   });
-
-  it('should change the language and get key', () => {
-    i18next.changeLanguage('es', (err, t) => {
-      let key = 'common.reset';
-      let expected = 'iniciar';
-      let result = t.getText(key, null, true);
-      expect(result).to.contain(expected);
-
-      //reset back to primary language
-      i18next.changeLanguage('en', (err, t) => {});
-    });
-  });
-
-
 });
 
 

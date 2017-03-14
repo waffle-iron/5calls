@@ -154,30 +154,16 @@ function runKarmaTests ({singleRun, configFile} = {}) {
 var Server = require("karma").Server;
 var path = require("path");
 
-gulp.task('test:js-unit-windows', function() {
-    new Server({
-        configFile: path.join(__dirname, "/karma.conf.js"),
-    }, karmaCompleted).start();
-
-    //This handles an error formatting output from gulp
-    function karmaCompleted(err) {
-       if (err === 0) {
-          done();
-       } else {
-
-          // done(new gutil.PluginError('karma', {
-          //    message: 'Karma Tests failed'
-          // }));
-       }
-    }
-});
-
 gulp.task('test:js-unit', function() {
   return runKarmaTests({singleRun: true});
 });
 
 gulp.task('test:watch', function() {
   return runKarmaTests({singleRun: false});
+});
+
+gulp.task('test:js-unit-windows', function() {
+    new Server({configFile: path.join(__dirname, "/karma.conf.js")}).start();
 });
 
 // Designed for running tests in continuous integration. The main difference
