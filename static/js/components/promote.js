@@ -9,7 +9,7 @@ module.exports = (state, prev, send, issue) => {
     <div class="promote">
       <p>
         <a target="_blank"
-          href="https://twitter.com/share?url=${url}&text=${tweet}"><i class="fa fa-twitter" aria-hidden="true"></i> t.getText("promote.tweetThisIssue", null , true))</a> <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://bit.ly/2iJb5nH"><i class="fa fa-facebook" aria-hidden="true"></i> t.getText("promote.shareThisIssue", null , true))</a>
+          href="https://twitter.com/share?url=${url}&text=${tweet}"><i class="fa fa-twitter" aria-hidden="true"></i> ${t.getText("promote.tweetThisIssue", null , true)}</a> <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://bit.ly/2iJb5nH"><i class="fa fa-facebook" aria-hidden="true"></i> ${t.getText("promote.shareThisIssue", null , true)}</a>
       </p>
     </div>
     `;
