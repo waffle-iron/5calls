@@ -1,5 +1,6 @@
 const html = require('choo/html');
 const t = require('../utils/translation');
+const constants = require('../constants');
 
 const find = require('lodash/find');
 const contact = require('./contact.js');
@@ -15,9 +16,9 @@ module.exports = (state, prev, send) => {
   if (issue == null) {
     return html`<section class="call" onload=${(e) => send('oldcall')}>
       <div class="call_complete">
-        <h2 class="call__title">${t.getText('noCalls.title')}</h2>
-        <p class="call__text">${t.getText('noCalls.reason')}</p>
-        <p class="call__text">${t.getText('noCalls.nextStep')}</p>
+        <h2 class="call__title">${t.getText('call.title')}</h2>
+        <p class="call__text">${t.getText('call.reason', { contactEmail: constants.contact.email})}</p>
+        <p class="call__text">${t.getText('call.nextStep')}</p>
       </div>
     </section>`;
   }

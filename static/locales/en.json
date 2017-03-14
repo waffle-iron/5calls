@@ -43,7 +43,7 @@
       }
     },    
     "callCount": {
-      "callCountPhrase": "Together we’ve made $t(common.callWithCount,{'count': {{totalCalls}}})"
+      "callCountPhrase": "Together we’ve made {{formattedCallsTotal}} $t(common.call,{'count': {{totalCalls}}})"
     },
     "contact": {
       "localOfficeNumbers": "Local office numbers:",
@@ -77,9 +77,9 @@
       "chooseALocation": "Choose a location",
       "enterAnAddressOrZipCode": "Enter an address or zip code"
     },
-    "noCalls": {
+    "call": {
       "title": "No calls to make",
-      "reason": "This issue is no longer relevant, or the URL you used to get here was wrong. If you clicked a link on this site to get here, <a href='mailto:{{contactEmail}}'>please tell us</a> so we can fix it!`",
+      "reason": "This issue is no longer relevant, or the URL you used to get here was wrong. If you clicked a link on this site to get here, <a href='mailto:{{contactEmail}}'>please tell us</a> so we can fix it!",
       "nextStep":"Next choose a different issue from the list to make calls about."
     },
     "noContact":{      

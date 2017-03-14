@@ -39,7 +39,7 @@
       }
     },    
     "callCount": {
-      "callCountPhrase": "Juntos hemos hecho $t(common.callWithCount,{'count': {{totalCalls}}})"
+      "callCountPhrase": "Juntos hemos hecho {{formattedCallsTotal}} $t(common.call,{'count': {{totalCalls}}})"
     },
     "contact": {
       "localOfficeNumbers": "Números de oficinas locales:",
@@ -73,9 +73,9 @@
       "chooseALocation": "Elija una ubicación",
       "enterAnAddressOrZipCode": "Ingrese una dirección o código postal"
     },
-    "noCalls": {
+    "call": {
       "title": "No hay llamadas para hacer",
-      "reason": "Este problema ya no es relevante, o la URL que usaste para llegar aquí estaba equivocada. Si has hecho clic en un enlace de este sitio para llegar aquí, <a href='mailto:{{contactEmail}}'> por favor díganos </a> para que podamos arreglarlo! `",
+      "reason": "Este problema ya no es relevante, o la URL que usaste para llegar aquí estaba equivocada. Si has hecho clic en un enlace de este sitio para llegar aquí, <a href='mailto:{{contactEmail}}'> por favor díganos </a> para que podamos arreglarlo!",
       "nextStep":"A continuación, elija un tema diferente de la lista para realizar llamadas."
     },
     "noContact":{
