@@ -93,7 +93,7 @@
       "voicemail":"Dejé un buzón de voz",
       "madeContact":"Contacto hecho",
       "skip":"Omitir",
-      "contactsLeft": "{{contactsLeft}} más {{callsPluralization}} para llamar a este problema."
+      "contactsLeft": "{{contactsRemaining}} mas $t(common.person, {'count': {{contactsRemaining}}}) para llamar a este problema."
     },
     "script": {
       "yourScript": "Su guión:"

@@ -2,7 +2,7 @@
     "common":{
       "reset": "reset",
       "go": "Go",
-      "5Calls": "$t(common.callWithCount, {'count': 5})",
+      "5Calls": "$t(common.callWithCount,{'count': 5})",
       "done": "Done",
       "call": "call",
       "call_plural": "calls",
@@ -43,7 +43,7 @@
       }
     },    
     "callCount": {
-      "callCountPhrase": "Together we’ve made {{formattedCallsTotal}} $t(common.call,{'count': {{totalCalls}}})"
+      "callCountPhrase": "Together we’ve made {{formattedCallsTotal}} $t(common.call,{count: {{totalCalls}}})"
     },
     "contact": {
       "localOfficeNumbers": "Local office numbers:",
@@ -93,7 +93,7 @@
       "voicemail":"Left Voicemail",
       "madeContact":"Made Contact",
       "skip":"Skip",
-      "contactsLeft": "{{contactsRemaining}} more $t(common.person, 'count': {{contactsRemaining}}) to call for this issue."
+      "contactsLeft": "{{contactsRemaining}} more $t(common.person, {'count': {{contactsRemaining}}}) to call for this issue."
     },
     "script": {
       "yourScript": "Your script:"
