@@ -99,9 +99,9 @@
       "yourScript": "Your script:"
     },
     "footer": {
-      "getEmailAlerts": "Get email alerts once a week",
+      "emailLabel": "Get email alerts once a week",
       "subscribe": "Subscribe",
-      "updatesOnTwitter": "Updates on Twitter",
+      "twitter": "Updates on Twitter",
       "ipGeolocation": "IP geolocation by ipinfo.io",
       "about": "About",
       "privacy": "Privacy",

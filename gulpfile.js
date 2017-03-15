@@ -159,12 +159,12 @@ gulp.task('test:js-unit', function() {
   return runKarmaTests({singleRun: true});
 });
 
-gulp.task('test:watch', function() {
-  return runKarmaTests({singleRun: false});
-});
-
 gulp.task('test:js-unit-windows', function() {
     new Server({configFile: path.join(__dirname, "/karma.conf.js")}).start();
+});
+
+gulp.task('test:watch', function() {
+  return runKarmaTests({singleRun: false});
 });
 
 gulp.task('test:e2e', function() {
@@ -205,7 +205,8 @@ gulp.task('eslint', function() {
   }
 });
 
-gulp.task('test', ['eslint', 'test:js-unit-windows']);
+gulp.task('test', ['eslint', 'test:js-unit']);
+gulp.task('test:windows', ['eslint', 'test:js-unit-windows']);
 
 gulp.task('default', ['html', 'html:watch', 'html:serve', 'sass', 'sass:watch', 'copy-images', 'copy-images:watch', 'scripts', 'scripts:watch', 'extra', 'locales']);
 gulp.task('deploy', ['html', 'sass', 'build-scripts', 'extra', 'copy-images']);

@@ -9,7 +9,7 @@
     "test": "gulp test",
     "test:watch": "gulp test:watch",
     "test:e2e": "gulp test:e2e",
-    "start": "gulp"
+    "test:windows": "gulp test:windows"
   },
   "repository": {
     "type": "git",
