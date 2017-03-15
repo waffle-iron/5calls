@@ -1,7 +1,7 @@
 const html = require('choo/html');
 const find = require('lodash/find');
 
-module.exports = (state, prev, send) => {
+module.exports = (state) => {
   // share widgets for both platforms don't play well with dom manipulation so we'll make our own
 
   // if no issue is selected, use these default parameters
