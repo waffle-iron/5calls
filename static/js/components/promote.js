@@ -17,7 +17,7 @@ module.exports = (state) => {
   if (issue) {
     url = encodeURIComponent('http://5calls.org/#issue/' + issue.id)
     // the additional "via @make5calls" text that the via param introduces doesn't fit with issue titles, remove it
-    additionalComps = ""
+    additionalTwitterComps = ""
     tweet = encodeURIComponent('I just called my rep to ' + issue.name.substring(0, 72) +
     ' — you should too:')
     twitterTitle = "Tweet this issue"
