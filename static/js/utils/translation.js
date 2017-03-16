@@ -26,16 +26,15 @@ module.exports = {
             return template;
         }    
 
-        // wrap it in the choo literal.  It also needs to be in a single node.
-        template = useDiv 
-                    ? "return html`<div>" + template + "</div>`"    
-                    : "return html`<span>" + template + "</span>`"    
-    
-        // Create a function from this string.  It will compile the string into code.
-        const func = new Function("html", template);
+        parser = new DOMParser();
 
-        // evaluate/run the code.  Choo will render the text/html into dom nodes
-        return func(html);
+        template = useDiv 
+                    ? "<div>" + template + "</div>"    
+                    : "<span>" + template + "</span>"    
+
+        let doc = parser.parseFromString(template, "text/html");
+        let node = useDiv ? doc.querySelector("div") : doc.querySelector("span");
+        return node;
     },
 
     // Get the user's locale.  
