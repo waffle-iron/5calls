@@ -54,7 +54,8 @@
 
     <header class="logo__header" role="banner"></header>
 
-    <div id="root" class="layout">
+    <div id="root">
+      <div class="layout">
       <aside id="nav" role="contentinfo" class="layout__side">
         <div class="issues">
           <header class="issues__header" role="banner">
@@ -123,6 +124,7 @@
         <a href="http://ipinfo.io"><span id="footer-ipGeolocation">IP geolocation by ipinfo.io</span></a>
       </div>
     </footer>
+    </div>
 
     <script src="/js/app.js"></script>
     <script src="https://cdn.ravenjs.com/3.9.1/raven.min.js"></script>
@@ -138,18 +140,6 @@
       ga('create', 'UA-90915119-1', 'auto');
       ga('send', 'pageview');
 
-    </script>
-    <script>
-      function translateFooter(i18n){
-        keys = ['openSource', 'twitter', 'privacy', 'contact', 'about', 'faq','ipGeolocation', 'emailLabel', 'btnSubscribe'];
-        keys.map(function(k) {
-          let el = document.getElementById("footer." + k);
-          if (el){
-            let val = i18n.t("footer." + k);
-            k == 'btnSubscribe' ? el.val = val : el.innerText = val;
-          }
-        });
-      }
     </script>
   </body>
 </html>

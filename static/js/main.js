@@ -451,9 +451,8 @@ i18n.use(XHR)
       'loadPath': 'locales/{{lng}}.json'
     },
     'fallbackLng' : constants.localization.fallbackLocale
-}, (t) => {
+}, () => {
   startApp();
-  translateFooter(i18n);
 });
 
 
