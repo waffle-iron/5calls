@@ -6,7 +6,7 @@ const callcount = require('./callcount.js');
 module.exports = (state, prev, send) => {
 
   return html`
-    <main role="main" class="layout__main" onload=${() => send('startup')}>
+    <main id="content" role="main" class="layout__main" onload=${() => send('startup')}>
     <section class="call">
       <div class="call_complete">
         <h2 class="call__title">Great work!</h2>
