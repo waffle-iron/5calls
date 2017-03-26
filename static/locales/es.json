@@ -55,13 +55,13 @@
     "callComplete": {
       "title":"¡Buen trabajo!",
       "pickAnotherIssue": "Escoja otro tema para seguir llamando, o difundir la palabra compartiendo su trabajo con amigos:",
-      "learnWhyCallingIsGreat":"<a href='#about'> Aprenda por qué llamar a </a> representantes es la manera más efectiva de hacer que su voz sea escuchada."
+      "learnWhyCallingIsGreat":"<a href='/about'> Aprenda por qué llamar a </a> representantes es la manera más efectiva de hacer que su voz sea escuchada."
     },
     "hypothesis": {
       "title": "Haga que su voz sea escuchada",
       "p1": "Convierta su participación pasiva en resistencia activa. Facebook le gusta y Twitter retweets no puede crear el cambio que desea ver. Llamar a su Gobierno en el teléfono puede.",
       "p2": "Pase 5 minutos, haga 5 llamadas.",
-      "p3": "Llamar es la forma más efectiva de influir en su representante. Lea más sobre <a href='#about'> por qué la llamada funciona.",
+      "p3": "Llamar es la forma más efectiva de influir en su representante. Lea más sobre <a href='/about'> por qué la llamada funciona.</a>",
       "featuresTitle": "$t(common.5Calls):",
       "feature1": "Proporciona números de teléfono y secuencias de comandos para llamar es rápido y fácil",
       "feature2": "Utiliza su ubicación para encontrar a sus representantes locales para que sus llamadas tengan más impacto",

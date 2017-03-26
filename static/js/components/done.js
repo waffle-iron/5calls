@@ -27,7 +27,6 @@ module.exports = (state, prev, send) => {
         <p class="call__text">${t.getText('callComplete.pickAnotherIssue')}</p>
         ${promote(state, prev, send)}
         <p class="call__text"> ${t.getText('callComplete.learnWhyCallingIsGreat')}</p>
-
         ${callcount(state, prev, send)}
       </div>
     </section>
