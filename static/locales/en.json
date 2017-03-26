@@ -1,6 +1,5 @@
 {
     "common":{
-      "reset": "reset",
       "go": "Go",
       "5Calls": "$t(common.callWithCount,{'count': 5})",
       "done": "Done",
@@ -65,7 +64,9 @@
       "featuresTitle": "$t(common.5Calls):",
       "feature1": "provides phone numbers and scripts so calling is quick and easy",
       "feature2": "uses your location to find your local representatives so your calls have more impact",
-      "getApp": "Get the 5 Calls app:"
+      "getApp": "Get the $t(common.5Calls) app:",
+      "onAppStore": "$t(common.5Calls) Calls on the App Store",
+      "onGooglePlay": "$t(common.5Calls) Calls on Google Play"
     },
     "issues":{
       "whatsImportantToYou": "What’s important to you?",

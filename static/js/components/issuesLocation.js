@@ -35,7 +35,7 @@ module.exports = (state, prev, send) => {
   }
 
   function debugText(debug) {
-    return debug ? html`<button onclick=${unsetLocation}>${t.getText("common.reset")}</button>` : html``;
+    return debug ? html`<button onclick=${unsetLocation}>reset</button>` : html``;
   }
 
   function submitAddress(e) {

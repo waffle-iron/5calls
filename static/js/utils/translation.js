@@ -13,7 +13,7 @@ module.exports = {
     // useDiv - if true, wrap the text in a <div> tag instead of a span.  This is not currently used, but may be required
     //              with larger fragments such as we will get for issues.  By default(false), the localized text is wrapped in
     //              a <span> tag.  
-    //              Note: if the third parameter is false, this fourth parameter will be ignored because the text will not be wrapped at all.
+    //              Note: if the third parameter is true, this fourth parameter will be ignored because the text will not be wrapped at all.
     getText : (key, variableObject, justText, useDiv) => {
         variableObject = variableObject || {};
         justText = justText || false;

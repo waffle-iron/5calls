@@ -1,6 +1,5 @@
 {
     "common": {
-      "reset": "reiniciar",
       "go": "Vaya",
       "5Calls": "$t(common.callWithCount, {'count': 5})",
       "done": "Terminado",
@@ -65,7 +64,7 @@
       "featuresTitle": "$t(common.5Calls):",
       "feature1": "Proporciona números de teléfono y secuencias de comandos para llamar es rápido y fácil",
       "feature2": "Utiliza su ubicación para encontrar a sus representantes locales para que sus llamadas tengan más impacto",
-      "getApp": "Obtenga la aplicación de 5 llamadas:"
+      "getApp": "Obtenga la aplicación de $t(common.5Calls):"
     },
     "issues":{
       "whatsImportantToYou": "¿Qué es importante para usted?",

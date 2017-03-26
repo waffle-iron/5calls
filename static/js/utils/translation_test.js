@@ -5,72 +5,72 @@ const expect = chai.expect;
 describe('translation', () => {
   describe('arguments to getText method', () => {
     it('should return the localized phrase in a span when no interpolation or pluraliation arguments are passed in the second, or options, argument', () => {
-      let key = 'common.reset';
-      let expected = '<span>reset</span>';
+      let key = 'common.go';
+      let expected = '<span>Go</span>';
       let result = t.getText(key);
       expect(result.outerHTML).to.equal(expected);
     });
 
     it('should return the localized phrase when null is passed for the second, or options, argument', () => {
-      let key = 'common.reset';
-      let expected = '<span>reset</span>';
+      let key = 'common.go';
+      let expected = '<span>Go</span>';
       let result = t.getText(key, null);
       expect(result.outerHTML).to.equal(expected);
     });
 
     it('should return the localized phrase when an empty object is passed for the second, or options, argument', () => {
-      let key = 'common.reset';
-      let expected = '<span>reset</span>';
+      let key = 'common.go';
+      let expected = '<span>Go</span>';
       let result = t.getText(key, {});
       expect(result.outerHTML).to.equal(expected);
     });
 
     it('should return the localized phrase when properties that are not used are passed in the object for the second, or options, argument', () => {
-      let key = 'common.reset';
+      let key = 'common.go';
       let options = { notUsed: 1 };
-      let expected = '<span>reset</span>';
+      let expected = '<span>Go</span>';
       let result = t.getText(key, options);
       expect(result.outerHTML).to.equal(expected);
     });
 
     it('should return the localized phrase in a "span" tag when third argument to getText() is missing', () => {
-      let key = 'common.reset';
-      let expected = '<span>reset</span>';
+      let key = 'common.go';
+      let expected = '<span>Go</span>';
       let result = t.getText(key, null);
       expect(result.outerHTML).to.equal(expected);
     });
 
     it('should return the phrase in a "span" tag when third argument to getText() is missing', () => {
-      let key = 'common.reset';
-      let expected = '<span>reset</span>';
+      let key = 'common.go';
+      let expected = '<span>Go</span>';
       let result = t.getText(key, null, false);
       expect(result.outerHTML).to.equal(expected);
     });
 
     it('should not return the phrase in a "span" tag when third argument is true', () => {
-      let key = 'common.reset';
-      let expected = 'reset';
+      let key = 'common.go';
+      let expected = 'Go';
       let result = t.getText(key, null, true);
       expect(result).to.equal(expected);
     });
 
     it('should return the phrase in a "span" tag when fourth, "useDiv", argument is false', () => {
-      let key = 'common.reset';
-      let expected = '<span>reset</span>';
+      let key = 'common.go';
+      let expected = '<span>Go</span>';
       let result = t.getText(key, null, false, false);
       expect(result.outerHTML).to.equal(expected);
     });
 
     it('should return the phrase in no tag when third argument(justText) is true and fourth(useDiv) argument is true', () => {
-      let key = 'common.reset';
-      let expected = 'reset';
+      let key = 'common.go';
+      let expected = 'Go';
       let result = t.getText(key, null, true, true);
       expect(result).to.equal(expected);
     });
 
     it('should return the phrase in a "div" tag when fourth, "useDiv", argument is true', () => {
-      let key = 'common.reset';
-      let expected = '<div>reset</div>';
+      let key = 'common.go';
+      let expected = '<div>Go</div>';
       let result = t.getText(key, null, false, true);
       expect(result.outerHTML).to.equal(expected);
     });
@@ -78,8 +78,8 @@ describe('translation', () => {
 
   describe('simple localization', () => {
     it('should return the english localized string when given the key', () => {
-      let key = 'common.reset';
-      let expected = 'reset';
+      let key = 'common.go';
+      let expected = 'Go';
       let result = t.getText(key, null, true);
       expect(result).to.equal(expected);
     });
