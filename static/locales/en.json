@@ -1,12 +1,14 @@
 {
     "common":{
       "go": "Go",
-      "5Calls": "$t(common.callWithCount,{'count': 5})",
+      "5Calls": "$t(common.callCapitalizedWithCount,{'count': 5})",
       "done": "Done",
       "call": "call",
       "call_plural": "calls",
       "callWithCount": "{{count}} call",
       "callWithCount_plural": "{{count}} calls",
+      "callCapitalizedWithCount": "{{count}} Call",
+      "callCapitalizedWithCount_plural": "{{count}} Calls",
       "person": "person",
       "person_plural": "people",
       "personWithCount": "{{count}} person",
@@ -48,7 +50,7 @@
     },
     "contact": {
       "localOfficeNumbers": "Local office numbers:",
-      "busyLine": "Busy Line",
+      "busyLine": "Busy line?",
       "busyLineGuidance": "Click here to see local office numbers",
       "callThisOffice": "Call this office:",
       "whyYouAreCallingThisOffice": "Why you’re calling this office:"

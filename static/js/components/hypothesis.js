@@ -17,7 +17,6 @@ module.exports = (state, prev, send) => {
       </header>
 
       <div class="hypothesis__text">
---                                                                                                                                       +
         <p>${t.getText('hypothesis.p3')}</p>
         <h3 class="hypothesis__subtitle">${t.getText('hypothesis.featuresTitle')}</h3>
         <ul class="hypothesis__list">

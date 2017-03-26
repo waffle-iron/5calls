@@ -15,13 +15,13 @@ module.exports = (state, prev, send) => {
       </div>
       <div class="colophon">
         <a href="https://github.com/5calls/5calls">
-          <i class="fa fa-github" aria-hidden="true"></i>${t.getText('footer.openSource')}
+          <i class="fa fa-github" aria-hidden="true"></i> ${t.getText('footer.openSource')}
         </a>
         <a href="https://twitter.com/make5calls">
-          <i class="fa fa-twitter" aria-hidden="true"></i>${t.getText('footer.twitter')}
+          <i class="fa fa-twitter" aria-hidden="true"></i> ${t.getText('footer.twitter')}
         </a>
         <a href="https://5calls.org/privacy.html" data-no-routing>
-          <i class="fa fa-shield" aria-hidden="true"></i>${t.getText('footer.privacy')}
+          <i class="fa fa-shield" aria-hidden="true"></i> ${t.getText('footer.privacy')}
         </a>
         <a href="mailto:make5calls@gmail.com">
           <i class="fa fa-envelope" aria-hidden="true"></i> ${t.getText('footer.contact')}
@@ -33,7 +33,7 @@ module.exports = (state, prev, send) => {
           <i class="fa fa-question-circle" aria-hidden="true"></i> ${t.getText('footer.faq')}
         </a>
         <br />
-        <a href="http://ipinfo.io">${t.getText('footer.ipGeolocation')}</a>
+        <a href="http://ipinfo.io"> ${t.getText('footer.ipGeolocation')}</a>
       </div></footer>
   `;
 }

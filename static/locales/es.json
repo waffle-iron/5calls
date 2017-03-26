@@ -1,12 +1,14 @@
 {
     "common": {
       "go": "Vaya",
-      "5Calls": "$t(common.callWithCount, {'count': 5})",
+      "5Calls": "$t(common.callCapitalizedWithCount, {'count': 5})",
       "done": "Terminado",
       "call": "llamada",
       "call_plural": "llamadas",
       "callWithCount": "{{count}} llamada",
       "callWithCount_plural": "{{count}} llamadas",
+      "callCapitalizedWithCount": "{{count}} Llamada",
+      "callCapitalizedWithCount_plural": "{{count}} Llamadas",
       "person": "persona",
       "person_plural": "gente",
       "personWithCount": "{{count}} persona",
@@ -18,10 +20,10 @@
         "title": "Por qué la llamada funciona",
         "justificationForCalling": "",
         "justificationArticlesListHeader": "No lo tome de nosotros:",
-        "article1":"<a href='https://www.nytimes.com/2016/11/22/us/politics/heres-why-you-should-call-not-email-your-legislators.html'>'Here’s Why You Should Call, Not Email, Your Legislators'</a> <span class='about__source'>NY Times</span>",
-        "article2":"<a href='http://www.vox.com/policy-and-politics/2016/11/15/13641920/trump-resist-congress'>'Don’t just write to your representatives. Call them — and go to town halls.'</a> <span class='about__source'>Vox</span>",
-        "article3":"<a href='https://www.washingtonpost.com/powerpost/a-day-of-chaos-at-the-capitol-as-house-republicans-back-down-on-ethics-changes/2017/01/03/50e392ac-d1e6-11e6-9cb0-54ab630851e8_story.html?utm_term=.86c8d3a06832'>'I can tell you the calls we’ve gotten in my district office and here in Washington surprised me, meaning the numbers of calls.'</a> <span class='about__source'> Washington Post</span>",
-        "article4":"<a href='https://twitter.com/costareports/status/816373917900161024'>'Most members tell me blizzard of angry constituent calls were most impt factor in getting the House to sideline the amdt'</a> <span class='about__source'>Robert Costa</span>",
+        "article1":"<a href='https://www.nytimes.com/2016/11/22/us/politics/heres-why-you-should-call-not-email-your-legislators.html'>'Aquí está la razón por la que debe llamar, no el correo electrónico, sus legisladores.'</a> <span class='about__source'>NY Times</span>",
+        "article2":"<a href='http://www.vox.com/policy-and-politics/2016/11/15/13641920/trump-resist-congress'>'No se limite a escribir a sus representantes. Llámelos - y vaya a los ayuntamientos.'</a> <span class='about__source'>Vox</span>",
+        "article3":"<a href='https://www.washingtonpost.com/powerpost/a-day-of-chaos-at-the-capitol-as-house-republicans-back-down-on-ethics-changes/2017/01/03/50e392ac-d1e6-11e6-9cb0-54ab630851e8_story.html?utm_term=.86c8d3a06832'>'Puedo decirle que las llamadas que hemos recibido en mi oficina del distrito y aquí en Washington me sorprendieron, es decir, el número de llamadas.'</a> <span class='about__source'> Washington Post</span>",
+        "article4":"<a href='https://twitter.com/costareports/status/816373917900161024'>'La mayoría de los miembros me dicen que la ventisca de las llamadas constitutivas enojadas era el factor más importante para conseguir que la Cámara dejara de lado la enmienda.'</a> <span class='about__source'>Robert Costa</span>",
         "weDoTheResearch": "5 Calls hace la investigación para cada tema, determinando qué representantes son los más influyentes para qué tema, recopilando números de teléfono para esas oficinas y escribiendo guiones que claramente articulan una posición progresiva. Sólo tienes que llamar.",
         "sendYourIssues": "¿No estamos cubriendo un tema que debemos ser?<a href='mailto:{{contactEmail}}'>Por favor contáctenos.</a>"
       },
@@ -48,7 +50,7 @@
     },
     "contact": {
       "localOfficeNumbers": "Números de oficinas locales:",
-      "busyLine": "Linea ocupada",
+      "busyLine": "¿Linea ocupada?",
       "busyLineGuidance": "Haga clic aquí para ver los números de oficinas locales",
       "callThisOffice": "Llame a esta oficina:",
       "whyYouAreCallingThisOffice": "La razón por la que llamas a esta oficina:"
