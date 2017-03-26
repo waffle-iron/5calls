@@ -76,6 +76,23 @@ store.getAll('org.5calls.completed', (completed) => {
   completedIssues = completed == null ? [] : completed;
 });
 
+// get stored user stats
+const defaultStats = {
+  all: [],
+  contacted: 0,
+  vm: 0,
+  unavailable: 0,
+};
+let localStats = defaultStats;
+store.getAll('org.5calls.userStats', (stats) => {
+  if (stats.length > 0) {
+    localStats = stats[0];
+  } else {
+    let impactLink = document.querySelector('#impact__link');
+    impactLink.classList.add('hidden');
+  }
+});
+
 app.model({
   state: {
     // remote data
@@ -93,6 +110,9 @@ app.model({
     geoCacheTime: cachedGeoTime,
     allowBrowserGeo: cachedAllowBrowserGeo,
     cachedCity: cachedCity,
+
+    // local user stats
+    userStats: localStats,
 
     // view state
     // getInfo: false,
@@ -158,6 +178,18 @@ app.model({
         return { contactIndices: contactIndices, completedIssues: state.completedIssues.concat(data.issueid) }
       }
     },
+    setUserStats: (state, data) => {
+      let stats = state.userStats;
+      stats['all'].push({
+        contactid: data.contactid,
+        issueid: data.issueid,
+        result: data.result,
+        time: new Date().valueOf()
+      });
+      stats[data.result] = stats[data.result] + 1;
+      store.replace("org.5calls.userStats", 0, stats, () => {});
+      return { userStats: stats }
+    },
     setAddress: (state, address) => {
       Raven.setExtraContext({ address: address })
       store.replace("org.5calls.location", 0, address, () => {});
@@ -201,6 +233,10 @@ app.model({
     resetCompletedIssues: () => {
       store.remove("org.5calls.completed", () => {});
       return { completedIssues: [] }
+    },
+    resetUserStats: () => {
+      store.replace("org.5calls.userStats", 0, defaultStats, () => {});
+      return { userStats: defaultStats }
     },
     home: () => {
       return { activeIssue: false, getInfo: false }
@@ -387,6 +423,8 @@ app.model({
         ga('send', 'event', 'call_result', 'success', data.result);
       }
 
+      send('setUserStats', data, done);
+
       const body = queryString.stringify({ location: state.zip, result: data.result, contactid: data.contactid, issueid: data.issueid })
       http.post(appURL+'/report', { body: body, headers: {"Content-Type": "application/x-www-form-urlencoded"} }, () => {
         // don’t really care about the result
@@ -419,6 +457,7 @@ app.router({ default: '/' }, [
     [':issueid', require('./pages/doneView.js')]
   ],
   ['/about', require('./pages/aboutView.js')],
+  ['/impact', require('./pages/impactView.js')],
   ['/more', require('./pages/issuesView.js')],
 ]);
 
