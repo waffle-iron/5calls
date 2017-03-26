@@ -1,10 +1,17 @@
 const html = require('choo/html');
 const t = require('../utils/translation');
 const constants = require('../constants');
+const scrollIntoView = require('../utils/scrollIntoView.js');
 
 module.exports = (state, prev, send) => {
+
+  function load() {
+    scrollIntoView(document.querySelector('#content'));
+    send('startup');
+  }
+
   return html`
-    <main role="main" class="layout__main" onload=${(e) => send('startup')}>
+    <main id="content" role="main" class="layout__main" onload=${load}>
     <section class="about">
       <h2 class="about__title">${t.getText("about.title")}</h2>
 

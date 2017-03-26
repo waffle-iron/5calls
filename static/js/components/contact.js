@@ -1,7 +1,5 @@
 const html = require('choo/html');
 const t = require('../utils/translation');
-
-const find = require('lodash/find');
 const logger = require('loglevel');
 
 module.exports = (c, state, prev, send) => {
@@ -10,7 +8,7 @@ module.exports = (c, state, prev, send) => {
     logger.debug("Missing reason for contact " + c.name)
   }
 
-  repID = ""
+  let repID = ""
   if (c.party != "") {
     repID = c.party.substring(0,1) + "-" + c.state;
   }

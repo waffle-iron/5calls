@@ -80,6 +80,23 @@ store.getAll('org.5calls.completed', (completed) => {
   completedIssues = completed == null ? [] : completed;
 });
 
+// get stored user stats
+const defaultStats = {
+  all: [],
+  contacted: 0,
+  vm: 0,
+  unavailable: 0,
+};
+let localStats = defaultStats;
+store.getAll('org.5calls.userStats', (stats) => {
+  if (stats.length > 0) {
+    localStats = stats[0];
+  } else {
+    let impactLink = document.querySelector('#impact__link');
+    impactLink.classList.add('hidden');
+  }
+});
+
 app.model({
   state: {
     // remote data
@@ -97,6 +114,9 @@ app.model({
     geoCacheTime: cachedGeoTime,
     allowBrowserGeo: cachedAllowBrowserGeo,
     cachedCity: cachedCity,
+
+    // local user stats
+    userStats: localStats,
 
     // view state
     // getInfo: false,
@@ -162,6 +182,18 @@ app.model({
         return { contactIndices: contactIndices, completedIssues: state.completedIssues.concat(data.issueid) }
       }
     },
+    setUserStats: (state, data) => {
+      let stats = state.userStats;
+      stats['all'].push({
+        contactid: data.contactid,
+        issueid: data.issueid,
+        result: data.result,
+        time: new Date().valueOf()
+      });
+      stats[data.result] = stats[data.result] + 1;
+      store.replace("org.5calls.userStats", 0, stats, () => {});
+      return { userStats: stats }
+    },
     setAddress: (state, address) => {
       Raven.setExtraContext({ address: address })
       store.replace("org.5calls.location", 0, address, () => {});
@@ -205,6 +237,10 @@ app.model({
     resetCompletedIssues: () => {
       store.remove("org.5calls.completed", () => {});
       return { completedIssues: [] }
+    },
+    resetUserStats: () => {
+      store.replace("org.5calls.userStats", 0, defaultStats, () => {});
+      return { userStats: defaultStats }
     },
     home: () => {
       return { activeIssue: false, getInfo: false }
@@ -378,7 +414,7 @@ app.model({
       } else {
         scrollIntoView(document.querySelector('#content'));
         store.add("org.5calls.completed", issue.id, () => {})
-        send('location:set', "/#done/" + issue.id, done)
+        send('location:set', "/done/" + issue.id, done)
         send('setContactIndices', { newIndex: 0, issueid: issue.id }, done);
       }
     },
@@ -390,6 +426,8 @@ app.model({
       } else {
         ga('send', 'event', 'call_result', 'success', data.result);
       }
+
+      send('setUserStats', data, done);
 
       const body = queryString.stringify({ location: state.zip, result: data.result, contactid: data.contactid, issueid: data.issueid })
       http.post(appURL+'/report', { body: body, headers: {"Content-Type": "application/x-www-form-urlencoded"} }, () => {
@@ -404,19 +442,12 @@ app.model({
 
       send('incrementContact', data, done);
     },
-    activateIssue: (state, data, send, done) => {
+    trackSwitchIssue: (state, data, send, done) => {
       send('hideFieldOfficeNumbers', data, done);
 
       ga('send', 'event', 'issue_flow', 'select', 'select');
 
       scrollIntoView(document.querySelector('#content'));
-
-      // Use Choo's internal model to control Window.location. Fixes issue #161
-      // For more information, see: https://github.com/yoshuawuyts/choo/blob/f84ec43fa58508cc20fe537d752a14901339f0cd/README.md#router
-      // this strips the query string which breaks hashes, so temp workaround
-      send('location:set', "/#issue/" + data.id, done)
-      // location = location.origin + "#issue/" + data.id;
-      // location.hash = "issue/" + data.id;
     }
   },
 });
@@ -430,29 +461,31 @@ app.router({ default: '/' }, [
     [':issueid', require('./pages/doneView.js')]
   ],
   ['/about', require('./pages/aboutView.js')],
-  ['/issues', require('./pages/issuesView.js')],
+  ['/impact', require('./pages/impactView.js')],
+  ['/more', require('./pages/issuesView.js')],
 ]);
 
-let startApp = () => {
+let startApp = () => {  
   const tree = app.start();
   const rootNode = document.getElementById('root');
-  document.body.replaceChild(tree, rootNode);
+
+  if (rootNode != null) {
+    document.body.replaceChild(tree, rootNode);
+  }
 }
 
 // get the user's locale
 let locale = t.getLocaleFromBrowserLanguage(navigator.language || navigator.userLanguage);
 
 // need to get the localization resource file before bootstrapping the app's rendering process
-i18n.use(XHR)
-    .init({
+var options = {
     //'debug': true,
     'lng': locale,
     'backend': {
       'loadPath': 'locales/{{lng}}.json'
     },
     'fallbackLng' : constants.localization.fallbackLocale
-}, () => {
-  startApp();
-});
+}
 
-
+i18n.use(XHR)
+    .init(options, startApp);

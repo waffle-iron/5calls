@@ -40,7 +40,7 @@ module.exports = (state, prev, send) => {
 
   function submitAddress(e) {
     e.preventDefault();
-    address = this.elements["address"].value;
+    const address = this.elements["address"].value;
 
     send('setLocation', address);
   }

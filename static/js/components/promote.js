@@ -2,7 +2,7 @@ const html = require('choo/html');
 const t = require('../utils/translation');
 const find = require('lodash/find');
 
-module.exports = (state, prev, send) => {
+module.exports = (state) => {
   // share widgets for both platforms don't play well with dom manipulation so we'll make our own
 
   // if no issue is selected, use these default parameters
@@ -16,9 +16,9 @@ module.exports = (state, prev, send) => {
 
   // for selected issues, customize the share text a bit more
   if (issue) {
-    url = encodeURIComponent('http://5calls.org/#issue/' + issue.id)
+    url = encodeURIComponent('http://5calls.org/issue/' + issue.id)
     // the additional "via @make5calls" text that the via param introduces doesn't fit with issue titles, remove it
-    additionalComps = ""
+    additionalTwitterComps = ""
     tweet = encodeURIComponent(t.getText("promote.iJustCalled", null, true) + issue.name.substring(0, 72) + t.getText("promote.youShouldToo", null , true))
     twitterTitle = t.getText("promote.tweetThisIssue", null , true)
     facebookTitle = t.getText("promote.shareThisIssue", null , true)

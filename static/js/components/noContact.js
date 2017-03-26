@@ -1,8 +1,6 @@
 const html = require('choo/html');
 const t = require('../utils/translation');
 
-const find = require('lodash/find');
-
 module.exports = (state, prev, send) => {
   function initializeFragment(e) {
     keys = ['lnkEnterAddress', 'lnkSetYourLocation'];

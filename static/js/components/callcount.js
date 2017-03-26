@@ -4,7 +4,7 @@ const constants = require('../constants');
 
 module.exports = (state, prev, send) => {
   return html`
-  <h2 class="callcount" onload=${(e) => send('getTotals')}>
+  <h2 class="callcount" onload=${() => send('getTotals')}>
       ${t.getText("callCount.callCountPhrase", {formattedCallsTotal: callCount(state), totalCalls: callCountAsNumber(state)})}
   </h2>
   `;

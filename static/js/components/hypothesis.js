@@ -7,7 +7,7 @@ const promote = require('./promote.js');
 module.exports = (state, prev, send) => {
   // TODO: separate this out into straight up content and stats
   return html`
-    <div class="hypothesis" onload=${(e) => send('getTotals')}>
+    <div class="hypothesis" onload=${() => send('getTotals')}>
       <header class="hypothesis__header">
         <h2 class="hypothesis__title">${t.getText('hypothesis.title')}</h2>
         <p>${t.getText('hypothesis.p1')}</p>
@@ -17,9 +17,9 @@ module.exports = (state, prev, send) => {
       </header>
 
       <div class="hypothesis__text">
+--                                                                                                                                       +
         <p>${t.getText('hypothesis.p3')}</p>
         <h3 class="hypothesis__subtitle">${t.getText('hypothesis.featuresTitle')}</h3>
-
         <ul class="hypothesis__list">
         <li>${t.getText('hypothesis.feature1')}</li>
         <li>${t.getText('hypothesis.feature2')}</li>
