@@ -18,9 +18,9 @@ module.exports = (state, prev, send) => {
       send('oldcall')
     }}>
       <div class="call_complete">
-        <h2 class="call__title">${t.getText('call.title')}</h2>
-        <p class="call__text">${t.getText('call.reason', { contactEmail: constants.contact.email})}</p>
-        <p class="call__text">${t.getText('call.nextStep')}</p>
+        <h2 class="call__title">${t.getText('noCalls.title')}</h2>
+        <p class="call__text">${t.getText('noCalls.reason', { contactEmail: constants.contact.email})}</p>
+        <p class="call__text">${t.getText('noCalls.nextStep')}</p>
       </div>
     </section>`;
   }

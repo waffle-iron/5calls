@@ -33,11 +33,12 @@ module.exports = (state, prev, send) => {
       <p>${t.getText("about.callingTips.callEtiquette")}</p>
 
       <h3 class="about__subtitle">${t.getText("about.whoIs5Calls.title")}</h3>
-      <p>${t.getText("about.whoIs5Calls.whyWeWorkOnIt")}</p>
-      <p>${t.getText("about.whoIs5Calls.broughtToYouBy")}
-      <a href='https://twitter.com/nickoneill'>@nickoneill</a>, <a href='https://twitter.com/syntheticmethod'>@syntheticmethod</a>, <a href='https://twitter.com/monteiro'>@monteiro</a>, <a href='https://twitter.com/stewartsc'>@stewartsc</a>, <a href='https://twitter.com/liamdanger'>@liamdanger</a>, <a href='https://twitter.com/capndesign'>@capndesign</a>, <a href='https://twitter.com/gotwarlost'>@gotwarlost</a>, <a href='https://twitter.com/jameshome'>@jameshome</a>, <a href='https://twitter.com/robynshhh'>@robynshhh</a>
-      </p>
-
+      <p>${t.getText("about.whoIs5Calls.overview")}</p>
+      <p>${t.getText("about.whoIs5Calls.iOSApp")}</p>
+      <p>${t.getText("about.whoIs5Calls.androidApp")}</p>
+      <p>${t.getText("about.whoIs5Calls.contentAndSocial")}</p>
+      <p>${t.getText("about.whoIs5Calls.whyStatement")}</p>
+      
       <h3 class="about__subtitle">${t.getText("about.joinUs.title")}</h3>
       <p>${t.getText("about.joinUs.contactInvite", { contactEmail: constants.contact.email})}</p>
 

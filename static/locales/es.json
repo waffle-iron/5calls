@@ -31,10 +31,12 @@
         "callEtiquette": "Se respetuoso. Los empleados que recogen el teléfono no están buscando desafiarlos y deben tratarlos con el mismo respeto que esperan de ellos, independientemente de la partido en la que trabajen."
       },
       "whoIs5Calls": {
-        "title": "¿Quién hizo 5 llamadas?",
-        "whyWeWorkOnIt": "Somos un grupo de voluntarios de ideas afines que quieren hacer accesible la incidencia. Esperamos que 5 llamadas hará que sea fácil para las personas regulares a tener una voz cuando más se necesita.",
-        "broughtToYouBy": "5 llamadas es traído a usted por",
-        "andMoreSupporters": " y más partidarios."
+        "title": "¿Quién hizo $t(common.5Calls)?",
+        "overview": "$t(common.5Calls) es un esfuerzo voluntario. Fundada y dirigida por el equipo de marido y mujer <a href='https://twitter.com/nickoneill'> Nick </a> y <a href='https://twitter.com/syntheticmethod'> Rebecca </a>, Muchos voluntarios dedicados aportan diseño, código y temas al sitio incluyendo:<a href='https://twitter.com/monteiro'>@monteiro</a>, <a href='https://twitter.com/stewartsc'>@stewartsc</a>, <a href='https://twitter.com/liamdanger'>@liamdanger</a>, <a href='https://twitter.com/capndesign'>@capndesign</a>, <a href='https://twitter.com/jameshome'>@jameshome</a>, <a href='https://twitter.com/beau'>@beau</a>, <a href='https://twitter.com/cdoremus'>@cdoremus</a>, <a href='https://twitter.com/ocderby'>@ocderby</a>, <a href='https://twitter.com/mr0grog'>@mr0grog</a> y <a href='https://github.com/5calls/5calls/graphs/contributors'> más partidarios.</a>",
+        "iOSApp": "Nuestra iOS aplicación está hecha por <a href='https://twitter.com/subdigital'>@subdigital</a>, <a href='https://twitter.com/mccarron'>@mccarron</a>, <a href='https://twitter.com/chrisbrandow'>@chrisbrandow</a> y <a href='https://github.com/5calls/ios/graphs/contributors'> más partidarios.</a>",
+        "androidApp":"Nuestra Android aplicación está hecha por <a href='https://github.com/dektar'>dektar</a>, gregliest y <a href='https://github.com/5calls/android/graphs/contributors'> más partidarios.</a>",
+        "contentAndSocial": "Nuestros temas, guiones y equipo social son <a href='https://twitter.com/charmbtrippin'>@charmbtrippin</a>, <a href='https://www.instagram.com/sara.n.g/'>sara.n.g</a>, amanda.l, <a href='https://twitter.com/djpiebob'>@djpiebob</a>, <a href='https://twitter.com/theRati'>@theRati</a>, <a href='https://twitter.com/Lhhargrave'>@lhhargrave</a>, amanda.n, <a href='https://twitter.com/sagerke'>@sagerke</a>, Eleanor Wertman y más partidarios.",
+        "whyStatement": "Queremos hacer accesible la incidencia política. Esperamos que $t(common.5Calls) hará que sea fácil para las personas regulares tener una voz cuando más se necesita."
       },
       "joinUs": {
         "title": "Únete a nosotros",
@@ -76,7 +78,7 @@
       "chooseALocation": "Elija una ubicación",
       "enterAnAddressOrZipCode": "Ingrese una dirección o código postal"
     },
-    "call": {
+    "noCalls": {
       "title": "No hay llamadas para hacer",
       "reason": "Este problema ya no es relevante, o la URL que usaste para llegar aquí estaba equivocada. Si has hecho clic en un enlace de este sitio para llegar aquí, <a href='mailto:{{contactEmail}}'> por favor díganos </a> para que podamos arreglarlo!",
       "nextStep":"A continuación, elija un tema diferente de la lista para realizar llamadas."
