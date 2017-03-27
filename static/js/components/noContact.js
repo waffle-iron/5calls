@@ -2,8 +2,8 @@ const html = require('choo/html');
 const t = require('../utils/translation');
 
 module.exports = (state, prev, send) => {
-  function initializeFragment(e) {
-    keys = ['lnkEnterAddress', 'lnkSetYourLocation'];
+  function initializeFragment() {
+    const keys = ['lnkEnterAddress', 'lnkSetYourLocation'];
     keys.map((k) => {
       let el = document.getElementById(`${k}`);
       if (el) {
