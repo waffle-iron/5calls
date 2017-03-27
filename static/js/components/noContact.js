@@ -17,14 +17,14 @@ module.exports = (state, prev, send) => {
   function noContactsMessage(state) {
     if (state.splitDistrict && (state.address || state.cachedCity)) {
       const targetId = 'lnkEnterAddress';
-      return html`<div onload=${(e) => initializeFragment(targetId)}>
+      return html`<div onload=${() => initializeFragment(targetId)}>
                     <p>${t("noContact.oneOfTwoDistricts")}</p>
                     <p>${t("noContact.enterYourLocation", {anchorId: targetId})}</p>
                   </div>`
     }
     else {
       const targetId = 'lnkSetYourLocation';
-      return html`<h2 onload=${(e) => initializeFragment(targetId)}>${t("noContact.setYourLocation", {anchorId: targetId})}</h2>`
+      return html`<h2 onload=${() => initializeFragment(targetId)}>${t("noContact.setYourLocation", {anchorId: targetId})}</h2>`
     }
   }
 
