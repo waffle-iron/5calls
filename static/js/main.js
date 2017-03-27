@@ -7,7 +7,8 @@ const logger = require('loglevel');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
 const i18n = require('i18next');
-const XHR = require('i18next-xhr-backend');
+const xhr = require('i18next-xhr-backend');
+const userLocaleDetection = require('./utils/userLocaleDetection');
 const constants = require('./constants');
 const t = require('./utils/translation');
 const scrollIntoView = require('./utils/scrollIntoView.js');
@@ -79,6 +80,19 @@ let completedIssues = [];
 store.getAll('org.5calls.completed', (completed) => {
   completedIssues = completed == null ? [] : completed;
 });
+
+let cachedUserLocale = '';
+store.getAll('org.5calls.userlocale', (userLocale) => {
+  if (userLocale.length > 0) {
+    logger.debug("user locale get", userLocale[0]);
+    cachedUserLocale = userLocale[0];
+  } else {
+    const cachedUserLocale = userLocaleDetection(navigator.language || navigator.userLanguage);
+    store.add('org.5calls.userlocale', cachedUserLocale, () => {});
+  }
+});
+
+
 
 // get stored user stats
 const defaultStats = {
@@ -474,18 +488,15 @@ let startApp = () => {
   }
 }
 
-// get the user's locale
-let locale = t.getLocaleFromBrowserLanguage(navigator.language || navigator.userLanguage);
-
 // need to get the localization resource file before bootstrapping the app's rendering process
 var options = {
     //'debug': true,
-    'lng': locale,
+    'lng': cachedUserLocale,
     'backend': {
       'loadPath': 'locales/{{lng}}.json'
     },
     'fallbackLng' : constants.localization.fallbackLocale
 }
 
-i18n.use(XHR)
+i18n.use(xhr)
     .init(options, startApp);

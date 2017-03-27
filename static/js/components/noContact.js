@@ -20,12 +20,12 @@ module.exports = (state, prev, send) => {
   function noContactsMessage(state) {
     if (state.splitDistrict && (state.address || state.cachedCity)) {
       return html`<div onload=${(e) => initializeFragment(e)}>
-                    <p>${t.getText("noContact.oneOfTwoDistricts")}</p>
-                    <p>${t.getText("noContact.enterYourLocation")}</p>
+                    <p>${t("noContact.oneOfTwoDistricts")}</p>
+                    <p>${t("noContact.enterYourLocation")}</p>
                   </div>`
     }
     else {
-      return html`<h2 onload=${(e) => initializeFragment(e)}>${t.getText("noContact.setYourLocation")}</h2>`
+      return html`<h2 onload=${(e) => initializeFragment(e)}>${t("noContact.setYourLocation")}</h2>`
     }
   }
 
