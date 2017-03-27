@@ -24,7 +24,7 @@ const namespacedLocaleObject = {
 
 const options = {
     // turn on this flag to see if you're localization keys are not correct.  It will log a message
-    'debug': true,
+    'debug': false,
     // the localized data, adding directly to the cache
     'resources': namespacedLocaleObject,
     // the language we're using for all of the regular tests.
