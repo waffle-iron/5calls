@@ -11,22 +11,26 @@ module.exports = (state, prev, send) => {
 
   const contactsLeftText = contactsLeft + " more " + callsPluralization +" to call for this issue.";
 
-  function outcome(result) {
+  function outcome(e, result) {
+    e.target.blur()
+    
     if (result == null) {
       send('skipCall', { issueid: issue.id });
     } else {
       send('callComplete', { result: result, contactid: currentContact.id, issueid: issue.id });
     }
+
+    return true
   }
 
   if (currentContact != null) {
     return html`<div class="call__outcomes">
       <h3 class="call__outcomes__header">Enter your call result to get the next call:</h3>
       <div class="call__outcomes__items">
-        <button onclick=${() => outcome('unavailable')}>Unavailable</button>
-        <button onclick=${() => outcome('vm')}>Left Voicemail</button>
-        <button onclick=${() => outcome('contacted')}>Made Contact</button>
-        <button onclick=${() => outcome()}>Skip</button>
+        <button onclick=${(e) => outcome(e, 'unavailable')}>Unavailable</button>
+        <button onclick=${(e) => outcome(e, 'vm')}>Left Voicemail</button>
+        <button onclick=${(e) => outcome(e, 'contacted')}>Made Contact</button>
+        <button onclick=${(e) => outcome(e)}}>Skip</button>
       </div>
 
       ${contactsLeft > 0 ? html`<h3 aria-live="polite" class="call__contacts__left" >${contactsLeftText}</h3>` : null}
