@@ -1,3 +1,4 @@
+const i18n = require('i18next');
 const t = require('./translation.js');
 const chai = require('chai');
 const expect = chai.expect;
@@ -83,6 +84,45 @@ describe('translation', () => {
         let expected = 'Go';
         let result = t(key, null, true);
         expect(result).to.equal(expected);
+      });
+    });
+
+    describe('change locales', () => {
+      it('should return the spanish localized string when the locale is changed to spanish', (done) => {
+        i18n.changeLanguage('es', () => {
+          let key = 'common.go';
+          let expected = 'Vaya';
+          let result = t(key, null, true);
+          expect(result).to.equal(expected);
+          // change the language back to english so the rest of the tests will be set for that language
+          i18n.changeLanguage('en', () => {
+            done();
+          });
+        });
+      });
+      it('should return the spanish localized string when the country is changed to spanish-mexican', (done) => {
+        i18n.changeLanguage('es', () => {
+          let key = 'common.go';
+          let expected = 'Vaya';
+          let result = t(key, null, true);
+          expect(result).to.equal(expected);
+          // change the language back to english so the rest of the tests will be set for that language
+          i18n.changeLanguage('en', () => {
+            done();
+          });
+        });
+      });
+      it('should return the english localized string when the locale is changed to one that is unsupported', (done) => {
+        i18n.changeLanguage('na', () => {
+          let key = 'common.go';
+          let expected = 'Go';
+          let result = t(key, null, true);
+          expect(result).to.equal(expected);
+          // change the language back to english so the rest of the tests will be set for that language
+          i18n.changeLanguage('en', () => {
+            done();
+          });
+        });
       });
     });
 

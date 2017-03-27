@@ -6,10 +6,8 @@ const find = require('lodash/find');
 const logger = require('loglevel');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
-const i18n = require('i18next');
-const xhr = require('i18next-xhr-backend');
 const userLocaleDetection = require('./utils/userLocaleDetection');
-const constants = require('./constants');
+const localization = require('./utils/localization');
 const scrollIntoView = require('./utils/scrollIntoView.js');
 
 const app = choo();
@@ -487,15 +485,6 @@ let startApp = () => {
   }
 }
 
-// need to get the localization resource file before bootstrapping the app's rendering process
-var options = {
-    //'debug': true,
-    'lng': cachedUserLocale,
-    'backend': {
-      'loadPath': 'locales/{{lng}}.json'
-    },
-    'fallbackLng' : constants.localization.fallbackLocale
-}
-
-i18n.use(xhr)
-    .init(options, startApp);
+// need to initialize the localization engine/cache before bootstrapping the app's rendering process
+// The app's startApp method will be called as the callback after the initialization has taken place.
+localization.start(cachedUserLocale, startApp);

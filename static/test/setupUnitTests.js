@@ -29,7 +29,9 @@ const options = {
     'resources': namespacedLocaleObject,
     // the language we're using for all of the regular tests.
     // There are some tests specific to localization where we reload the cache with another locale, at that point we re-initialize 
-    'lng': 'en'
+    'lng': 'en',
+    // if an unsupported locale is selected, it will fall back to this locale
+    'fallbackLng' : 'en'
 }
 
 // initialize the i18n cache
