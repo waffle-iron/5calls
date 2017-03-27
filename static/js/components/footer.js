@@ -1,7 +1,7 @@
 const html = require('choo/html');
 const t = require('../utils/translation');
 
-module.exports = (state, prev, send) => {
+module.exports = () => {
 
   return html`
       <footer><div class="tinyletter__form">
@@ -28,6 +28,9 @@ module.exports = (state, prev, send) => {
         </a>
         <a href="#about">
           <i class="fa fa-heart" aria-hidden="true"></i> ${t('footer.about')}
+        </a>
+        <a id="impact__link" href="/impact">
+          <i class="fa fa-line-chart" aria-hidden="true"></i> ${t('footer.impact')}
         </a>
         <a href="https://5calls.zendesk.com/hc/en-us/sections/115000760947-FAQ">
           <i class="fa fa-question-circle" aria-hidden="true"></i> ${t('footer.faq')}

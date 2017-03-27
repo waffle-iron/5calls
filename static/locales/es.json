@@ -9,6 +9,10 @@
       "callWithCount_plural": "{{count}} llamadas",
       "callCapitalizedWithCount": "{{count}} Llamada",
       "callCapitalizedWithCount_plural": "{{count}} Llamadas",
+      "timeWithCount": "{{count}} vez",
+      "timeWithCount_plural": "{{count}} veces",
+      "voicemailWithCount": "{{count}} mensaje de voz",
+      "voicemailWithCount_plural": "{{count}} mensajes de voz",
       "person": "persona",
       "person_plural": "gente",
       "personWithCount": "{{count}} persona",
@@ -70,6 +74,12 @@
       "feature2": "Utiliza su ubicación para encontrar a sus representantes locales para que sus llamadas tengan más impacto",
       "getApp": "Obtenga la aplicación de $t(common.5Calls):"
     },
+    "impact":{
+      "title": "Mi Impacto",
+      "text": "Eso es increíble y deberías sentirte impresionante. <br> Cada llamada cuenta!",
+      "callSummaryText": "Ha contactado <span>$t(common.timeWithCount,{'count': {{contactedCalls}}})</span> y ha dejado<span>$t(common.voicemailWithCount,{'count': {{vmCalls}}})</span>. Sus representantes no han estado disponibles <span>$t(common.timeWithCount,{'count': {{unavailableCalls}}})</span>.",
+      "totalCallCountText": "Tu has hecho <span>$t(common.callWithCount,{'count': {{myTotalCalls}}})</span>!"
+    },
     "issues":{
       "whatsImportantToYou": "¿Qué es importante para usted?",
       "issuesListItemSummary": "$t(common.callWithCount,{'count': {{callsToMake}}}) para hacer"
@@ -110,7 +120,8 @@
       "privacy": "Privada",
       "faq": "Preguntas más frecuentes",
       "contact": "Contacto",
-      "openSource":  "Fuente Abierta"
+      "openSource":  "Fuente Abierta",
+      "impact": "Tu Impacto"
     }, 
     "promote": {
       "iJustCalled": "Acabo de llamar a mi representante para ",

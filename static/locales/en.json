@@ -9,6 +9,10 @@
       "callWithCount_plural": "{{count}} calls",
       "callCapitalizedWithCount": "{{count}} Call",
       "callCapitalizedWithCount_plural": "{{count}} Calls",
+      "timeWithCount": "{{count}} time",
+      "timeWithCount_plural": "{{count}} times",
+      "voicemailWithCount": "{{count}} voicemail",
+      "voicemailWithCount_plural": "{{count}} voicemails",
       "person": "person",
       "person_plural": "people",
       "personWithCount": "{{count}} person",
@@ -72,6 +76,12 @@
       "onAppStore": "$t(common.5Calls) on the App Store",
       "onGooglePlay": "$t(common.5Calls) on Google Play"
     },
+    "impact":{
+      "title": "My Impact",
+      "text": "That's awesome and you should feel awesome. <br>Every call counts!",
+      "callSummaryText": "You have <span>made contact $t(common.timeWithCount,{'count': {{contactedCalls}}})</span> and left <span>$t(common.voicemailWithCount,{'count': {{vmCalls}}})</span>.  Your representatives have been unavailable <span>$t(common.timeWithCount,{'count': {{unavailableCalls}}})</span>.",
+      "totalCallCountText": "You have made <span>$t(common.callWithCount,{'count': {{myTotalCalls}}})</span>!"
+    },
     "issues":{
       "whatsImportantToYou": "What’s important to you?",
       "issuesListItemSummary": "$t(common.callWithCount,{'count': {{callsToMake}}}) to make"
@@ -112,7 +122,8 @@
       "privacy": "Privacy",
       "faq": "FAQ",
       "contact": "Contact",
-      "openSource":  "Open Source"
+      "openSource":  "Open Source",
+      "impact": "Your Impact"
     }, 
     "promote": {
       "iJustCalled": "I just called my rep to ",

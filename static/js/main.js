@@ -10,7 +10,6 @@ const i18n = require('i18next');
 const xhr = require('i18next-xhr-backend');
 const userLocaleDetection = require('./utils/userLocaleDetection');
 const constants = require('./constants');
-const t = require('./utils/translation');
 const scrollIntoView = require('./utils/scrollIntoView.js');
 
 const app = choo();

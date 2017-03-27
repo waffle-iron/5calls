@@ -1,5 +1,4 @@
 const i18n = require('i18next');
-const html = require('choo/html');
 
 /*key - the localization key in the locale file
 variableObject - a json object having variables that will be interpolated into the localized string
@@ -21,7 +20,7 @@ function getText(key, variableObject, justText, useDiv) {
         return template;
     }    
 
-    parser = new DOMParser();
+    const parser = new DOMParser();
 
     template = useDiv 
                 ? "<div>" + template + "</div>"    
