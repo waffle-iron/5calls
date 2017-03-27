@@ -99,8 +99,8 @@
     },
     "noContact":{      
       "oneOfTwoDistricts":"The location you provided could be in one of two congressional districts.",
-      "enterYourLocation":"<a id='lnkEnterAddress'>Enter your address</a> to identify your representative in the House.",
-      "setYourLocation":"<a id='lnkSetYourLocation'>Set your location</a> to find your representatives"
+      "enterYourLocation":"<a id='{{anchorId}}'>Enter your address</a> to identify your representative in the House.",
+      "setYourLocation":"<a id='{{anchorId}}'>Set your location</a> to find your representatives"
     },
     "outcomes":{
       "enterYourCallResult":"Enter your call result to get the next call:",

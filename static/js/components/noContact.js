@@ -2,14 +2,11 @@ const html = require('choo/html');
 const t = require('../utils/translation');
 
 module.exports = (state, prev, send) => {
-  function initializeFragment() {
-    const keys = ['lnkEnterAddress', 'lnkSetYourLocation'];
-    keys.map((k) => {
-      let el = document.getElementById(`${k}`);
-      if (el) {
-        el.addEventListener("click", (e)=>enterLocation(e), false);
-      }
-    });
+  function initializeFragment(targetId) {
+    let el = document.getElementById(`${targetId}`);
+    if (el) {
+      el.addEventListener("click", (e)=>enterLocation(e), false);
+    }
   }
 
   function enterLocation(e) {
@@ -19,13 +16,15 @@ module.exports = (state, prev, send) => {
 
   function noContactsMessage(state) {
     if (state.splitDistrict && (state.address || state.cachedCity)) {
-      return html`<div onload=${(e) => initializeFragment(e)}>
+      const targetId = 'lnkEnterAddress';
+      return html`<div onload=${(e) => initializeFragment(targetId)}>
                     <p>${t("noContact.oneOfTwoDistricts")}</p>
-                    <p>${t("noContact.enterYourLocation")}</p>
+                    <p>${t("noContact.enterYourLocation", {anchorId: targetId})}</p>
                   </div>`
     }
     else {
-      return html`<h2 onload=${(e) => initializeFragment(e)}>${t("noContact.setYourLocation")}</h2>`
+      const targetId = 'lnkSetYourLocation';
+      return html`<h2 onload=${(e) => initializeFragment(targetId)}>${t("noContact.setYourLocation", {anchorId: targetId})}</h2>`
     }
   }
 
