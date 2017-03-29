@@ -221,4 +221,4 @@ gulp.task('test', ['eslint', 'test:js-unit']);
 gulp.task('test:windows', ['eslint', 'test:js-unit-windows']);
 
 gulp.task('default', ['html', 'html:watch', 'html:serve', 'sass', 'sass:watch', 'copy-images', 'copy-images:watch', 'scripts', 'scripts:watch', 'extra', 'locales']);
-gulp.task('deploy', ['html', 'sass', 'build-scripts', 'extra', 'copy-images', 'locales']);
+gulp.task('deploy', ['html', 'sass', 'build-scripts', 'extra', 'copy-images']);
