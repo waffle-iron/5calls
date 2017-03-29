@@ -1,4 +1,4 @@
-const i18n = require('i18next');
+//const i18n = require('i18next');
 const t = require('./translation.js');
 const chai = require('chai');
 const expect = chai.expect;
