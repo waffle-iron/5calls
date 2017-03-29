@@ -14,7 +14,6 @@ var gulp = require('gulp')
   , connect_logger = require('connect-logger')
   , spawn = require('child_process').spawn
   , mocha = require('gulp-mocha')
-  , path = require('path')
   ;
 
 var SRC = {
@@ -44,22 +43,9 @@ gulp.task('html:watch', function() {
 });
 
 gulp.task('html:serve', function (cb) {
-
-  function alwaysServeIndex(req, res, next) {
-  
-    // Allow the development server to respond to URLs defined in the front end application.
-    // Assume that any URL without a file extension can be handled by the client side code
-    // and serve index.html (instead of 404).
-  
-    if(!(path.extname(req.url))) {
-      req.url = "/";
-    }
-    next();
-  }  
-
   var server = new http_server.HttpServer({
     root: 'app/static',
-    before: [connect_logger(), alwaysServeIndex]
+    before: [connect_logger()]
   });
   server.listen(8000, function () {
     util.log('HTTP server started on port 8000');
@@ -166,11 +152,13 @@ function runKarmaTests ({singleRun, configFile} = {}) {
   });
 }
 
+var Server = require("karma").Server;
+var path = require("path");
+
 gulp.task('test:js-unit', function() {
   return runKarmaTests({singleRun: true});
 });
 
-var Server = require("karma").Server;
 gulp.task('test:js-unit-windows', function() {
     new Server({configFile: path.join(__dirname, "/karma.conf.js")}).start();
 });

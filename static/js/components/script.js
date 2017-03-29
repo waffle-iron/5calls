@@ -12,7 +12,7 @@ module.exports = (state, prev, send) => {
     if (currentContact != null) {
       return html`
       <div class="call__script">
-        <h3 class="call__script__header">${t("script.yourScript")}</h3>
+        <h3 class="call__script__header">${t.getText("script.yourScript")}</h3>
         <div class="call__script__body">${issue.script.split('\n').map((line) => scriptLine(line, state, prev, send))}</div>
       </div>`      
     } else {

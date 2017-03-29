@@ -1,10 +1,11 @@
 const html = require('choo/html');
 const t = require('../utils/translation');
+const constants = require('../constants');
 
 module.exports = (state, prev, send) => {
   return html`
   <h2 class="callcount" onload=${() => send('getTotals')}>
-      ${t("callCount.callCountPhrase", {formattedCallsTotal: callCount(state), totalCalls: callCountAsNumber(state)})}
+      ${t.getText("callCount.callCountPhrase", {formattedCallsTotal: callCount(state), totalCalls: callCountAsNumber(state)})}
   </h2>
   `;
 

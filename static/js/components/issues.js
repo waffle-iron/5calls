@@ -1,4 +1,5 @@
 const html = require('choo/html');
+const t = require('../utils/translation');
 const scrollIntoView = require('../utils/scrollIntoView.js');
 
 const issuesHeader = require('./issuesHeader.js');
