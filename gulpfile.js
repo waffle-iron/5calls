@@ -166,13 +166,11 @@ function runKarmaTests ({singleRun, configFile} = {}) {
   });
 }
 
-var Server = require("karma").Server;
-var path = require("path");
-
 gulp.task('test:js-unit', function() {
   return runKarmaTests({singleRun: true});
 });
 
+var Server = require("karma").Server;
 gulp.task('test:js-unit-windows', function() {
     new Server({configFile: path.join(__dirname, "/karma.conf.js")}).start();
 });
