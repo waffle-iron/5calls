@@ -1,6 +1,5 @@
 const html = require('choo/html');
 const t = require('../utils/translation');
-const constants = require('../constants');
 
 module.exports = (state, prev, send) => {
   return html`

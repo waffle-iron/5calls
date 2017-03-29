@@ -1,5 +1,4 @@
 const i18n = require('i18next');
-const html = require('choo/html');
 const constants = require('../constants');
 
 const find = require('lodash/find');
@@ -26,7 +25,7 @@ module.exports = {
             return template;
         }    
 
-        parser = new DOMParser();
+        const parser = new DOMParser();
 
         template = useDiv 
                     ? "<div>" + template + "</div>"    
