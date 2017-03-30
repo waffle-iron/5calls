@@ -6,6 +6,7 @@ module.exports = {
   },
   localization: {
     supportedLocales: ['en', 'es'],
-    fallbackLocale: 'en'
+    fallbackLocale: 'en',
+    loadPath: 'locales/{{lng}}.json'
   }
 }
