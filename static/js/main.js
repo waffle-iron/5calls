@@ -6,7 +6,6 @@ const find = require('lodash/find');
 const logger = require('loglevel');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
-const userLocaleDetection = require('./utils/userLocaleDetection');
 const localization = require('./utils/localization');
 const scrollIntoView = require('./utils/scrollIntoView.js');
 

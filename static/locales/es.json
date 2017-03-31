@@ -97,8 +97,8 @@
     },
     "noContact":{
       "oneOfTwoDistricts":"La ubicación que usted proporcionó podría estar en uno de los dos distritos del Congreso.",
-      "enterYourLocation":"<a id='{{anchorId}}'> Ingrese su dirección </a> para identificar a su representante en la Cámara.",
-      "setYourLocation":"<a id='{{anchorId}}'> Establezca su ubicación </a> para encontrar a sus representantes"
+      "enterYourLocation":"<a class='location-link'> Ingrese su dirección </a> para identificar a su representante en la Cámara.",
+      "setYourLocation":"<a class='location-link'> Establezca su ubicación </a> para encontrar a sus representantes"
     },
     "outcomes":{
       "enterYourCallResult":"Ingrese el resultado de su llamada para obtener la siguiente llamada:",

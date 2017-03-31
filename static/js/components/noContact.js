@@ -2,10 +2,10 @@ const html = require('choo/html');
 const t = require('../utils/translation');
 
 module.exports = (state, prev, send) => {
-  function initializeLocalizedAnchors(targetId) {
-    let el = document.getElementById(`${targetId}`);
-    if (el) {
-      el.addEventListener("click", (e)=>enterLocation(e), false);
+  function initializeLocalizedAnchors(targetClassName) {
+    let els = document.getElementsByClassName(`${targetClassName}`);
+    if (els.length >= 1) {
+      els[0].addEventListener("click", (e)=>enterLocation(e), false);
     }
   }
 
@@ -15,16 +15,15 @@ module.exports = (state, prev, send) => {
   }
 
   function noContactsMessage(state) {
+    const targetClassName = 'location-link';
     if (state.splitDistrict && (state.address || state.cachedCity)) {
-      const targetId = 'lnkEnterAddress';
-      return html`<div onload=${() => initializeLocalizedAnchors(targetId)}>
+      return html`<div onload=${() => initializeLocalizedAnchors(targetClassName)}>
                     <p>${t("noContact.oneOfTwoDistricts")}</p>
-                    <p>${t("noContact.enterYourLocation", {anchorId: targetId})}</p>
+                    <p>${t("noContact.enterYourLocation")}</p>
                   </div>`
     }
     else {
-      const targetId = 'lnkSetYourLocation';
-      return html`<h2 onload=${() => initializeLocalizedAnchors(targetId)}>${t("noContact.setYourLocation", {anchorId: targetId})}</h2>`
+      return html`<h2 onload=${() => initializeLocalizedAnchors(targetClassName)}>${t("noContact.setYourLocation")}</h2>`
     }
   }
 
