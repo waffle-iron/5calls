@@ -88,28 +88,29 @@ describe('translation', () => {
     });
 
     describe('change locales', () => {
+      afterEach((done) => {
+          // change the language back to english so the rest of the tests will be set for that language
+          i18n.changeLanguage('en', () => {
+            done();
+          });
+      });
+
       it('should return the spanish localized string when the locale is changed to spanish', (done) => {
         i18n.changeLanguage('es', () => {
           let key = 'common.go';
           let expected = 'Vaya';
           let result = t(key, null, true);
           expect(result).to.equal(expected);
-          // change the language back to english so the rest of the tests will be set for that language
-          i18n.changeLanguage('en', () => {
-            done();
-          });
+          done();
         });
       });
       it('should return the spanish localized string when the country is changed to spanish-mexican', (done) => {
-        i18n.changeLanguage('es', () => {
+         i18n.changeLanguage('es-mx', () => {
           let key = 'common.go';
           let expected = 'Vaya';
           let result = t(key, null, true);
           expect(result).to.equal(expected);
-          // change the language back to english so the rest of the tests will be set for that language
-          i18n.changeLanguage('en', () => {
-            done();
-          });
+          done();
         });
       });
       it('should return the english localized string when the locale is changed to one that is unsupported', (done) => {
@@ -118,10 +119,7 @@ describe('translation', () => {
           let expected = 'Go';
           let result = t(key, null, true);
           expect(result).to.equal(expected);
-          // change the language back to english so the rest of the tests will be set for that language
-          i18n.changeLanguage('en', () => {
-            done();
-          });
+          done();
         });
       });
     });
