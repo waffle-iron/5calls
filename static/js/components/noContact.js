@@ -2,7 +2,7 @@ const html = require('choo/html');
 const t = require('../utils/translation');
 
 module.exports = (state, prev, send) => {
-  function initializeFragment(targetId) {
+  function initializeLocalizedAnchors(targetId) {
     let el = document.getElementById(`${targetId}`);
     if (el) {
       el.addEventListener("click", (e)=>enterLocation(e), false);
@@ -17,14 +17,14 @@ module.exports = (state, prev, send) => {
   function noContactsMessage(state) {
     if (state.splitDistrict && (state.address || state.cachedCity)) {
       const targetId = 'lnkEnterAddress';
-      return html`<div onload=${() => initializeFragment(targetId)}>
+      return html`<div onload=${() => initializeLocalizedAnchors(targetId)}>
                     <p>${t("noContact.oneOfTwoDistricts")}</p>
                     <p>${t("noContact.enterYourLocation", {anchorId: targetId})}</p>
                   </div>`
     }
     else {
       const targetId = 'lnkSetYourLocation';
-      return html`<h2 onload=${() => initializeFragment(targetId)}>${t("noContact.setYourLocation", {anchorId: targetId})}</h2>`
+      return html`<h2 onload=${() => initializeLocalizedAnchors(targetId)}>${t("noContact.setYourLocation", {anchorId: targetId})}</h2>`
     }
   }
 
