@@ -83,7 +83,7 @@ store.getAll('org.5calls.userlocale', (userLocale) => {
     logger.debug("user locale get", userLocale[0]);
     cachedUserLocale = userLocale[0];
   } else {
-    cachedUserLocale = userLocaleDetection(navigator.language || navigator.userLanguage);
+    cachedUserLocale = localization.getLocaleFromBrowserLanguage(navigator.language || navigator.userLanguage);
     store.add('org.5calls.userlocale', cachedUserLocale, () => {});
   }
 });
