@@ -1,4 +1,4 @@
-/* global Raven, ga */
+/* global ga */
 
 const choo = require('choo');
 const http = require('xhr');
