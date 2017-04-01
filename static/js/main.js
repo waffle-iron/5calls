@@ -1,4 +1,4 @@
-/* global Raven, ga */
+/* global ga */
 
 const choo = require('choo');
 const http = require('xhr');
@@ -191,7 +191,6 @@ app.model({
       return { userStats: stats }
     },
     setAddress: (state, address) => {
-      Raven.setExtraContext({ address: address })
       store.replace("org.5calls.location", 0, address, () => {});
 
       return { address: address, askingLocation: false }
@@ -307,17 +306,13 @@ app.model({
               send('fetchActiveIssues', {}, done);
             } else {
               send('fetchLocationBy', 'address', done);
-              Raven.captureMessage("Location with no city: "+response.loc, { level: 'warning' });
             }
           } catch(e) {
             send('fetchLocationBy', 'address', done);
-            Raven.setExtraContext({ json: data })
-            Raven.captureMessage("Couldn’t parse ipinfo json", { level: 'error' });
           }
 
         } else {
           send('fetchLocationBy', 'address', done);
-          Raven.captureMessage("Non-200 from ipinfo", { level: 'info' });
         }
       })
     },
