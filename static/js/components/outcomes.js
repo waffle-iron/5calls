@@ -11,12 +11,16 @@ module.exports = (state, prev, send) => {
 
   const contactsLeftText =  t("outcomes.contactsLeft", { "contactsRemaining": contactsLeft}); 
 
-  function outcome(result) {
+  function outcome(e, result) {
+    e.target.blur()
+    
     if (result == null) {
       send('skipCall', { issueid: issue.id });
     } else {
       send('callComplete', { result: result, contactid: currentContact.id, issueid: issue.id });
     }
+
+    return true
   }
 
   if (currentContact != null) {

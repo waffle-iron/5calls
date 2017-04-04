@@ -76,7 +76,7 @@
     },
     "impact":{
       "title": "Mi Impacto",
-      "text": "Eso es increíble y deberías sentirte impresionante. <br> Cada llamada cuenta!",
+      "text": "¡Estás haciendo una diferencia! La llamada es la forma más efectiva de influir en sus representantes, y aquí es lo que ha logrado:",
       "callSummaryText": "Ha contactado <span>$t(common.timeWithCount,{'count': {{contactedCalls}}})</span> y ha dejado<span>$t(common.voicemailWithCount,{'count': {{vmCalls}}})</span>. Sus representantes no han estado disponibles <span>$t(common.timeWithCount,{'count': {{unavailableCalls}}})</span>.",
       "totalCallCountText": "Tu has hecho <span>$t(common.callWithCount,{'count': {{myTotalCalls}}})</span>!"
     },
