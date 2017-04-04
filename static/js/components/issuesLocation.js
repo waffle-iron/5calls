@@ -31,7 +31,7 @@ module.exports = (state, prev, send) => {
 
   function addressForm(state) {
     const className = (state.askingLocation && !state.fetchingLocation) ? '' : 'hidden';
-    return html`<p><form onsubmit=${submitAddress} class=${className}><input type="text" autofocus="true" id="address" name="address" placeholder="${t("location.chooseALocation", null, true)}" /> <button>${t("common.go", null, true)}</button></form></p>`;
+    return html`<p><form onsubmit=${submitAddress} class=${className}><input type="text" autofocus="true" id="address" name="address" placeholder="${t("location.enterAnAddressOrZipCode", null, true)}" /> <button>${t("common.go", null, true)}</button></form></p>`;
   }
 
   function debugText(debug) {

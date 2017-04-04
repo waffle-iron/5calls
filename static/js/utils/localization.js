@@ -12,7 +12,6 @@ module.exports = {
             },
             'fallbackLng': constants.localization.fallbackLocale
         }
-
         i18n.use(xhr)
             .init(options, cb);
     },

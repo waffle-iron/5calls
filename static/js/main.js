@@ -473,6 +473,8 @@ app.router({ default: '/' }, [
 ]);
 
 let startApp = () => {  
+  // if there has been a global error, don't start the app and we'll fall back to the basic index.html page
+
   const tree = app.start();
   const rootNode = document.getElementById('root');
 
