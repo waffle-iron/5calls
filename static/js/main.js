@@ -472,9 +472,13 @@ app.router({ default: '/' }, [
   ['/more', require('./pages/issuesView.js')],
 ]);
 
-let startApp = () => {  
-  // if there has been a global error, don't start the app and we'll fall back to the basic index.html page
-
+let startApp = (err) => {  
+  // If we errored on initializing localization, then we won't have the
+  // right content for most of the app. For now, just fallback to the default index.html in that case.
+  if (err !== undefined) {
+    return;
+  }
+  
   const tree = app.start();
   const rootNode = document.getElementById('root');
 
