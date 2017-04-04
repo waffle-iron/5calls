@@ -18,8 +18,8 @@ module.exports = (state, prev, send) => {
 
       ${impactTotal(state, prev, send)}
       <p class="impact__text">
-        That's awesome and you should feel awesome. <br>
-        Every call counts!
+        You're making a difference! Calling is the most effective way to
+        influence your representatives, and here is what you've achieved:
       </p>
       ${impactResult(state, prev, send)}
       ${callcount(state, prev, send)}
