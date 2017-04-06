@@ -44,6 +44,7 @@ gulp.task('html:watch', function() {
 });
 
 gulp.task('html:serve', function (cb) {
+
   function alwaysServeIndex(req, res, next) {
   
     // Allow the development server to respond to URLs defined in the front end application.
@@ -149,7 +150,8 @@ function runKarmaTests ({singleRun, configFile} = {}) {
     // trying to shut down after completing tests, so run it as a separate
     // process instead. See:
     // https://github.com/karma-runner/karma/issues/1693
-    // https://github.com/karma-runner/karma/issues/1035    
+    // https://github.com/karma-runner/karma/issues/1035
+    
     const karma = spawn(path.join(__dirname, 'node_modules', '.bin', 'karma'), karmaArguments, {
       shell: true,
       cwd: __dirname,
@@ -213,7 +215,6 @@ gulp.task('eslint', function() {
 });
 
 gulp.task('test', ['eslint', 'test:js-unit']);
-gulp.task('test:windows', ['eslint', 'test:js-unit-windows']);
 
 gulp.task('default', ['html', 'html:watch', 'html:serve', 'sass', 'sass:watch', 'copy-images', 'copy-images:watch', 'scripts', 'scripts:watch', 'extra', 'locales']);
 gulp.task('deploy', ['html', 'sass', 'build-scripts', 'extra', 'copy-images', 'locales']);
