@@ -19,6 +19,9 @@ module.exports = (state, prev, send) => {
         <p>Calling is the most effective way to influence your representative. Read more about <a href="/about">why calling works.</a>
         </p>
 
+        <p>You can contribute to help out with costs associated with running 5 Calls. This project is run by an <strong>all-volunteer team</strong>, and all donations go towards basic expenses like <strong>hosting our site, sending issue alerts and keeping our data updated</strong>.</p>
+        <p class="hypothesis__callout"><a href="https://secure.actblue.com/contribute/page/5calls?refcode=web">Donate to 5 Calls Today</a></p>
+
         <h3 class="hypothesis__subtitle">5 Calls:</h3>
 
         <ul class="hypothesis__list">

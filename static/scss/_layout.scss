@@ -75,6 +75,11 @@ footer {
   a {
     color: #fff;
   }
+  p {
+    a {
+      text-decoration: underline;
+    }
+  }
   .emailform {
     display: inline-block;
     white-space: nowrap;
