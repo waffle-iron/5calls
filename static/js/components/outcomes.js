@@ -12,8 +12,8 @@ module.exports = (state, prev, send) => {
   const contactsLeftText = contactsLeft + " more " + callsPluralization +" to call for this issue.";
 
   function outcome(e, result) {
-    e.target.blur()
-    
+    e.target.blur();
+
     if (result == null) {
       send('skipCall', { issueid: issue.id });
     } else {
@@ -30,7 +30,7 @@ module.exports = (state, prev, send) => {
         <button onclick=${(e) => outcome(e, 'unavailable')}>Unavailable</button>
         <button onclick=${(e) => outcome(e, 'vm')}>Left Voicemail</button>
         <button onclick=${(e) => outcome(e, 'contacted')}>Made Contact</button>
-        <button onclick=${(e) => outcome(e)}}>Skip</button>
+        <button onclick=${(e) => outcome(e)}>Skip</button>
       </div>
 
       ${contactsLeft > 0 ? html`<h3 aria-live="polite" class="call__contacts__left" >${contactsLeftText}</h3>` : null}
