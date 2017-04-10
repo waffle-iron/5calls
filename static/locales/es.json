@@ -66,7 +66,7 @@
     },
     "hypothesis": {
       "title": "Haga que su voz sea escuchada",
-      "p1": "Convierta su participación pasiva en resistencia activa. Facebook le gusta y Twitter retweets no puede crear el cambio que desea ver. Llamar a su Gobierno en el teléfono puede.",
+      "p1": "Convierta su participación pasiva a resistencia activa. Los likes en Facebook y retweets en Twitter no pueden crear el cambio que usted desea ver pero llamarle a su gobierno por teléfono si puede.",
       "p2": "Pase 5 minutos, haga 5 llamadas.",
       "p3": "Llamar es la forma más efectiva de influir en su representante. Lea más sobre <a href='/about'> por qué la llamada funciona.</a>",
       "featuresTitle": "$t(common.5Calls):",
@@ -121,7 +121,7 @@
       "faq": "Preguntas más frecuentes",
       "contact": "Contacto",
       "openSource":  "Fuente Abierta",
-      "impact": "Tu Impacto"
+      "impact": "Su Impacto"
     }, 
     "promote": {
       "iJustCalled": "Acabo de llamar a mi representante para ",
