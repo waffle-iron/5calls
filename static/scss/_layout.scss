@@ -71,6 +71,12 @@ footer {
       padding: 0 12px;
       white-space: nowrap;
     }
+    p {
+      a {
+        padding: 0;
+        text-decoration: underline;
+      }
+    }
   }
   a {
     color: #fff;

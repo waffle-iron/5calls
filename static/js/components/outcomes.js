@@ -12,8 +12,8 @@ module.exports = (state, prev, send) => {
   const contactsLeftText =  t("outcomes.contactsLeft", { "contactsRemaining": contactsLeft}); 
 
   function outcome(e, result) {
-    e.target.blur()
-    
+    e.target.blur();
+
     if (result == null) {
       send('skipCall', { issueid: issue.id });
     } else {
@@ -28,8 +28,8 @@ module.exports = (state, prev, send) => {
       <h3 class="call__outcomes__header">${t("outcomes.enterYourCallResult")}</h3>
       <div class="call__outcomes__items">
         <button onclick=${(e) => outcome(e, 'unavailable')}>${t("outcomes.unavailable")}</button>
-        <button onclick=${(e) => outcome(e,'vm')}>${t("outcomes.voicemail")}</button>
-        <button onclick=${(e) => outcome(e,'contacted')}>${t("outcomes.madeContact")}</button>
+        <button onclick=${(e) => outcome(e, 'vm')}>${t("outcomes.voicemail")}</button>
+        <button onclick=${(e) => outcome(e, 'contacted')}>${t("outcomes.madeContact")}</button>
         <button onclick=${(e) => outcome(e)}>${t("outcomes.skip")}</button>
       </div>
 

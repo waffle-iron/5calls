@@ -17,8 +17,14 @@ module.exports = (state, prev, send) => {
       </header>
 
       <div class="hypothesis__text">
+
         <p>${t('hypothesis.p3')}</p>
+
+        <p>You can contribute to help out with costs associated with running 5 Calls. This project is run by an <strong>all-volunteer team</strong>, and all donations go towards basic expenses like <strong>hosting our site, sending issue alerts and keeping our data updated</strong>.</p>
+        <p class="hypothesis__callout"><a href="https://secure.actblue.com/contribute/page/5calls?refcode=web">Donate to 5 Calls Today</a></p>
+
         <h3 class="hypothesis__subtitle">${t('hypothesis.featuresTitle')}</h3>
+
         <ul class="hypothesis__list">
         <li>${t('hypothesis.feature1')}</li>
         <li>${t('hypothesis.feature2')}</li>
