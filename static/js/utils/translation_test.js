@@ -98,7 +98,7 @@ describe('translation', () => {
       it('should return the spanish localized string when the locale is changed to spanish', (done) => {
         i18n.changeLanguage('es', () => {
           let key = 'common.go';
-          let expected = 'Vaya';
+          let expected = 'envíe';
           let result = t(key, null, true);
           expect(result).to.equal(expected);
           done();
@@ -107,7 +107,7 @@ describe('translation', () => {
       it('should return the spanish localized string when the country is changed to spanish-mexican', (done) => {
          i18n.changeLanguage('es-mx', () => {
           let key = 'common.go';
-          let expected = 'Vaya';
+          let expected = 'envíe';
           let result = t(key, null, true);
           expect(result).to.equal(expected);
           done();
