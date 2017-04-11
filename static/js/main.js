@@ -7,10 +7,14 @@ const logger = require('loglevel');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
 const scrollIntoView = require('./utils/scrollIntoView.js');
+const townHallUtils = require('./utils/townHallUtils.js');
+const zipcodes = require('zipcodes');
 
 const app = choo();
 const appURL = 'https://5calls.org';
 // const appURL = 'http://localhost:8090';
+
+const maxTownHallDistance = 50;
 
 // use localStorage directly to set this value *before* bootstrapping the app.
 const debug = (localStorage['org.5calls.debug'] === 'true');
@@ -123,6 +127,8 @@ app.model({
     locationFetchType: cachedLocationFetchType,
     contactIndices: {},
     completedIssues: completedIssues,
+    localEvents: {},
+    divisions: {},
 
     showFieldOfficeNumbers: false,
 
@@ -132,10 +138,12 @@ app.model({
   reducers: {
     receiveActiveIssues: (state, data) => {
       const response = JSON.parse(data)
+      let divisions = townHallUtils.parseCivicData(response.divisions)
       return {
         activeIssues: response.issues,
         splitDistrict: response.splitDistrict,
         invalidAddress: response.invalidAddress,
+        divisions: divisions,
       }
     },
     receiveInactiveIssues: (state, data) => {
@@ -241,11 +249,54 @@ app.model({
       return { activeIssue: false, getInfo: false }
     },
     toggleFieldOfficeNumbers: (state) => ({ showFieldOfficeNumbers: !state.showFieldOfficeNumbers }),
-    hideFieldOfficeNumbers: () => ({ showFieldOfficeNumbers: false }),
-    setCacheDate: (state, data) => ({ [data]: Date.now() })
+    hideFieldOfficeNumbers: () => ({ showFieldOfficeNumbers: false }),    
+    setCacheDate: (state, data) => ({ [data]: Date.now() }),
+    receiveTownHallData: (state, data) => {
+      let events = JSON.parse(data);
+      let lat = false;
+      let lng = false;
+      let locationExists = !!localStorage['org.5calls.location'];
+      let geolocationExists = !!localStorage['org.5calls.geolocation'];
+      if (locationExists){
+        // zipcode
+        let zipcode = localStorage['org.5calls.location'].replace(new RegExp(/\]|\[|"/, 'g'),'');
+        let zipcode_obj = zipcodes.lookup(zipcode);
+        if (!!zipcode_obj && !!zipcode_obj.latitude && !!zipcode_obj.longitude){
+          lat = zipcode_obj.latitude;
+          lng = zipcode_obj.longitude;
+        }
+      } else if (geolocationExists){
+        // lat/long
+        let geo = localStorage['org.5calls.geolocation'].replace(new RegExp(/\]|\[|"/, 'g'),'');
+        lat = geo.split(",")[0];
+        lng = geo.split(",")[1];
+      }
+      if (!!lat && !!lng){
+        events = Object.keys(events).map(function(key){ return events[key]; }); // Convert Object to Array
+        events = events
+          .map(townHallUtils.mapDistance(lat, lng))
+          .filter(townHallUtils.filterEvents(state, maxTownHallDistance))
+          .sort(townHallUtils.sortEvents()); // Sort by distance
+        return {
+          localEvents: events.slice(0,3)
+        }
+      }else{
+        // we don't have enough data to determine their location
+        return {
+          localEvents: []
+        };
+      }
+    },
   },
 
   effects: {
+    fetchTownHallData: (state, data, send, done) => {
+      let townHallUrl = "https://townhallproject-86312.firebaseio.com/townHalls.json";
+      logger.debug("fetching url", townHallUrl);
+      http(townHallUrl, (err, res, body) => {
+        send('receiveTownHallData', body, done);
+      })
+    },
     fetchActiveIssues: (state, data, send, done) => {
       let address = "?address="
       if (state.address !== '') {
@@ -258,6 +309,7 @@ app.model({
       http(issueURL, (err, res, body) => {
         send('setCachedCity', body, done)
         send('receiveActiveIssues', body, done)
+        send('fetchTownHallData', {}, done)
         send('mergeIssues', body, done)
       })
     },
