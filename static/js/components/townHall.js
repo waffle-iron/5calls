@@ -10,7 +10,7 @@ let renderNotes = (e) => {
   let notesExist = !!e.Notes;
   if (notesExist){
     let ret = html`<li></li>`;
-    ret.innerHTML = "Notes: " + e.Notes;
+    ret.innerHTML = e.Notes;
     return ret;
   }
 };
@@ -33,8 +33,7 @@ module.exports = (state) => {
                   <span class="badge badge-default badge-pill pull-right">  ${e.meetingType}</span>
                 </span>
                 <ul class="list-inline list-inline-separated">
-                  <li>${e.Date}</li>
-                  <li>${e.Time}, ${e.timeZone}</li>
+                  <li>${e.Date} - ${e.Time}, ${e.timeZone}</li>
                   <li>${e.eventName}</li>
                   <li>${e.Location}</li>
                   <li>${e.address}</li>
