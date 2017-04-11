@@ -60,12 +60,13 @@ describe('townHall component', () => {
       let result = townHall(state);
       let ul = result.querySelector('.town-hall ul');
       expect(ul).to.be.defined;
-    })
+    });
+    
     it('should display nothing when no events are found', () => {
       let state = {localEvents: []}
       let result = townHall(state);
       let ul = result.querySelector('.town-hall ul');
-      expect(ul).to.not.be.defined;
+      expect(ul).not.to.exist;
     })
   })
 })

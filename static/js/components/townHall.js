@@ -16,7 +16,7 @@ let renderNotes = (e) => {
 };
 
 module.exports = (state) => {
-  if (state.localEvents.length > 0){
+  if (!!state.localEvents && state.localEvents.length > 0){
     return html`
       <div class="town-hall">
         <h2>Find an upcoming event near you</h2>
@@ -47,6 +47,6 @@ module.exports = (state) => {
         </p>
       </div>`
   }else{
-    return ` `;
+    return html`<div></div>`;
   }
 } 
