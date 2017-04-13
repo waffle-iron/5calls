@@ -36,15 +36,12 @@
   }
 
   &__location {
-    color: $blue;
+    color: $gray;
 
     p {
       margin: 0;
       font-size: $font-small;
-      padding: 6px 6px 6px;
-      &.loadingAnimation {
-        color: $gray;
-      }
+      padding: 6px 6px 12px;
     }
 
     input {
@@ -53,10 +50,6 @@
 
     a {
       text-decoration: underline;
-    }
-
-    span {
-      font-weight: bold;
     }
   }
 
