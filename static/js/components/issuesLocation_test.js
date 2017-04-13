@@ -7,7 +7,8 @@ describe('issuesLocation component', () => {
     const testCases = [
       {state: {askingLocation: true, fetchingLocation: false}, shouldSend: true},
       {state: {askingLocation: true, fetchingLocation: true}, shouldSend: false},
-      {state: {askingLocation: false, fetchingLocation: false}, shouldSend: false}
+      {state: {askingLocation: false, fetchingLocation: false}, shouldSend: false},
+      {state: {askingLocation: false, fetchingLocation: false, invalidAddress: true}, shouldSend: true}
     ];
     testCases.forEach(({state, shouldSend}) => {
       it('should' + (shouldSend ? '' : ' not') + ' send "focusLocation" when ' +
@@ -24,12 +25,7 @@ describe('issuesLocation component', () => {
     });
   });
   describe('html content', () => {
-    it('should always include the addressForm', () => {
-      let result = issuesLocation({}, null, () => {});
-      let formElement = result.querySelector('form');
-      expect(formElement).to.be.defined;
-    });
-    it('should tell user when fetching location and hide addressForm', () => {
+    it('should tell user when fetching location and hide form', () => {
       const expected = 'Getting your location';
       const state = {fetchingLocation: true};
       let result = issuesLocation(state, null, () => {});
@@ -39,45 +35,57 @@ describe('issuesLocation component', () => {
     });
     it('should prompt user for address when askingLocation', () => {
       const state = {fetchingLocation: false, askingLocation:true};
-      let result = issuesLocation(state, null, () => {});
-      expect(result.querySelectorAll("p")).to.have.length(1);
-      let formElement = result.querySelector('form');
-      expect(formElement.classList.contains('hidden')).to.be.false;
-    });
-    it('should tell the user about an invalid address', () => {
-      const expected = 'address is invalid';
-      const state = {fetchingLocation: false, askingLocation:false,
-                     invalidAddress: true};
+      const expected = "Enter your location";
       let result = issuesLocation(state, null, () => {});
       expect(result.innerText).to.contain(expected);
       let formElement = result.querySelector('form');
-      expect(formElement.classList.contains('hidden')).to.be.true;
+      expect(formElement.classList.contains('hidden')).to.be.false;
+    });
+    it('should tell user when validating location and still show form', () => {
+      const expected = 'Getting your location';
+      const state = {fetchingLocation: false, askingLocation:false,
+        validatingLocation: true};
+      let result = issuesLocation(state, null, () => {});
+      expect(result.innerText).to.contain(expected);
+      let formElement = result.querySelector('form');
+      expect(formElement.classList.contains('hidden')).to.be.false;
+    });
+    it('should prompt user for another address when address is invalid', () => {
+      const expected = 'address is invalid';
+      const state = {fetchingLocation: false, askingLocation:false,
+        invalidAddress: true};
+      let result = issuesLocation(state, null, () => {});
+      expect(result.innerText).to.contain(expected);
+      let formElement = result.querySelector('form');
+      expect(formElement.classList.contains('hidden')).to.be.false;
     });
     it('should reflect the current address if available', () => {
       const address = '123 Main St. 12345';
       const state = {fetchingLocation: false, askingLocation:false,
-                     invalidAddress: false, address};
+        validatingLocation: false, invalidAddress: false,
+        address};
       let result = issuesLocation(state, null, () => {});
       expect(result.innerText).to.contain(address);
-      let formElement = result.querySelector('form');
-      expect(formElement.classList.contains('hidden')).to.be.true;
+      let buttonElement = result.querySelector('button');
+      expect(buttonElement.classList.contains('hidden')).to.be.false;
     });
     it('should reflect the current cached city if available', () => {
       const cachedCity = 'Munroe';
       const state = {fetchingLocation: false, askingLocation:false,
-                     invalidAddress: false, cachedCity};
+        validatingLocation: false,
+        invalidAddress: false, cachedCity};
       let result = issuesLocation(state, null, () => {});
       expect(result.innerText).to.contain(cachedCity);
-      let formElement = result.querySelector('form');
-      expect(formElement.classList.contains('hidden')).to.be.true;
+      let buttonElement = result.querySelector('button');
+      expect(buttonElement.classList.contains('hidden')).to.be.false;
     });
     it('should prompt for an address if nothing else', () => {
-      const expected = 'Choose a location';
+      const expected = 'Enter your location';
       const state = {};
       let result = issuesLocation(state, null, () => {});
       expect(result.innerText).to.contain(expected);
       let formElement = result.querySelector('form');
-      expect(formElement.classList.contains('hidden')).to.be.true;
+      expect(formElement.classList.contains('hidden')).to.be.false;
     });
   });
 });
