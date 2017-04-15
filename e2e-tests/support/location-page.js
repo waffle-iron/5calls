@@ -10,9 +10,9 @@ const BasePage = require('./base-page');
  */
 class LocationPage extends BasePage {
   isInitialized() {
-    const locationButtonSelector = By.css('button.subtle-button');
-    return this.waitForElement(locationButtonSelector,
-      'Location input button cannot be located')
+    const locationMessage = By.css('#locationMessage');
+    return this.waitForElement(locationMessage,
+      'Location message cannot be located')
       .then(() => Promise.resolve(true));
   }
 
@@ -22,7 +22,7 @@ class LocationPage extends BasePage {
    *
    */
   displayLocationInputBox() {
-    const selector = By.css('button.subtle-button');
+    const selector = By.css('.issues__location button');
     const addressButton = this.waitForElement(selector,
       'Location button not found');
     addressButton.click();
@@ -56,15 +56,15 @@ class LocationPage extends BasePage {
    *
    */
   getNewLocationElement(location) {
-    const selector = By.css('button.subtle-button');
-    // find button
-    const addressButton = this.waitForElement(selector,
-      'Location button not found',
+    const selector = By.css('#locationMessage');
+    // find location message
+    const addressMessage = this.waitForElement(selector,
+      'Location address not found',
       config.defaultTimeout);
-    // make sure button contains the new location text
-    this.driver.wait(until.elementTextIs(addressButton, location),
-      config.defaultTimeout, 'New location button text not found');
-    return addressButton;
+    // make sure message contains the new location text
+    this.driver.wait(until.elementTextContains(addressMessage, location),
+      config.defaultTimeout, 'New location message not found');
+    return addressMessage;
   }
 
 
