@@ -28,7 +28,7 @@ test.describe('location lookup', function() {
 
     // check for location text
     const newLocationText = page.getNewLocationElement(location);
-    return expect(newLocationText.getText()).to.eventually.equal(location);
+    return expect(newLocationText.getText()).to.eventually.contain(location);
   });
 
   test.it('Should lookup location by location name', function() {
@@ -46,7 +46,7 @@ test.describe('location lookup', function() {
 
     // check for location text
     const newLocationText = page.getNewLocationElement(location);
-    return expect(newLocationText.getText()).to.eventually.equal(location);
+    return expect(newLocationText.getText()).to.eventually.contain(location);
   });
 
   test.it('Should show error message if lookup location is invalid', function() {
@@ -69,4 +69,3 @@ test.describe('location lookup', function() {
   });
 
 });
-
