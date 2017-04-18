@@ -16,7 +16,7 @@ let renderNotes = (e) => {
 };
 
 module.exports = (state) => {
-  if (!!state.localEvents && state.localEvents.length > 0){
+  if (state.localEvents && state.localEvents.length > 0){
     return html`
       <div class="town-hall">
         <h2>Find an upcoming event near you</h2>
@@ -34,7 +34,7 @@ module.exports = (state) => {
                 </span>
                 <ul class="list-inline list-inline-separated">
                   <li>${e.Date} - ${e.Time}, ${e.timeZone}</li>
-                  <li>${e.eventName}</li>
+                  <li><b>${e.eventName}</b></li>
                   <li>${e.Location}</li>
                   <li>${e.address}</li>
                   ${renderLink(e)}
@@ -43,7 +43,7 @@ module.exports = (state) => {
               </li>`
             })}
           </ul>
-          <small>* Sourced from <a href="https://townhallproject.com" target="_new">Town Hall Project</a></small>
+          <small>Events from the <a href="https://townhallproject.com" target="_new">Town Hall Project</a></small>
         </p>
       </div>`
   }else{

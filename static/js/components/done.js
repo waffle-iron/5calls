@@ -27,8 +27,8 @@ module.exports = (state, prev, send) => {
           Pick another issue to keep calling, or spread the word by sharing your work with friends:
         </p>
         ${promote(state, prev, send)}
-        ${townHall(state)}
         <p class="call__text"> <a href="/about">Learn why calling</a> representatives is the most effective way of making your voice heard.</p>
+        ${townHall(state)}
         ${callcount(state, prev, send)}
       </div>
     </section>

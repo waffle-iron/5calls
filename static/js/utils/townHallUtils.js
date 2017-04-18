@@ -1,3 +1,8 @@
+// maxTownHallDistance is the distance (in miles) to limit how far away an event
+// can be and still show in the user's localEvents
+// 50 was chosen based on a brief Slack conversation
+const maxTownHallDistance = 50;
+
 let stateAbbrs = {
   "AL": "Alabama",
   "AK": "Alaska",
@@ -59,21 +64,51 @@ let stateAbbrs = {
   "WI": "Wisconsin",
   "WY": "Wyoming",
 }
-let calculateDistance = (lat1, lon1, lat2, lon2) => {
-  let radlat1 = Math.PI * lat1/180
-  let radlat2 = Math.PI * lat2/180
-  let theta = lon1-lon2
-  let radtheta = Math.PI * theta/180
-  let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-  dist = Math.acos(dist)
-  dist = dist * 180/Math.PI
-  dist = dist * 60 * 1.1515
-  return dist
-};
 // calculate the distance between two lat/long points
-module.exports = {
-  calculateDistance: calculateDistance,
-  parseCivicData: (divisions) => {
+// This uses the Haversine formula
+// Taken from http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+let calculateDistance = (lat1, lon1, lat2, lon2) => {
+  if (lat1 && lon1 && lat2 && lon2){
+    let R = 3959; // Radius of the Earth in miles
+    let dLat = deg2rad(lat2-lat1);
+    let dLon = deg2rad(lon2-lon1);
+    let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c; // distance in miles
+  }else{
+    return null;
+  }
+};
+let deg2rad = (deg) => {
+  return deg * (Math.PI/180);
+};
+let getKeyByValue = (obj, val) => {
+  for( var prop in obj ) {
+    if( obj.hasOwnProperty( prop ) ) {
+       if( obj[ prop ] === val )
+         return prop;
+    }
+  }
+};
+let mapDistanceAndDistrict = (lat, lng) => {
+  return (e) => {
+    e.distance = calculateDistance(lat, lng, parseFloat(e.lat), parseFloat(e.lng));
+    if (!e.stateAb){
+      e.stateAb = getKeyByValue(stateAbbrs, e.State);
+    }
+    // This is to clean up 'District' data.
+    // All of these values ('VA-02', 'VA-2', '02', '2') should map to 'VA-02' (if e.stateAb == 'VA')
+    if (e.District != 'Senate'){
+      let districtParts = e.District.split('-');
+      e.District = districtParts[districtParts.length - 1];
+      e.District = e.stateAb + '-' + "0".substring(0, 2 - e.District.length) + e.District;
+    }
+    return e;
+  };
+};
+let parseCivicData = (divisions) => {
     let ret = {
         'congressional_district': false,
         'country': false,
@@ -101,28 +136,39 @@ module.exports = {
       }
     }
     return ret;
-  },
-  stateAbbrs: stateAbbrs,
-  mapDistance: (lat, lng) => {
-    return (e) => {
-      e.distance = calculateDistance(lat, lng, parseFloat(e.lat), parseFloat(e.lng));
-      return e;
-    };
-  },
-  filterEvents: (state, maxTownHallDistance) => {
-    return (e) => {
-      return e.dateObj > (new Date()).getTime() // The event is in the future
-            && ((!!state.divisions.congressional_district 
-                && state.divisions.congressional_district == e.District) // The event is for the user's District
-              || (!!state.divisions.state 
-                && state.divisions.state == e.State 
-                && e.District == "Senate" 
-                && e.distance < maxTownHallDistance)) // The event is for a Senator in the user's state, less than maxTownHallDistance away
-    };
-  },
-  sortEvents: () => {
-    return (a, b) => {
+};
+let filterEvents = (divisions) => {
+  return (e) => {
+    return e.dateObj > (new Date()).getTime() // The event is in the future
+          && ((!!divisions.congressional_district 
+              && divisions.congressional_district == e.District) // The event is for the user's District
+            || (!!divisions.state 
+              && divisions.state == e.State 
+              && e.District == "Senate"
+              && e.distance
+              && e.distance < maxTownHallDistance)) // The event is for a Senator in the user's state, less than maxTownHallDistance away
+  };
+};
+let sortEvents = () => {
+  return (a, b) => {
+    if (a.distance == b.distance){
+      return a.dateObj < b.dateObj ? 1 : -1;
+    }else{
       return a.distance < b.distance ? 1 : -1;
-    };
-  }
-} 
+    }
+  };
+};
+let filterForLocalEvents = (events, divisions, lat, lng) => {
+  return events.map(mapDistanceAndDistrict(lat, lng))
+    .filter(filterEvents(divisions))
+    .sort(sortEvents);
+}
+module.exports = {
+  calculateDistance: calculateDistance,
+  parseCivicData: parseCivicData,
+  stateAbbrs: stateAbbrs,
+  mapDistanceAndDistrict: mapDistanceAndDistrict,
+  filterEvents: filterEvents,
+  sortEvents: sortEvents,
+  filterForLocalEvents: filterForLocalEvents,
+}
