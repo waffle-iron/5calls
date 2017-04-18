@@ -282,7 +282,7 @@ app.model({
       }
     },
   },
-  receiveTownHallDataError: (state) => {
+  receiveTownHallDataError: () => {
     return { localEvents: [] };
   },
 
