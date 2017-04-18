@@ -149,14 +149,12 @@ let filterEvents = (divisions) => {
               && e.distance < maxTownHallDistance)) // The event is for a Senator in the user's state, less than maxTownHallDistance away
   };
 };
-let sortEvents = () => {
-  return (a, b) => {
-    if (a.distance == b.distance){
-      return a.dateObj < b.dateObj ? 1 : -1;
-    }else{
-      return a.distance < b.distance ? 1 : -1;
-    }
-  };
+let sortEvents = (a,b) => {
+  if (a.distance === b.distance){
+    return a.dateObj < b.dateObj ? -1 : 1;
+  }else{
+    return a.distance < b.distance ? -1 : 1;
+  }
 };
 let filterForLocalEvents = (events, divisions, lat, lng) => {
   return events.map(mapDistanceAndDistrict(lat, lng))

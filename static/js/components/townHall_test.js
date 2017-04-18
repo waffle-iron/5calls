@@ -607,20 +607,21 @@ describe('townHallUtils component', () => {
       expect(divisions.stateAbbr).to.equal('VA');
       expect(divisions.state).to.equal('Virginia');
       let events = townHallUtils.filterForLocalEvents(localEvents, divisions, userLocale.lat, userLocale.lng);
+      
       expect(events.length).to.equal(14);
-      expect(events[0].eventId).to.equal('100096');
+      expect(events[0].eventId).to.equal('100097');
       expect(events[1].eventId).to.equal('100128');
       expect(events[2].eventId).to.equal('100099');
-      expect(events[3].eventId).to.equal('100105');
-      expect(events[4].eventId).to.equal('100106');
-      expect(events[5].eventId).to.equal('100107');
-      expect(events[6].eventId).to.equal('100108');
-      expect(events[7].eventId).to.equal('100097');
-      expect(events[8].eventId).to.equal('100110');
-      expect(events[9].eventId).to.equal('100111');
-      expect(events[10].eventId).to.equal('100112');
-      expect(events[11].eventId).to.equal('100113');
-      expect(events[12].eventId).to.equal('100114');
+      expect(events[3].eventId).to.equal('100113');
+      expect(events[4].eventId).to.equal('100111');
+      expect(events[5].eventId).to.equal('100110');
+      expect(events[6].eventId).to.equal('100107');
+      expect(events[7].eventId).to.equal('100108');
+      expect(events[8].eventId).to.equal('100105');
+      expect(events[9].eventId).to.equal('100114');
+      expect(events[10].eventId).to.equal('100096');
+      expect(events[11].eventId).to.equal('100106');
+      expect(events[12].eventId).to.equal('100112');
       expect(events[13].eventId).to.equal('100109');
     });
     it ('should disregard Senators\' events if lat/long are not present', () => {
@@ -644,9 +645,19 @@ describe('townHallUtils component', () => {
       delete events[14].lng;
       events = townHallUtils.filterForLocalEvents(events, divisions, userLocale.lat, userLocale.lng);
       expect(events.length).to.equal(13);
-      expect(events[0].eventId).to.equal('100096');
-      expect(events[1].eventId).to.equal('100114');
-      expect(events[2].eventId).to.equal('100099');
+      expect(events[0].eventId).to.equal('100097');
+      expect(events[1].eventId).to.equal('100099');
+      expect(events[2].eventId).to.equal('100113');
+      expect(events[3].eventId).to.equal('100111');
+      expect(events[4].eventId).to.equal('100110');
+      expect(events[5].eventId).to.equal('100107');
+      expect(events[6].eventId).to.equal('100108');
+      expect(events[7].eventId).to.equal('100105');
+      expect(events[8].eventId).to.equal('100114');
+      expect(events[9].eventId).to.equal('100096');
+      expect(events[10].eventId).to.equal('100106');
+      expect(events[11].eventId).to.equal('100112');
+      expect(events[12].eventId).to.equal('100109');
     });
   })
 });
