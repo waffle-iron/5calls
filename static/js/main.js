@@ -290,6 +290,7 @@ app.model({
 
   effects: {
     fetchTownHallData: (state, data, send, done) => {
+      // Data provided from the Town Hall Project, http://townhallproject.com
       let townHallUrl = "https://townhallproject-86312.firebaseio.com/townHalls.json";
       logger.debug("fetching url", townHallUrl);
       http(townHallUrl, (err, res, body) => {
