@@ -1,4 +1,6 @@
 const html = require('choo/html');
+const t = require('../utils/translation');
+
 const callcount = require('./callcount.js');
 const promote = require('./promote.js');
 
@@ -7,33 +9,33 @@ module.exports = (state, prev, send) => {
   return html`
     <div class="hypothesis" onload=${() => send('getTotals')}>
       <header class="hypothesis__header">
-        <h2 class="hypothesis__title">Make your voice heard</h2>
-        <p>Turn your passive participation into active resistance. Facebook likes and Twitter retweets can’t create the change you want to see. Calling your Government on the phone can.</p>
-
-        <p><strong>Spend 5 minutes, make 5 calls.</strong></p>
+        <h2 class="hypothesis__title">${t('hypothesis.title')}</h2>
+        <p>${t('hypothesis.p1')}</p>
+        <p><strong>${t('hypothesis.p2')}</strong></p>
 
         ${promote(state, prev, send)}
       </header>
 
       <div class="hypothesis__text">
-        <p>Calling is the most effective way to influence your representative. Read more about <a href="/about">why calling works.</a>
-        </p>
 
-        <p>You can contribute to help out with costs associated with running 5 Calls. This project is run by an <strong>all-volunteer team</strong>, and all donations go towards basic expenses like <strong>hosting our site, sending issue alerts and keeping our data updated</strong>.</p>
-        <p class="hypothesis__callout"><a href="https://secure.actblue.com/contribute/page/5calls?refcode=web">Donate to 5 Calls Today</a></p>
+        <p>${t('hypothesis.p3')}</p>
 
-        <h3 class="hypothesis__subtitle">5 Calls:</h3>
+        <p>${t('hypothesis.contribute')}</p>
+
+        <p class="hypothesis__callout"><a href="https://secure.actblue.com/contribute/page/5calls?refcode=web">${t('hypothesis.donateCallout')}</a></p>
+
+        <h3 class="hypothesis__subtitle">${t('hypothesis.featuresTitle')}</h3>
 
         <ul class="hypothesis__list">
-        <li>provides phone numbers and scripts so calling is quick and easy</li>
-        <li>uses your location to find your local representatives so your calls have more impact</li>
+        <li>${t('hypothesis.feature1')}</li>
+        <li>${t('hypothesis.feature2')}</li>
         </ul>
 
-        <h3 class="hypothesis__subtitle">Get the 5 Calls app:</h3>
+        <h3 class="hypothesis__subtitle">${t('hypothesis.getApp')}</h3>
 
         <ul class="hypothesis__apps">
-        <li><a href="https://itunes.apple.com/us/app/5-calls/id1202558609?mt=8"><img class="ios" src="/img/app-store.svg" alt="5 Calls on the App Store" /></a></li>
-        <li><a href="https://play.google.com/store/apps/details?id=org.a5calls.android.a5calls&hl=en"><img class="play" src="/img/google-play-badge.png" alt="5 Calls on Google Play" /></a></li>
+        <li><a href="https://itunes.apple.com/us/app/5-calls/id1202558609?mt=8"><img class="ios" src="/img/app-store.svg" alt="${t('hypothesis.onAppStore')}" /></a></li>
+        <li><a href="https://play.google.com/store/apps/details?id=org.a5calls.android.a5calls&hl=en"><img class="play" src="/img/google-play-badge.png" alt="${t('hypothesis.onGooglePlay')}" /></a></li>
         </ul>
       </div>
 

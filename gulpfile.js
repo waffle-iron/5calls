@@ -22,14 +22,16 @@ var SRC = {
   scss:    './static/scss',
   img:     './static/img',
   js:      './static/js',
-  extra:   './static/rootExtra'
+  extra:   './static/rootExtra',
+  locales: './static/locales'
 };
 
 var DEST = {
   html:'./app/static',
   css: './app/static/css',
   img: './app/static/img',
-  js:  './app/static/js'
+  js:  './app/static/js',
+  locales: './app/static/locales'
 };
 
 gulp.task('html', function() {
@@ -125,6 +127,11 @@ gulp.task('scripts:watch', function() {
 gulp.task('extra', function() {
   gulp.src(SRC.extra + '/*.+(ico|xml|json)')
     .pipe(gulp.dest(DEST.html));
+});
+
+gulp.task('locales', function() {
+  gulp.src(SRC.locales + '/*.json')
+    .pipe(gulp.dest(DEST.locales));
 });
 
 function runKarmaTests ({singleRun, configFile} = {}) {
@@ -224,6 +231,5 @@ gulp.task('eslint', function() {
 
 gulp.task('test', ['eslint', 'test:js-unit']);
 
-gulp.task('default', ['html', 'html:watch', 'html:serve', 'sass', 'sass:watch', 'copy-images', 'copy-images:watch', 'scripts', 'scripts:watch', 'extra']);
-gulp.task('deploy', ['html', 'sass', 'build-scripts', 'extra', 'copy-images']);
-
+gulp.task('default', ['html', 'html:watch', 'html:serve', 'sass', 'sass:watch', 'copy-images', 'copy-images:watch', 'scripts', 'scripts:watch', 'extra', 'locales']);
+gulp.task('deploy', ['html', 'sass', 'build-scripts', 'extra', 'copy-images', 'locales']);

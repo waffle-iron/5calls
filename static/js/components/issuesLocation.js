@@ -1,4 +1,5 @@
 const html = require('choo/html');
+const t = require('../utils/translation');
 
 module.exports = (state, prev, send) => {
   if ((state.askingLocation && !state.fetchingLocation) ||
@@ -15,17 +16,17 @@ module.exports = (state, prev, send) => {
 
   function pretext(state) {
     if (state.fetchingLocation || state.validatingLocation) {
-      return html`<p id="locationMessage" class="loadingAnimation">Getting your location</p>`;
+      return html`<p id="locationMessage" class="loadingAnimation">${t("location.gettingYourLocation")}</p>`;
     } else if (state.askingLocation) {
-      return html`<p id="locationMessage">Enter your location</p>`;
+      return html`<p id="locationMessage">${t("location.chooseALocation")}</p>`;
     } else if (state.invalidAddress) {
-      return html`<p id="locationMessage" role="alert">That address is invalid, please try again</p>`;
+      return html`<p id="locationMessage" role="alert">${t("location.invalidAddress")}</p>`;
     } else if (state.address) {
       return html`<p id="locationMessage">Your location: <span>${state.address}</span></p>`;
     } else if (state.cachedCity) {
       return html`<p id="locationMessage">Your location: <span>${state.cachedCity}</span> ${debugText(state.debug)}</p>`;
     } else {
-      return html`<p id="locationMessage">Enter your location</p>`;
+      return html`<p id="locationMessage">${t("location.chooseALocation")}</p>`;
     }
   }
 
@@ -36,7 +37,7 @@ module.exports = (state, prev, send) => {
         !state.validatingLocation &&
         (state.address ||
          state.cachedCity)) {
-      return html`<p><button onclick=${enterLocation}>Change location</button></p>`;
+      return html`<p><button onclick=${enterLocation}>${t("location.changeLocation")}</button></p>`;
     } else {
       const className = (state.fetchingLocation) ? 'hidden' : '';
       return html`<p>
@@ -44,8 +45,8 @@ module.exports = (state, prev, send) => {
         <input type="text" autofocus="true" id="address" name="address" \
           aria-labelledby="locationMessage" aria-invalid=${state.invalidAddress} \
           disabled=${state.validatingLocation}
-          placeholder="Enter an address or zip code" />
-        <button>Go</button>
+          placeholder=${t("location.enterAnAddressOrZipCode", null, true)} />
+        <button>${t("common.go", null, true)}</button>
       </form></p>`;
     }
   }

@@ -1,4 +1,5 @@
 const html = require('choo/html');
+const t = require('../utils/translation');
 const promote = require('./promote.js');
 const callcount = require('./callcount.js');
 const impactTotal = require('./impactTotal.js');
@@ -21,13 +22,11 @@ module.exports = (state, prev, send) => {
     <main id="content" role="main" class="layout__main" onload=${() => send('startup')}>
     <section class="call">
       <div class="call_complete">
-        <h2 class="call__title">Great work!</h2>
+        <h2 class="call__title">${t('callComplete.title')}</h2>
         ${impactPreview}
-        <p class="call__text">
-          Pick another issue to keep calling, or spread the word by sharing your work with friends:
-        </p>
+        <p class="call__text">${t('callComplete.pickAnotherIssue')}</p>
         ${promote(state, prev, send)}
-        <p class="call__text"> <a href="/about">Learn why calling</a> representatives is the most effective way of making your voice heard.</p>
+        <p class="call__text"> ${t('callComplete.learnWhyCallingIsGreat')}</p>
         ${callcount(state, prev, send)}
       </div>
     </section>

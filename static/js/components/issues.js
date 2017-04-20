@@ -6,7 +6,7 @@ const issuesList = require('./issuesList.js');
 
 module.exports = (state, prev, send) => {
 	function debugText(debug) {
-    return debug ? html`<a href="#" onclick=${resetCompletedIssues}>reset</a>` : html``;
+    return debug ? html`<a href="/" onclick=${resetCompletedIssues}>reset</a>` : html``;
   }
 
   function resetCompletedIssues() {

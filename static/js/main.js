@@ -6,6 +6,7 @@ const find = require('lodash/find');
 const logger = require('loglevel');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
+const localization = require('./utils/localization');
 const scrollIntoView = require('./utils/scrollIntoView.js');
 
 const app = choo();
@@ -74,6 +75,17 @@ cachedLocationFetchType = (cachedAddress !== '') ? 'address' : cachedLocationFet
 let completedIssues = [];
 store.getAll('org.5calls.completed', (completed) => {
   completedIssues = completed == null ? [] : completed;
+});
+
+let cachedUserLocale = '';
+store.getAll('org.5calls.userlocale', (userLocale) => {
+  if (userLocale.length > 0) {
+    logger.debug("user locale get", userLocale[0]);
+    cachedUserLocale = userLocale[0];
+  } else {
+    cachedUserLocale = localization.getLocaleFromBrowserLanguage(navigator.language || navigator.userLanguage);
+    store.add('org.5calls.userlocale', cachedUserLocale, () => {});
+  }
 });
 
 // get stored user stats
@@ -350,7 +362,7 @@ app.model({
       let geoError = function(error) {
         window.clearTimeout(slowResponseTimeout);
 
-        // We need the most current state, so we need another effect call.
+         // We need the most current state, so we need another effect call.
         send('handleBrowserLocationError', error, done)
         logger.warn("Error with browser location (code: " + error.code + ")");
       }
@@ -464,9 +476,21 @@ app.router({ default: '/' }, [
   ['/more', require('./pages/issuesView.js')],
 ]);
 
-const tree = app.start();
-const rootNode = document.getElementById('root');
+let startApp = (err) => {  
+  // If we errored on initializing localization, then we won't have the
+  // right content for most of the app. For now, just fallback to the default index.html in that case.
+  if (err !== undefined) {
+    return;
+  }
+  
+  const tree = app.start();
+  const rootNode = document.getElementById('root');
 
-if (rootNode != null) {
-  document.body.replaceChild(tree, rootNode);
+  if (rootNode != null) {
+    document.body.replaceChild(tree, rootNode);
+  }
 }
+
+// need to initialize the localization engine/cache before bootstrapping the app's rendering process
+// The app's startApp method will be called as the callback after the initialization has taken place.
+localization.start(cachedUserLocale, startApp);
