@@ -34,8 +34,8 @@ module.exports = (state, prev, send) => {
         <h3 class="hypothesis__subtitle">${t('hypothesis.getApp')}</h3>
 
         <ul class="hypothesis__apps">
-        <li><a href="https://itunes.apple.com/us/app/5-calls/id1202558609?mt=8"><img class="ios" src="/img/app-store.svg" alt="${t('hypothesis.onAppStore')}" /></a></li>
-        <li><a href="https://play.google.com/store/apps/details?id=org.a5calls.android.a5calls&hl=en"><img class="play" src="/img/google-play-badge.png" alt="${t('hypothesis.onGooglePlay')}" /></a></li>
+        <li><a href="https://itunes.apple.com/us/app/5-calls/id1202558609?mt=8"><img class="ios" src="/img/app-store.svg" alt="${t('hypothesis.onAppStore', null, true)}" /></a></li>
+        <li><a href="https://play.google.com/store/apps/details?id=org.a5calls.android.a5calls&hl=en"><img class="play" src="/img/google-play-badge.png" alt="${t('hypothesis.onGooglePlay', null, true)}" /></a></li>
         </ul>
       </div>
 
