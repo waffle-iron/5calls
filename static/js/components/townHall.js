@@ -40,13 +40,13 @@ module.exports = (state) => {
                   ${renderLink(e)}
                   ${renderNotes(e)}
                 </ul>
-              </li>`
+              </li>`;
             })}
           </ul>
           <small>Events from the <a href="https://townhallproject.com" target="_new">Town Hall Project</a></small>
         </p>
-      </div>`
+      </div>`;
   }else{
     return html`<div></div>`;
   }
-} 
+}; 

@@ -63,7 +63,7 @@ let stateAbbrs = {
   "WV": "West Virginia",
   "WI": "Wisconsin",
   "WY": "Wyoming",
-}
+};
 // calculate the distance between two lat/long points
 // This uses the Haversine formula
 // Taken from http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
@@ -87,8 +87,8 @@ let deg2rad = (deg) => {
 let getKeyByValue = (obj, val) => {
   for( var prop in obj ) {
     if( obj.hasOwnProperty( prop ) ) {
-       if( obj[ prop ] === val )
-         return prop;
+      if( obj[ prop ] === val )
+        return prop;
     }
   }
 };
@@ -109,33 +109,33 @@ let mapDistanceAndDistrict = (lat, lng) => {
   };
 };
 let parseCivicData = (divisions) => {
-    let ret = {
-        'congressional_district': false,
-        'country': false,
-        'state': false,
-        'stateAbbr': false,
-    };
+  let ret = {
+    'congressional_district': false,
+    'country': false,
+    'state': false,
+    'stateAbbr': false,
+  };
     
-    for(let i in divisions){
-      let parts = divisions[i].split('/');
-      if (parts.length > 0){
-        let key = parts[parts.length - 1].split(':')[0];
-        let val = parts[parts.length - 1].split(':')[1];
-        switch (key){
-          case 'cd':
-            ret.congressional_district = parts[parts.length - 2].split(':')[1].toUpperCase() + "-00".substring(0, 3 - val.length) + val;
-            break;
-          case 'country':
-            ret.country = val.toUpperCase();
-            break;
-          case 'state':
-            ret.stateAbbr = val.toUpperCase();
-            ret.state = stateAbbrs[val.toUpperCase()];
-            break;
-        }
+  for(let i in divisions){
+    let parts = divisions[i].split('/');
+    if (parts.length > 0){
+      let key = parts[parts.length - 1].split(':')[0];
+      let val = parts[parts.length - 1].split(':')[1];
+      switch (key){
+      case 'cd':
+        ret.congressional_district = parts[parts.length - 2].split(':')[1].toUpperCase() + "-00".substring(0, 3 - val.length) + val;
+        break;
+      case 'country':
+        ret.country = val.toUpperCase();
+        break;
+      case 'state':
+        ret.stateAbbr = val.toUpperCase();
+        ret.state = stateAbbrs[val.toUpperCase()];
+        break;
       }
     }
-    return ret;
+  }
+  return ret;
 };
 let filterEvents = (divisions) => {
   return (e) => {
@@ -146,7 +146,7 @@ let filterEvents = (divisions) => {
               && divisions.state == e.State 
               && e.District == "Senate"
               && e.distance
-              && e.distance < maxTownHallDistance)) // The event is for a Senator in the user's state, less than maxTownHallDistance away
+              && e.distance < maxTownHallDistance)); // The event is for a Senator in the user's state, less than maxTownHallDistance away
   };
 };
 let sortEvents = (a,b) => {
@@ -160,7 +160,7 @@ let filterForLocalEvents = (events, divisions, lat, lng) => {
   return events.map(mapDistanceAndDistrict(lat, lng))
     .filter(filterEvents(divisions))
     .sort(sortEvents);
-}
+};
 module.exports = {
   calculateDistance: calculateDistance,
   parseCivicData: parseCivicData,
@@ -169,4 +169,4 @@ module.exports = {
   filterEvents: filterEvents,
   sortEvents: sortEvents,
   filterForLocalEvents: filterForLocalEvents,
-}
+};

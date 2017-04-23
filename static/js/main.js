@@ -280,7 +280,7 @@ app.model({
         lng = geo.split(",")[1];
       }
       if (lat && lng){
-        events = Object.values(events).map(function(val){ return val; }); // Convert Object to Array
+        events = Object.values(events).map(function(val){ return val }); // Convert Object to Array
         events = townHallUtils.filterForLocalEvents(events, state.divisions, lat, lng);
         // Only return (at most) the first three. Showing more than that could be overwhelming.
         return {
@@ -309,7 +309,7 @@ app.model({
         }else{
           send('receiveTownHallDataError', body, done);
         }
-      })
+      });
     },
     fetchActiveIssues: (state, data, send, done) => {
       let address = "?address=";
