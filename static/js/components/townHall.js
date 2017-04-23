@@ -3,7 +3,7 @@ const html = require('choo/html');
 let renderLink = (e) => {
   let linkExists = !!e.link;
   if (linkExists){
-    return html`<li><a href="${e.link}" target="_new">More Info</a></li>`;
+    return html`<li><a href="${e.link}" target="_new">${t("townhall.moreInfo")}</a></li>`;
   }
 };
 let renderNotes = (e) => {
@@ -19,7 +19,7 @@ module.exports = (state) => {
   if (state.localEvents && state.localEvents.length > 0){
     return html`
       <div class="town-hall">
-        <h2>Find an upcoming event near you</h2>
+        <h2>${t("townhall.findNearYou")}</h2>
         <p>
           <ul class="list-group">
             ${state.localEvents.map(function(e){
@@ -43,7 +43,7 @@ module.exports = (state) => {
               </li>`;
             })}
           </ul>
-          <small>Events from the <a href="https://townhallproject.com" target="_new">Town Hall Project</a></small>
+          <small>${t("townhall.thpCredit")}</small>
         </p>
       </div>`;
   }else{
