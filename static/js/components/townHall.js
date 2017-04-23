@@ -1,4 +1,5 @@
 const html = require('choo/html');
+const t = require('../utils/translation');
 
 let renderLink = (e) => {
   let linkExists = !!e.link;
