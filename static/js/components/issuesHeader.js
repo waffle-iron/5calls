@@ -1,4 +1,5 @@
 const html = require('choo/html');
+const t = require('../utils/translation');
 
 const issuesLocation = require('./issuesLocation.js');
 
@@ -6,7 +7,7 @@ module.exports = (state, prev, send) => {
   return html`
     <header class="${classString(state)}" role="banner">
       <h1 class="issues__title">
-        <a href="/" onclick=${() => send('home')}><img class="issues__logo" src="/img/5calls-logotype.png">5 Calls</a>
+        <a href="/" onclick=${() => send('home')}><img class="issues__logo" src="/img/5calls-logotype.png" alt="${t('common.AppName', null, true)}">${t("common.AppName")}</a>
       </h1>
       ${issuesLocation(state, prev, send)}
       ${issueExplain(state)}
@@ -15,9 +16,9 @@ module.exports = (state, prev, send) => {
 
   function issueExplain(state) {
     if (state.issues.length > 0) {
-      return html`<h2>What’s important to you?</h2>`
+      return html`<h2>${t("issues.whatsImportantToYou")}</h2>`;
     } else {
-      return html``
+      return html``;
     }
   }
 
@@ -31,4 +32,4 @@ module.exports = (state, prev, send) => {
 
     return classes.join(' ');
   }
-}
+};

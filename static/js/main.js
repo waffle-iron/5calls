@@ -6,6 +6,7 @@ const find = require('lodash/find');
 const logger = require('loglevel');
 const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
+const localization = require('./utils/localization');
 const scrollIntoView = require('./utils/scrollIntoView.js');
 const townHallUtils = require('./utils/townHallUtils.js');
 const zipcodes = require('zipcodes');
@@ -26,7 +27,7 @@ if (debug) {
 let cachedAddress = '';
 store.getAll('org.5calls.location', (location) => {
   if (location.length > 0) {
-   cachedAddress = location[0]
+    cachedAddress = location[0];
   }
 });
 
@@ -35,7 +36,7 @@ let cachedGeo = '';
 store.getAll('org.5calls.geolocation', (geo) => {
   if (geo.length > 0) {
     logger.debug("geo get", geo[0]);
-    cachedGeo = geo[0]
+    cachedGeo = geo[0];
   }
 });
 
@@ -46,7 +47,7 @@ let cachedAllowBrowserGeo = true;
 store.getAll('org.5calls.allow_geolocation', (allowGeo) => {
   if (allowGeo.length > 0) {
     logger.debug("allowGeo get", allowGeo[0]);
-    cachedAllowBrowserGeo = allowGeo[0]
+    cachedAllowBrowserGeo = allowGeo[0];
   }
 });
 
@@ -57,7 +58,7 @@ let cachedGeoTime = '';
 store.getAll('org.5calls.geolocation_time', (geo) => {
   if (geo.length > 0) {
     logger.debug("geo time get", geo[0]);
-    cachedGeoTime = geo[0]
+    cachedGeoTime = geo[0];
   }
 });
 
@@ -65,7 +66,7 @@ let cachedCity = '';
 store.getAll('org.5calls.geolocation_city', (city) => {
   if (city.length > 0) {
     logger.debug("city get", city[0]);
-    cachedCity = city[0]
+    cachedCity = city[0];
   }
 });
 
@@ -76,6 +77,17 @@ cachedLocationFetchType = (cachedAddress !== '') ? 'address' : cachedLocationFet
 let completedIssues = [];
 store.getAll('org.5calls.completed', (completed) => {
   completedIssues = completed == null ? [] : completed;
+});
+
+let cachedUserLocale = '';
+store.getAll('org.5calls.userlocale', (userLocale) => {
+  if (userLocale.length > 0) {
+    logger.debug("user locale get", userLocale[0]);
+    cachedUserLocale = userLocale[0];
+  } else {
+    cachedUserLocale = localization.getLocaleFromBrowserLanguage(navigator.language || navigator.userLanguage);
+    store.add('org.5calls.userlocale', cachedUserLocale, () => {});
+  }
 });
 
 // get stored user stats
@@ -89,9 +101,6 @@ let localStats = defaultStats;
 store.getAll('org.5calls.userStats', (stats) => {
   if (stats.length > 0) {
     localStats = stats[0];
-  } else {
-    let impactLink = document.querySelector('#impact__link');
-    impactLink.classList.add('hidden');
   }
 });
 
@@ -136,54 +145,55 @@ app.model({
 
   reducers: {
     receiveActiveIssues: (state, data) => {
-      const response = JSON.parse(data)
-      let divisions = townHallUtils.parseCivicData(response.divisions)
+      const response = JSON.parse(data);
+      let divisions = townHallUtils.parseCivicData(response.divisions);
+
       return {
         activeIssues: response.issues,
         splitDistrict: response.splitDistrict,
         invalidAddress: response.invalidAddress,
         divisions: divisions,
         validatingLocation: false
-      }
+      };
     },
     receiveInactiveIssues: (state, data) => {
-      const response = JSON.parse(data)
+      const response = JSON.parse(data);
       return {
         inactiveIssues: response.issues,
-      }
+      };
     },
     mergeIssues: (state) => {
-      let issues = state.activeIssues.concat(state.inactiveIssues)
-      let contactIndices = state.contactIndices
+      let issues = state.activeIssues.concat(state.inactiveIssues);
+      let contactIndices = state.contactIndices;
       issues.forEach(issue => {
         contactIndices[issue.id] = contactIndices[issue.id] || 0;
-      })
+      });
       return {
         issues,
         contactIndices,
-      }
+      };
     },
     receiveTotals: (state, data) => {
       const totals = JSON.parse(data);
-      return { totalCalls: totals.count }
+      return { totalCalls: totals.count };
     },
     receiveIPInfoLoc: (state, data) => {
-      const geo = data.loc
-      const city = data.city
-      const time = new Date().valueOf()
+      const geo = data.loc;
+      const city = data.city;
+      const time = new Date().valueOf();
       store.replace("org.5calls.geolocation", 0, geo, () => {});
       store.replace("org.5calls.geolocation_city", 0, city, () => {});
       store.replace("org.5calls.geolocation_time", 0, time, () => {});
-      return { geolocation: geo, cachedCity: city, geoCacheTime: time, fetchingLocation: false, askingLocation: false }
+      return { geolocation: geo, cachedCity: city, geoCacheTime: time, fetchingLocation: false, askingLocation: false };
     },
     setContactIndices: (state, data) => {
       let contactIndices = state.contactIndices;
       if (data.newIndex != 0) {
         contactIndices[data.issueid] = data.newIndex;
-        return { contactIndices: contactIndices }
+        return { contactIndices: contactIndices };
       } else {
         contactIndices[data.issueid] = 0;
-        return { contactIndices: contactIndices, completedIssues: state.completedIssues.concat(data.issueid) }
+        return { contactIndices: contactIndices, completedIssues: state.completedIssues.concat(data.issueid) };
       }
     },
     setUserStats: (state, data) => {
@@ -196,57 +206,57 @@ app.model({
       });
       stats[data.result] = stats[data.result] + 1;
       store.replace("org.5calls.userStats", 0, stats, () => {});
-      return { userStats: stats }
+      return { userStats: stats };
     },
     setAddress: (state, address) => {
       store.replace("org.5calls.location", 0, address, () => {});
 
-      return { address: address, askingLocation: false, validatingLocation: true }
+      return { address: address, askingLocation: false, validatingLocation: true };
     },
     setGeolocation: (state, data) => {
       store.replace("org.5calls.geolocation", 0, data, () => {});
-      return { geolocation: data, fetchingLocation: false }
+      return { geolocation: data, fetchingLocation: false };
     },
     setCachedCity: (state, data) => {
       const response = JSON.parse(data);
       if (response.normalizedLocation && state.cachedCity == '') {
         store.replace("org.5calls.geolocation_city", 0, response.normalizedLocation, () => {});
-        return { cachedCity: response.normalizedLocation }
+        return { cachedCity: response.normalizedLocation };
       } else {
-        return null
+        return null;
       }
     },
     fetchingLocation: (state, data) => {
-      return { fetchingLocation: data }
+      return { fetchingLocation: data };
     },
     allowBrowserGeolocation: (state, data) => {
-      store.replace("org.5calls.allow_geolocation", 0, data, () => {})
-      return { allowBrowserGeo: data }
+      store.replace("org.5calls.allow_geolocation", 0, data, () => {});
+      return { allowBrowserGeo: data };
     },
     enterLocation: () => {
-      return { askingLocation: true }
+      return { askingLocation: true };
     },
     setLocationFetchType: (state, data) => {
       let askingLocation = (data === 'address');
-      return { locationFetchType: data, askingLocation: askingLocation, fetchingLocation: !askingLocation }
+      return { locationFetchType: data, askingLocation: askingLocation, fetchingLocation: !askingLocation };
     },
     resetLocation: () => {
       store.remove("org.5calls.location", () => {});
       store.remove("org.5calls.geolocation", () => {});
       store.remove("org.5calls.geolocation_city", () => {});
       store.remove("org.5calls.geolocation_time", () => {});
-      return { address: '', geolocation: '', cachedCity: '', geoCacheTime: '' }
+      return { address: '', geolocation: '', cachedCity: '', geoCacheTime: '' };
     },
     resetCompletedIssues: () => {
       store.remove("org.5calls.completed", () => {});
-      return { completedIssues: [] }
+      return { completedIssues: [] };
     },
     resetUserStats: () => {
       store.replace("org.5calls.userStats", 0, defaultStats, () => {});
-      return { userStats: defaultStats }
+      return { userStats: defaultStats };
     },
     home: () => {
-      return { activeIssue: false, getInfo: false }
+      return { activeIssue: false, getInfo: false };
     },
     toggleFieldOfficeNumbers: (state) => ({ showFieldOfficeNumbers: !state.showFieldOfficeNumbers }),
     hideFieldOfficeNumbers: () => ({ showFieldOfficeNumbers: false }),    
@@ -302,39 +312,39 @@ app.model({
       })
     },
     fetchActiveIssues: (state, data, send, done) => {
-      let address = "?address="
+      let address = "?address=";
       if (state.address !== '') {
-        address += state.address
+        address += state.address;
       } else if (state.geolocation !== "") {
-        address += state.geolocation
+        address += state.geolocation;
       }
-      const issueURL = appURL+'/issues/'+address
+      const issueURL = appURL+'/issues/'+address;
       logger.debug("fetching url", issueURL);
       http(issueURL, (err, res, body) => {
-        send('setCachedCity', body, done)
-        send('receiveActiveIssues', body, done)
-        send('fetchTownHallData', {}, done)
-        send('mergeIssues', body, done)
-      })
+        send('setCachedCity', body, done);
+        send('receiveActiveIssues', body, done);
+        send('fetchTownHallData', body, done);
+        send('mergeIssues', body, done);
+      });
     },
     fetchInactiveIssues: (state, data, send, done) => {
-      let address = "?inactive=true&address="
+      let address = "?inactive=true&address=";
       if (state.address !== '') {
-        address += state.address
+        address += state.address;
       } else if (state.geolocation !== "") {
-        address += state.geolocation
+        address += state.geolocation;
       }
-      const issueURL = appURL+'/issues/'+address
+      const issueURL = appURL+'/issues/'+address;
       logger.debug("fetching url", issueURL);
       http(issueURL, (err, res, body) => {
-        send('receiveInactiveIssues', body, done)
-        send('mergeIssues', body, done)
-      })
+        send('receiveInactiveIssues', body, done);
+        send('mergeIssues', body, done);
+      });
     },
     getTotals: (state, data, send, done) => {
       http(appURL+'/report/', (err, res, body) => {
-        send('receiveTotals', body, done)
-      })
+        send('receiveTotals', body, done);
+      });
     },
     setLocation: (state, data, send, done) => {
       send('setAddress', data, done);
@@ -345,18 +355,18 @@ app.model({
       send('fetchActiveIssues', {}, done);
     },
     unsetLocation: (state, data, send, done) => {
-      send('resetLocation', data, done)
-      send('startup', data, done)
+      send('resetLocation', data, done);
+      send('startup', data, done);
     },
     fetchLocationBy: (state, data, send, done) => {
-      send('setLocationFetchType', data, done)
-      send('startup', data, done)
+      send('setLocationFetchType', data, done);
+      send('startup', data, done);
     },
     fetchLocationByIP: (state, data, send, done) => {
       http('https://ipinfo.io/json', (err, res, body) => {
         if (res.statusCode == 200) {
           try {
-            const response = JSON.parse(body)
+            const response = JSON.parse(body);
             if (response.city != "") {
               send('receiveIPInfoLoc', response, done);
               send('fetchActiveIssues', {}, done);
@@ -370,7 +380,7 @@ app.model({
         } else {
           send('fetchLocationBy', 'address', done);
         }
-      })
+      });
     },
     handleBrowserLocationError: (state, data, send, done) => {
       // data = error from navigator.geolocation.getCurrentPosition
@@ -400,17 +410,17 @@ app.model({
           logger.warn("Error: bad browser location results");
           send('fetchLocationBy', 'ipAddress', done);
         }
-      }
+      };
       let geoError = function(error) {
         window.clearTimeout(slowResponseTimeout);
 
-        // We need the most current state, so we need another effect call.
-        send('handleBrowserLocationError', error, done)
+         // We need the most current state, so we need another effect call.
+        send('handleBrowserLocationError', error, done);
         logger.warn("Error with browser location (code: " + error.code + ")");
-      }
+      };
       let handleSlowResponse = function() {
         send('fetchLocationBy', 'ipAddress', done);
-      }
+      };
       // If necessary, this prompts a permission dialog in the browser.
       navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
 
@@ -422,7 +432,7 @@ app.model({
     // If appropriate, focus and select the text for the location input element
     // in the issuesLocation component.
     focusLocation: (state, data, send, done) => {
-      let addressElement = document.querySelector('#address')
+      let addressElement = document.querySelector('#address');
       addressElement.focus();
       //feedback message above form should also be visible
       let addressLabel = document.querySelector("#locationMessage");
@@ -462,8 +472,8 @@ app.model({
         send('setContactIndices', { newIndex: currentIndex + 1, issueid: issue.id }, done);
       } else {
         scrollIntoView(document.querySelector('#content'));
-        store.add("org.5calls.completed", issue.id, () => {})
-        send('location:set', "/done/" + issue.id, done)
+        store.add("org.5calls.completed", issue.id, () => {});
+        send('location:set', "/done/" + issue.id, done);
         send('setContactIndices', { newIndex: 0, issueid: issue.id }, done);
       }
     },
@@ -482,10 +492,10 @@ app.model({
       // A value of test indicates that it did not come from the production environment
       const viaParameter = window.location.host === '5calls.org' ? 'web' : 'test';
 
-      const body = queryString.stringify({ location: state.zip, result: data.result, contactid: data.contactid, issueid: data.issueid, via: viaParameter })
+      const body = queryString.stringify({ location: state.zip, result: data.result, contactid: data.contactid, issueid: data.issueid, via: viaParameter });
       http.post(appURL+'/report', { body: body, headers: {"Content-Type": "application/x-www-form-urlencoded"} }, () => {
         // don’t really care about the result
-      })
+      });
       send('incrementContact', data, done);
     },
     skipCall: (state, data, send, done) => {
@@ -518,9 +528,21 @@ app.router({ default: '/' }, [
   ['/more', require('./pages/issuesView.js')],
 ]);
 
-const tree = app.start();
-const rootNode = document.getElementById('root');
+let startApp = (err) => {  
+  // If we errored on initializing localization, then we won't have the
+  // right content for most of the app. For now, just fallback to the default index.html in that case.
+  if (err !== undefined) {
+    return;
+  }
+  
+  const tree = app.start();
+  const rootNode = document.getElementById('root');
 
-if (rootNode != null) {
-  document.body.replaceChild(tree, rootNode);
-}
+  if (rootNode != null) {
+    document.body.replaceChild(tree, rootNode);
+  }
+};
+
+// need to initialize the localization engine/cache before bootstrapping the app's rendering process
+// The app's startApp method will be called as the callback after the initialization has taken place.
+localization.start(cachedUserLocale, startApp);
