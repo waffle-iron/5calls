@@ -24,7 +24,7 @@ module.exports = (c, state, prev, send) => {
           <h3 class="call__contact__field-offices__header">${t('contact.localOfficeNumbers')}</h3>
           <ul class="call__contact__field-office-list">
             ${c.field_offices.map(office => html`
-              <li><a href="tel:+1${office.phone.replace(/-/g, '')}">${office.phone}</a> ${cityFormat(office,c)}</li>
+              <li><a href="tel:${office.phone.replace(/-| /g, '')}">${office.phone}</a> ${cityFormat(office,c)}</li>
             `)}
           </ul>
         </div>
@@ -46,7 +46,7 @@ module.exports = (c, state, prev, send) => {
         <h3 class="call__contact__type">${t('contact.callThisOffice')}</h3>
         <p class="call__contact__name">${c.name} ${repID}</p>
         <p class="call__contact__phone">
-          <a href="tel:+1${c.phone}">+1 ${c.phone}</a>
+          <a href="tel:${c.phone.replace(/-| /g, '')}">${c.phone}</a>
         </p>
         ${fieldOffices}
         <h3 class="call__contact__reason__header">${t('contact.whyYouAreCallingThisOffice')}</h3>
