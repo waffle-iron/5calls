@@ -138,5 +138,10 @@
       "shareOnTwitter": "Share on Twitter",
       "shareOnFacebook": "Share on Facebook",
       "motto": "Spend 5 minutes. Make 5 calls. Make your voice heard."
-    }
+    },
+    "townhall": {
+      "findNearYou": "Find an upcoming event near you",
+      "moreInfo": "More info",
+      "thpCredit": "Events from the <a href='https://townhallproject.com' target='_new'>Town Hall Project</a>",
+    },
 }

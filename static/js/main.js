@@ -8,6 +8,8 @@ const queryString = require('query-string');
 const store = require('./utils/localstorage.js');
 const localization = require('./utils/localization');
 const scrollIntoView = require('./utils/scrollIntoView.js');
+const townHallUtils = require('./utils/townHallUtils.js');
+const zipcodes = require('zipcodes');
 
 const app = choo();
 const appURL = 'https://5calls.org';
@@ -133,6 +135,8 @@ app.model({
     locationFetchType: cachedLocationFetchType,
     contactIndices: {},
     completedIssues: completedIssues,
+    localEvents: {},
+    divisions: {},
 
     showFieldOfficeNumbers: false,
 
@@ -142,10 +146,13 @@ app.model({
   reducers: {
     receiveActiveIssues: (state, data) => {
       const response = JSON.parse(data);
+      let divisions = townHallUtils.parseCivicData(response.divisions);
+
       return {
         activeIssues: response.issues,
         splitDistrict: response.splitDistrict,
         invalidAddress: response.invalidAddress,
+        divisions: divisions,
         validatingLocation: false
       };
     },
@@ -252,11 +259,58 @@ app.model({
       return { activeIssue: false, getInfo: false };
     },
     toggleFieldOfficeNumbers: (state) => ({ showFieldOfficeNumbers: !state.showFieldOfficeNumbers }),
-    hideFieldOfficeNumbers: () => ({ showFieldOfficeNumbers: false }),
-    setCacheDate: (state, data) => ({ [data]: Date.now() })
+    hideFieldOfficeNumbers: () => ({ showFieldOfficeNumbers: false }),    
+    setCacheDate: (state, data) => ({ [data]: Date.now() }),
+    receiveTownHallData: (state, data) => {
+      let events = JSON.parse(data);
+      let lat = false;
+      let lng = false;
+      if (cachedAddress != ''){
+        // zipcode
+        let zipcode = cachedAddress.replace(new RegExp(/\]|\[|"/, 'g'),'');
+        let zipcode_obj = zipcodes.lookup(zipcode);
+        if (!!zipcode_obj && !!zipcode_obj.latitude && !!zipcode_obj.longitude){
+          lat = zipcode_obj.latitude;
+          lng = zipcode_obj.longitude;
+        }
+      } else if (cachedGeo != ''){
+        // lat/long
+        let geo = cachedGeo.replace(new RegExp(/\]|\[|"/, 'g'),'');
+        lat = geo.split(",")[0];
+        lng = geo.split(",")[1];
+      }
+      if (lat && lng){
+        events = Object.values(events).map(function(val){ return val }); // Convert Object to Array
+        events = townHallUtils.filterForLocalEvents(events, state.divisions, lat, lng);
+        // Only return (at most) the first three. Showing more than that could be overwhelming.
+        return {
+          localEvents: events.slice(0,3)
+        };
+      }else{
+        // we don't have enough data to determine their location
+        return {
+          localEvents: []
+        };
+      }
+    },
+  },
+  receiveTownHallDataError: () => {
+    return { localEvents: [] };
   },
 
   effects: {
+    fetchTownHallData: (state, data, send, done) => {
+      // Data provided from the Town Hall Project, http://townhallproject.com
+      let townHallUrl = "https://townhallproject-86312.firebaseio.com/townHalls.json";
+      logger.debug("fetching url", townHallUrl);
+      http(townHallUrl, (err, res, body) => {
+        if (res.statusCode == 200) {
+          send('receiveTownHallData', body, done);
+        }else{
+          send('receiveTownHallDataError', body, done);
+        }
+      });
+    },
     fetchActiveIssues: (state, data, send, done) => {
       let address = "?address=";
       if (state.address !== '') {
@@ -269,6 +323,7 @@ app.model({
       http(issueURL, (err, res, body) => {
         send('setCachedCity', body, done);
         send('receiveActiveIssues', body, done);
+        send('fetchTownHallData', body, done);
         send('mergeIssues', body, done);
       });
     },
