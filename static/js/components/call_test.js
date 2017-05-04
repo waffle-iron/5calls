@@ -24,7 +24,7 @@ describe('call component', () => {
         reason: 'crazy',
         script: 'Please vote against everything'
       };
-      let contact = {name: cname, party: 'Dem'};
+      let contact = {name: cname, phone: '555-555-1212', party: 'Dem'};
       let contactIndices = {};
       contactIndices[id] = 0;
       issue.contacts = [contact];
