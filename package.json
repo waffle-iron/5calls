@@ -59,7 +59,6 @@
     "raf": "^3.3.0",
     "smoothscroll-polyfill": "^0.3.4",
     "xhr": "^2.3",
-    "xtend": "^4.0.1",
-    "zipcodes": "^2.1.0"
+    "xtend": "^4.0.1"
   }
 }
