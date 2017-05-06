@@ -37,7 +37,7 @@ module.exports = (state) => {
         <a href="/faq">
           <i class="fa fa-question-circle" aria-hidden="true"></i> ${t('footer.faq')}
         </a>
-        <a href="#about">
+        <a href="/about">
           <i class="fa fa-heart" aria-hidden="true"></i> ${t('footer.about')}
         </a>
 
