@@ -10,7 +10,7 @@ module.exports = (state) => {
   let additionalTwitterComps = "&via=make5calls";
   let tweet = encodeURIComponent(t("promote.motto", null, true));
   let twitterTitle = t("promote.shareOnTwitter", null, true);
-  let facebookTitle = t("promote.shareOnTwitter", null, true);
+  let facebookTitle = t("promote.shareOnFacebook", null, true);
 
   const issue = find(state.issues, ['id', state.location.params.issueid]);
 
