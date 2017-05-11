@@ -9,6 +9,8 @@ const store = require('./utils/localstorage.js');
 const localization = require('./utils/localization');
 const scrollIntoView = require('./utils/scrollIntoView.js');
 
+const constants = require('./constants');
+
 const app = choo();
 const appURL = 'https://5calls.org';
 // const appURL = 'http://localhost:8090';
@@ -137,6 +139,8 @@ app.model({
     showFieldOfficeNumbers: false,
 
     debug: debug,
+    constants: constants,
+    selectedLanguage: cachedUserLocale
   },
 
   reducers: {
@@ -253,7 +257,13 @@ app.model({
     },
     toggleFieldOfficeNumbers: (state) => ({ showFieldOfficeNumbers: !state.showFieldOfficeNumbers }),
     hideFieldOfficeNumbers: () => ({ showFieldOfficeNumbers: false }),
-    setCacheDate: (state, data) => ({ [data]: Date.now() })
+    setCacheDate: (state, data) => ({ [data]: Date.now() }),
+
+    translate: (state, data) => {
+      store.replace('org.5calls.userlocale', 0, data, () => {});
+      return { selectedLanguage: data };
+    }
+
   },
 
   effects: {
@@ -456,8 +466,18 @@ app.model({
       ga('send', 'event', 'issue_flow', 'select', 'select');
 
       scrollIntoView(document.querySelector('#content'));
+    },
+
+    changeLanguage: (state, data, send, done) => {
+      localization.change(data, function(err){
+        if (!err) {
+          send('translate', data, done);
+        }
+      });
     }
-  },
+
+  }
+
 });
 
 app.router({ default: '/' }, [
