@@ -16,6 +16,10 @@ module.exports = {
             .init(options, cb);
   },
 
+  change: (newLanguage, cb) => {
+    i18n.changeLanguage(newLanguage, cb);
+  },
+
     // Get the user's locale from the browserLanguage and the configured supported locales  
   getLocaleFromBrowserLanguage: (browserLanguage) => {
     if (!browserLanguage){

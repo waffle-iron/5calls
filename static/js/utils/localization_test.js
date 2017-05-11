@@ -32,4 +32,24 @@ describe('userLocaleDetection', () => {
       expect(result).to.equal(expected);
     });
   });
+
+  describe('change', () => {
+    it('should load the new language as passed', (done) => {
+
+      l.change('es', function(err, t) {
+
+        let result = t('common.go');
+        expect(result).to.equal('envíe');
+
+        l.change('en', function(err, t) {
+          let result = t('common.go');
+          expect(result).to.equal('Go');
+          done();
+        });
+      });
+
+    });
+
+  });
+
 });
