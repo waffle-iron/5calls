@@ -1,7 +1,7 @@
 const html = require('choo/html');
 const t = require('../utils/translation');
 
-module.exports = (state) => {
+module.exports = (state, prev, send) => {
 
   function impactLink (userStats) {
 
@@ -15,6 +15,33 @@ module.exports = (state) => {
     }
 
     return null;
+  }
+
+  function languageSelect (state) {
+
+    var locales = state.constants && state.constants.localization && state.constants.localization.supportedLocales;
+
+    if (locales) {
+
+      var options = locales.map(function( locale ) {
+
+        var selected = "";
+
+        if (locale === state.selectedLanguage) {
+          selected = "selected";
+        }
+
+        return html`<option ${selected} value="${locale}">${locale}</option>`;
+      });
+
+      return [html`
+        <label>${t('footer.languageLabel')}: </label>`,
+        html`
+        <select onchange=${(e) => {send('changeLanguage', e.target.value)}}>
+          ${options}
+        </select>`
+      ];
+    }
   }
 
   return html`
@@ -45,6 +72,7 @@ module.exports = (state) => {
 
         <br />
         <a href="http://ipinfo.io"> ${t('footer.ipGeolocation')}</a>
+        ${languageSelect(state)}
       </div></footer>
   `;
 };

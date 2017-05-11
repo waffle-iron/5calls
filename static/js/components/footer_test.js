@@ -24,5 +24,49 @@ describe('footer component', () => {
     
     expect(result.querySelector('#impact__link')).to.exist;
   });
+
+  describe('language selection dropdown', () => {
   
+    it('should display with detected language selected', () => {
+
+      let result = footer({
+        constants: {
+          localization: {
+            supportedLocales: ['en', 'es']
+          }
+        },
+        selectedLanguage: 'es'
+      });
+      expect(result.innerHTML).to.match(/select/);
+      expect(result.innerHTML).to.match(/<option value="en">en<\/option>/);
+      expect(result.innerHTML).to.match(/<option selected="selected" value="es">es<\/option>/);
+    });
+
+    it('should call the changeLanguage effect when an option is selected', () => {
+
+      function sendSpy(effect, data) {
+        sendSpy.effect = effect;
+        sendSpy.data = data;
+      }
+
+      let result = footer({
+        constants: {
+          localization: {
+            supportedLocales: ['en', 'es']
+          }
+        },
+        selectedLanguage: 'es'
+      }, {}, sendSpy);
+
+      let esOption = result.getElementsByTagName("option")[1];
+      let languageDropdown = result.getElementsByTagName("select")[0];
+
+      languageDropdown.onchange({target:esOption});
+
+      expect(sendSpy.effect).to.equal('changeLanguage');
+      expect(sendSpy.data).to.equal('es');
+
+    });
+  });
+
 });
