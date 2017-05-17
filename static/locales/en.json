@@ -87,7 +87,9 @@
     "issues":{
       "whatsImportantToYou": "What’s important to you?",
       "issuesListItemSummary": "$t(common.callWithCount,{'count': {{callsToMake}}}) to make",
-      "viewMoreIssues":"View more issues"
+      "viewAllActiveIssues":"View all active issues",
+      "activeIssuesWithCount": "{{count}} Active Issues",
+      "uncategorizedIssues": "Uncategorized Issues"
     },
     "location": {
       "gettingYourLocation": "Getting your location",

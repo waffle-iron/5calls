@@ -108,6 +108,7 @@ app.model({
     issues: [],
     activeIssues: [],
     inactiveIssues: [],
+    issueCategories: [],
     totalCalls: 0,
     splitDistrict: false,
 
@@ -158,12 +159,17 @@ app.model({
     mergeIssues: (state) => {
       let issues = state.activeIssues.concat(state.inactiveIssues);
       let contactIndices = state.contactIndices;
+      const issueCategories = state.issueCategories;
       issues.forEach(issue => {
         contactIndices[issue.id] = contactIndices[issue.id] || 0;
+        if (issue.categories && !issueCategories.find((category) => (category === issue.categories[0].name))) {
+          issueCategories.push(issue.categories[0].name);
+        }
       });
       return {
         issues,
         contactIndices,
+        issueCategories: issueCategories.sort(),
       };
     },
     receiveTotals: (state, data) => {
@@ -471,6 +477,7 @@ app.router({ default: '/' }, [
   ['/about', require('./pages/aboutView.js')],
   ['/impact', require('./pages/impactView.js')],
   ['/more', require('./pages/issuesView.js')],
+  ['/issues', require('./pages/issuesView.js')],
   ['/faq', require('./pages/faqView.js')],
 ]);
 
