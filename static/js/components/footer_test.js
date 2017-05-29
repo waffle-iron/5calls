@@ -30,11 +30,6 @@ describe('footer component', () => {
     it('should display with detected language selected', () => {
 
       let result = footer({
-        constants: {
-          localization: {
-            supportedLocales: ['en', 'es']
-          }
-        },
         selectedLanguage: 'es'
       });
       expect(result.innerHTML).to.match(/select/);
@@ -50,11 +45,6 @@ describe('footer component', () => {
       }
 
       let result = footer({
-        constants: {
-          localization: {
-            supportedLocales: ['en', 'es']
-          }
-        },
         selectedLanguage: 'es'
       }, {}, sendSpy);
 

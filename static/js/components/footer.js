@@ -1,4 +1,5 @@
 const html = require('choo/html');
+const constants = require('../constants');
 const t = require('../utils/translation');
 
 module.exports = (state, prev, send) => {
@@ -19,7 +20,7 @@ module.exports = (state, prev, send) => {
 
   function languageSelect (state) {
 
-    var locales = state.constants && state.constants.localization && state.constants.localization.supportedLocales;
+    var locales = constants.localization && constants.localization.supportedLocales;
 
     if (locales) {
 

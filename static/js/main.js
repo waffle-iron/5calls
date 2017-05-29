@@ -9,8 +9,6 @@ const store = require('./utils/localstorage.js');
 const localization = require('./utils/localization');
 const scrollIntoView = require('./utils/scrollIntoView.js');
 
-const constants = require('./constants');
-
 const app = choo();
 const appURL = 'https://5calls.org';
 // const appURL = 'http://localhost:8090';
@@ -137,10 +135,9 @@ app.model({
     completedIssues: completedIssues,
 
     showFieldOfficeNumbers: false,
+    selectedLanguage: cachedUserLocale,
 
-    debug: debug,
-    constants: constants,
-    selectedLanguage: cachedUserLocale
+    debug: debug
   },
 
   reducers: {
