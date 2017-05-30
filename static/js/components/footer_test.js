@@ -27,17 +27,18 @@ describe('footer component', () => {
 
   describe('language selection dropdown', () => {
   
-    it('should display with detected language selected', () => {
+    it('should display unselected language as link with globe icon', () => {
 
       let result = footer({
         selectedLanguage: 'es'
       });
-      expect(result.innerHTML).to.match(/select/);
-      expect(result.innerHTML).to.match(/<option value="en">en<\/option>/);
-      expect(result.innerHTML).to.match(/<option selected="selected" value="es">es<\/option>/);
+
+      expect(result.innerHTML).not.to.match(/select/);
+      expect(result.innerHTML).to.match(/<a href="#en">\s*<i aria-hidden="true" class="fa fa-globe"><\/i><span>English<\/span>\s*<\/a>/);
+      expect(result.innerHTML).not.to.match(/<b>Español<\/b>/);
     });
 
-    it('should call the changeLanguage effect when an option is selected', () => {
+    it('should call the changeLanguage effect when an link is clicked', () => {
 
       function sendSpy(effect, data) {
         sendSpy.effect = effect;
@@ -48,13 +49,15 @@ describe('footer component', () => {
         selectedLanguage: 'es'
       }, {}, sendSpy);
 
-      let esOption = result.getElementsByTagName("option")[1];
-      let languageDropdown = result.getElementsByTagName("select")[0];
+      let enOption = result.querySelector("a[href='#en']");
 
-      languageDropdown.onchange({target:esOption});
+      enOption.onclick({
+        preventDefault:function(){},
+        stopPropagation:function(){}
+      });
 
       expect(sendSpy.effect).to.equal('changeLanguage');
-      expect(sendSpy.data).to.equal('es');
+      expect(sendSpy.data).to.equal('en');
 
     });
   });
