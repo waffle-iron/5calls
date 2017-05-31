@@ -27,31 +27,21 @@ module.exports = (state, prev, send) => {
       'es': 'Español'
     };
 
-    function chooseLanguage(e, locale) {
+    function select(e, locale) {
       e.preventDefault();
       e.stopPropagation();
-      send('changeLanguage', locale)
+      send('chooseLanguage', locale)
       return false
     }
     
     if (locales) {
-
-      var selected = "";
-      var options = [];
-
-      var options = locales.map(function( locale ) {
-
-        if (locale === state.selectedLanguage) {
-          selected = html`<span> ${displayLocale[locale]}</span>`;
-          return;
+      return locales.map(function( locale ) {
+        if (locale !== state.selectedLanguage) {
+          return html`<a href="#${locale}" onclick=${(e) => select(e, locale)}>
+            <i class="fa fa-globe" aria-hidden="true"></i><span>${displayLocale[locale]}</span>
+          </a>`;
         }
-
-        return html`<a href="#${locale}" onclick=${(e) => chooseLanguage(e, locale)}>
-          <i class="fa fa-globe" aria-hidden="true"></i><span>${displayLocale[locale]}</span>
-        </a>`;
       });
-
-      return options
     }
   }
 

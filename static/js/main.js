@@ -465,7 +465,7 @@ app.model({
       scrollIntoView(document.querySelector('#content'));
     },
 
-    changeLanguage: (state, data, send, done) => {
+    chooseLanguage: (state, data, send, done) => {
       localization.change(data, function(err){
         if (!err) {
           send('languageChanged', data, done);

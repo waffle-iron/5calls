@@ -56,7 +56,7 @@ describe('footer component', () => {
         stopPropagation:function(){}
       });
 
-      expect(sendSpy.effect).to.equal('changeLanguage');
+      expect(sendSpy.effect).to.equal('chooseLanguage');
       expect(sendSpy.data).to.equal('en');
 
     });
