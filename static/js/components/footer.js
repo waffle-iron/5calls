@@ -30,8 +30,8 @@ module.exports = (state, prev, send) => {
     function select(e, locale) {
       e.preventDefault();
       e.stopPropagation();
-      send('chooseLanguage', locale)
-      return false
+      send('chooseLanguage', locale);
+      return false;
     }
     
     if (locales) {
