@@ -37,20 +37,12 @@ describe('userLocaleDetection', () => {
     it('should load the new language as passed', (done) => {
 
       l.change('es', function(err, t) {
-      
-        if (err) {
-          expect(false, 'err attempting to change language').to.be.ok;
-        }
-
+        expect(err).to.equal(null);
         let result = t('common.go');
         expect(result).to.equal('envíe');
 
         l.change('en', function(err, t) {
-
-          if (err) {
-            expect(false, 'err attempting to change language').to.be.ok;
-          }
-
+          expect(err).to.equal(null);
           let result = t('common.go');
           expect(result).to.equal('Go');
           done();
