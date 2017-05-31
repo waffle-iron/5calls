@@ -32,10 +32,10 @@ describe('footer component', () => {
         selectedLanguage: 'es'
       });
 
-      var españolLink = result.querySelector('a[href="#es"]')
-      var englishLink = result.querySelector('a[href="#en"]')
-      var icon = englishLink.querySelector('i')
-      var label = englishLink.querySelector('span')
+      var españolLink = result.querySelector('a[href="#es"]');
+      var englishLink = result.querySelector('a[href="#en"]');
+      var icon = englishLink.querySelector('i');
+      var label = englishLink.querySelector('span');
       
 
       expect(españolLink).not.to.exist;
