@@ -256,7 +256,7 @@ app.model({
     hideFieldOfficeNumbers: () => ({ showFieldOfficeNumbers: false }),
     setCacheDate: (state, data) => ({ [data]: Date.now() }),
 
-    translate: (state, data) => {
+    languageChanged: (state, data) => {
       store.replace('org.5calls.userlocale', 0, data, () => {});
       return { selectedLanguage: data };
     }
@@ -468,7 +468,7 @@ app.model({
     changeLanguage: (state, data, send, done) => {
       localization.change(data, function(err){
         if (!err) {
-          send('translate', data, done);
+          send('languageChanged', data, done);
         }
       });
     }
