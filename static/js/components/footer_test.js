@@ -38,7 +38,7 @@ describe('footer component', () => {
       expect(result.innerHTML).not.to.match(/<b>Español<\/b>/);
     });
 
-    it('should call the changeLanguage effect when an link is clicked', () => {
+    it('should call the chooseLanguage effect when an link is clicked', () => {
 
       function sendSpy(effect, data) {
         sendSpy.effect = effect;
@@ -49,9 +49,9 @@ describe('footer component', () => {
         selectedLanguage: 'es'
       }, {}, sendSpy);
 
-      let enOption = result.querySelector("a[href='#en']");
+      let link = result.querySelector("a[href='#en']");
 
-      enOption.onclick({
+      link.onclick({
         preventDefault:function(){},
         stopPropagation:function(){}
       });
