@@ -86,6 +86,7 @@ store.getAll('org.5calls.userlocale', (userLocale) => {
     cachedUserLocale = localization.getLocaleFromBrowserLanguage(navigator.language || navigator.userLanguage);
     store.add('org.5calls.userlocale', cachedUserLocale, () => {});
   }
+  window.userLocale = cachedUserLocale;
 });
 
 // get stored user stats
@@ -258,6 +259,7 @@ app.model({
 
     languageChanged: (state, data) => {
       store.replace('org.5calls.userlocale', 0, data, () => {});
+      window.ga('set', 'dimension3', data);
       return { selectedLanguage: data };
     }
 
