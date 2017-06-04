@@ -36,7 +36,7 @@ module.exports = (state, prev, send) => {
     
     if (locales) {
       return locales.map(function( locale ) {
-        if (locale !== state.selectedLanguage) {
+        if (locale !== state.selectedLanguage && displayLocale[locale]) {
           return html`<a href="#${locale}" onclick=${(e) => select(e, locale)}>
             <i class="fa fa-globe" aria-hidden="true"></i><span>${displayLocale[locale]}</span>
           </a>`;
