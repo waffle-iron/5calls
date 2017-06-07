@@ -474,6 +474,7 @@ app.router({ default: '/' }, [
   ['/done', require('./pages/doneView.js'),
     [':issueid', require('./pages/doneView.js')]
   ],
+  ['/category/:category', require('./pages/categoryView.js')],
   ['/about', require('./pages/aboutView.js')],
   ['/impact', require('./pages/impactView.js')],
   ['/more', require('./pages/issuesView.js')],
