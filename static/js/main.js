@@ -477,7 +477,6 @@ app.router({ default: '/' }, [
   ['/about', require('./pages/aboutView.js')],
   ['/impact', require('./pages/impactView.js')],
   ['/more', require('./pages/issuesView.js')],
-  ['/issues', require('./pages/issuesView.js')],
   ['/faq', require('./pages/faqView.js')],
 ]);
 
