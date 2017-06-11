@@ -18,7 +18,7 @@ module.exports = (state, prev, send) => {
   `;
 
   function issueExplain(state) {
-    if (issue && issue.categories.length > 0) {
+    if (issue && issue.categories != null) {
       var categoryName = categoryName = issue.categories[0].name;
 
       return html`<h2>${categoryName}</h2>`;

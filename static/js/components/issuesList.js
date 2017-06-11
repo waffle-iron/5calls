@@ -8,16 +8,22 @@ module.exports = (state, prev, send) => {
 
   var categoryName = undefined;
 
-  if (issue && issue.categories.length > 0) {
+  if (issue && issue.categories != null) {
     categoryName = issue.categories[0].name;
   }
 
   // show either the other issues in this category or all active issues in the sidebar
   if (categoryName != undefined) {
+    console.log("category name is",categoryName)
     return html`
       <ul class="issues-list" role="navigation">
         ${state.issues
-          .filter(issue => issue.categories[0].name === categoryName)
+          .filter(issue => {
+            if (issue.categories != null) {
+              return issue.categories[0].name === categoryName
+            }
+            return false
+           })
           .map(issue => issuesListItem(issue, state, prev, send))
         }
       </ul>

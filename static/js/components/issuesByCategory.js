@@ -35,7 +35,12 @@ module.exports = (state, prev, send) => {
               <h2>${categoryName}</h2>
               <ul class="issues-list" role="navigation">
                 ${state.issues
-                  .filter(issue => issue.categories[0].name === categoryName)
+                  .filter(issue => {
+                    if (issue.categories != null) {
+                      return issue.categories[0].name === categoryName;
+                    }
+                    return false;  
+                  })
                   .map((issue) => issuesListItem(issue, state, prev, send))
                 }
               </ul>
