@@ -87,7 +87,9 @@
     "issues":{
       "whatsImportantToYou": "¿Qué importa para usted?",
       "issuesListItemSummary": "$t(common.callWithCount,{'count': {{callsToMake}}}) para hacer",
-      "viewMoreIssues":"Ver más temas"
+      "viewAllActiveIssues":"Ver todos los temas activos",
+      "activeIssuesWithCount": "{{count}} Temas Activos",
+      "uncategorizedIssues": "Temas Sin Categorizar"
     },
     "location": {
       "gettingYourLocation": "Obtener su ubicación",
