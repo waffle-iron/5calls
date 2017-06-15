@@ -162,7 +162,7 @@ app.model({
       const issueCategories = state.issueCategories;
       issues.forEach(issue => {
         contactIndices[issue.id] = contactIndices[issue.id] || 0;
-        if (issue.categories && !issueCategories.find((category) => (category === issue.categories[0].name))) {
+        if (issue.categories && !find(issueCategories, ['category', issue.categories[0].name])) {
           issueCategories.push(issue.categories[0].name);
         }
       });
