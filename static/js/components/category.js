@@ -9,10 +9,14 @@ module.exports = (state, prev, send) => {
     send('fetchInactiveIssues');
   }
 
+  function sanitizeUrl(url) {
+    return encodeURIComponent(url.toLowerCase())
+  }
+
   return html`
     <main id="content" role="main" class="layout__main" onload=${load}>
     <section class="category">
-        ${state.issueCategories.filter(category => category.toLowerCase() == urlCategory).map(categoryName => html`
+        ${state.issueCategories.filter(category => sanitizeUrl(category) == encodeURIComponent(urlCategory)).map(categoryName => html`
         <div>
           <h2 class="about__title">${categoryName}</h2>
           <ul class="issues-list" role="navigation">
