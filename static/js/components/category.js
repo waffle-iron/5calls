@@ -10,7 +10,7 @@ module.exports = (state, prev, send) => {
   }
 
   function sanitizeUrl(url) {
-    return encodeURIComponent(url.toLowerCase())
+    return encodeURIComponent(url.toLowerCase());
   }
 
   return html`
