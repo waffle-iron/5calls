@@ -103,45 +103,44 @@ store.getAll('org.5calls.userStats', (stats) => {
   }
 });
 
+exports.state = {
+  // remote data
+  issues: [],
+  activeIssues: [],
+  inactiveIssues: [],
+  totalCalls: 0,
+  splitDistrict: false,
+
+  // manual input address
+  address: cachedAddress,
+
+  // automatically geolocating
+  geolocation: cachedGeo,
+  geoCacheTime: cachedGeoTime,
+  allowBrowserGeo: cachedAllowBrowserGeo,
+  cachedCity: cachedCity,
+
+  // local user stats
+  userStats: localStats,
+
+  // view state
+  // getInfo: false,
+  // activeIssue: false,
+  // completeIssue: false,
+  askingLocation: false,
+  fetchingLocation: cachedFetchingLocation,
+  validatingLocation: false,
+  locationFetchType: cachedLocationFetchType,
+  contactIndices: {},
+  completedIssues: completedIssues,
+
+  showFieldOfficeNumbers: false,
+
+  debug: debug
+};
+
 app.model({
-  state: {
-    // remote data
-    issues: [],
-    activeIssues: [],
-    inactiveIssues: [],
-    issueCategories: [],
-    totalCalls: 0,
-    splitDistrict: false,
-
-    // manual input address
-    address: cachedAddress,
-
-    // automatically geolocating
-    geolocation: cachedGeo,
-    geoCacheTime: cachedGeoTime,
-    allowBrowserGeo: cachedAllowBrowserGeo,
-    cachedCity: cachedCity,
-
-    // local user stats
-    userStats: localStats,
-
-    // view state
-    // getInfo: false,
-    // activeIssue: false,
-    // completeIssue: false,
-    askingLocation: false,
-    fetchingLocation: cachedFetchingLocation,
-    validatingLocation: false,
-    locationFetchType: cachedLocationFetchType,
-    contactIndices: {},
-    completedIssues: completedIssues,
-    localEvents: [],
-    divisions: {},
- 
-    showFieldOfficeNumbers: false,
-
-    debug: debug,
-  },
+  state: exports.state,
 
   reducers: {
     receiveActiveIssues: (state, data) => {
