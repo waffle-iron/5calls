@@ -124,15 +124,13 @@ exports.state = {
   userStats: localStats,
 
   // view state
-  // getInfo: false,
-  // activeIssue: false,
-  // completeIssue: false,
   askingLocation: false,
   fetchingLocation: cachedFetchingLocation,
   validatingLocation: false,
   locationFetchType: cachedLocationFetchType,
   contactIndices: {},
   completedIssues: completedIssues,
+  issueCategories: [],
 
   showFieldOfficeNumbers: false,
 
