@@ -25,6 +25,7 @@ function getDefaultState() {
     askingLocation: false,
     cachedCity: "",
     completedIssues: [],
+    issueCategories: [],
     contactIndices: {},
     debug: false,
     fetchingLocation: true,
