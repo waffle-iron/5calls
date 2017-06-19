@@ -1,6 +1,9 @@
 const html = require('choo/html');
 const t = require('../utils/translation');
 const find = require('lodash/find');
+const clone = require('clone');
+
+const outcomesButton = require('./outcomesButton.js');
 
 module.exports = (state, prev, send) => {
   const issue = find(state.issues, ['id', state.location.params.issueid]);
@@ -9,28 +12,16 @@ module.exports = (state, prev, send) => {
 
   const contactsLeft = issue.contacts.length - (currentIndex + 1);
 
-  const contactsLeftText =  t("outcomes.contactsLeft", { "contactsRemaining": contactsLeft}); 
+  const contactsLeftText =  t("outcomes.contactsLeft", { "contactsRemaining": contactsLeft});
 
-  function outcome(e, result) {
-    e.target.blur();
-
-    if (result == null) {
-      send('skipCall', { issueid: issue.id });
-    } else {
-      send('callComplete', { result: result, contactid: currentContact.id, issueid: issue.id });
-    }
-
-    return true;
-  }
+  let outcomes = clone(issue.outcomes);
+  outcomes.push({"label": "Skip", "value": null});
 
   if (currentContact != null) {
     return html`<div class="call__outcomes">
       <h3 class="call__outcomes__header">${t("outcomes.enterYourCallResult")}</h3>
       <div class="call__outcomes__items">
-        <button onclick=${(e) => outcome(e, 'unavailable')}>${t("outcomes.unavailable")}</button>
-        <button onclick=${(e) => outcome(e, 'vm')}>${t("outcomes.voicemail")}</button>
-        <button onclick=${(e) => outcome(e, 'contacted')}>${t("outcomes.madeContact")}</button>
-        <button onclick=${(e) => outcome(e)}>${t("outcomes.skip")}</button>
+        ${outcomes.map((outcome) => outcomesButton(outcome, state, prev, send))}
       </div>
 
       ${contactsLeft > 0 ? html`<h3 aria-live="polite" class="call__contacts__left" >${contactsLeftText}</h3>` : null}
