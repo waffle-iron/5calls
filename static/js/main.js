@@ -176,7 +176,11 @@ app.model({
     },
     receiveTotals: (state, data) => {
       const totals = JSON.parse(data);
-      return { totalCalls: totals.count };
+      var totalCalls = 0;
+      if (totals != null && totals.count != null) {
+        totalCalls = totals.count;
+      }
+      return { totalCalls: totalCalls };
     },
     receiveIPInfoLoc: (state, data) => {
       const geo = data.loc;
