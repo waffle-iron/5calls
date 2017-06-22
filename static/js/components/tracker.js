@@ -1,7 +1,7 @@
 const html = require('choo/html');
 const t = require('../utils/translation');
 
-module.exports = (state, prev, send) => {
+module.exports = (state) => {
 
   function normalizeName(name) {
     // should turn something like "TX-TedCruz" into "Ted Cruz (TX)"
@@ -14,8 +14,8 @@ module.exports = (state, prev, send) => {
   if (!state.ahcaCounts || Object.keys(state.ahcaCounts).length === 0) {
     return html`
     <div class="tracker">
-      <h3>${t("tracker.title")}</h3>
-      <p><strong>${t("tracker.noTracker")}</strong></p>
+      <h3>Trumpcare Votes</h3>
+      <p><strong>We'll be right back with updated vote tally counts.</strong></p>
     </div>
     `;
   } else {
@@ -34,8 +34,8 @@ module.exports = (state, prev, send) => {
 
     return html`
     <div class="tracker">
-      <h2>${t("tracker.header")}</h2>
-      <p>${t("tracker.intro")}</p>
+      <h2>Help track Trumpcare</h2>
+      <p>Senate Republicans has kept us in the dark on Trumpcare, their new bill to replace the Affordable Care Act. This bill will affect one-sixth of our national economy, and the lives of every American.</p>
       <p>It's crucial that constituents know where their legislators stand on this - help us crowdsource our Senate Vote tally by <a href="/issue/rec2cBigI4Dl9vT4M">calling your Senator and adding their stated position on the AHCA/Trumpcare bill</a>.</p>
       <h3>${t("tracker.title")}</h3>
       <p class="tracker__required">${t("tracker.required")}</p>
@@ -62,4 +62,4 @@ module.exports = (state, prev, send) => {
     `;
   }
 
-}
+};

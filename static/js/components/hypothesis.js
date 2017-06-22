@@ -1,9 +1,7 @@
 const html = require('choo/html');
 const t = require('../utils/translation');
 
-const callcount = require('./callcount.js');
 const tracker = require('./tracker.js');
-const promote = require('./promote.js');
 
 module.exports = (state, prev, send) => {
   // TODO: separate this out into straight up content and stats
