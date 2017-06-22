@@ -32,10 +32,59 @@ module.exports = (state) => {
       unknownVotes = state.ahcaCounts.unknown;
     }
 
+    // hack-a-doo overrides
+    var definitelyNo = ["CA-DianneFeinstein"];
+    definitelyNo.forEach((senator) => {
+      // add to hard list
+      if (!noVotes.includes(senator)) {
+        noVotes.push(senator);
+      }
+
+      // remove from other lists
+      if (yesVotes.indexOf(senator) > -1) {
+        yesVotes.splice(yesVotes.indexOf(senator), 1);
+      }
+      if (unknownVotes.indexOf(senator) > -1) {
+        unknownVotes.splice(unknownVotes.indexOf(senator), 1);
+      }
+    });
+
+    var definitelyYes = ["KS-PatRoberts"];
+    definitelyYes.forEach((senator) => {
+      // add to hard list
+      if (!yesVotes.includes(senator)) {
+        yesVotes.push(senator);
+      }
+
+      // remove from other lists
+      if (noVotes.indexOf(senator) > -1) {
+        noVotes.splice(noVotes.indexOf(senator), 1);
+      }
+      if (unknownVotes.indexOf(senator) > -1) {
+        unknownVotes.splice(unknownVotes.indexOf(senator), 1);
+      }
+    });
+
+    // var definitelyUnknown = ["CA-DianneFeinstein","KS-PatRoberts"];
+    // definitelyUnknown.forEach((senator) => {
+    //   // add to hard list
+    //   if (!unknownVotes.includes(senator)) {
+    //     unknownVotes.push(senator);
+    //   }
+
+    //   // remove from other lists
+    //   if (noVotes.indexOf(senator) > -1) {
+    //     noVotes.splice(noVotes.indexOf(senator), 1);
+    //   }
+    //   if (yesVotes.indexOf(senator) > -1) {
+    //     yesVotes.splice(yesVotes.indexOf(senator)), 1);
+    //   }
+    // })
+
     return html`
     <div class="tracker">
       <h2>Help Track Trumpcare</h2>
-      <p>Senate Republicans has kept us in the dark on Trumpcare, their new bill to replace the Affordable Care Act. This bill will affect one-sixth of our national economy, and the lives of every American.</p>
+      <p>Senate Republicans have kept us in the dark on Trumpcare, their new bill to replace the Affordable Care Act. This bill will affect one-sixth of our national economy, and the lives of every American.</p>
       <p>It's crucial that constituents know where their legislators stand on this - help us crowdsource our Senate Vote tally by <a href="/issue/rec2cBigI4Dl9vT4M">calling your Senator and adding their current position on the AHCA/Trumpcare bill</a>.</p>
       <h3>${t("tracker.title")}</h3>
       <p class="tracker__required">${t("tracker.required")}</p>
