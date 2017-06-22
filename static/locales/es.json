@@ -111,10 +111,13 @@
     },
     "outcomes":{
       "enterYourCallResult":"Meta el resultado de su llamada para obtener la siguiente llamada:",
-      "unavailable":"no disponible",
-      "voicemail":"dejé mensaje de voz",
-      "madeContact":"contacto hecho",
-      "skip":"omitir",
+      "outcome_unavailable":"no disponible",
+      "outcome_voicemail":"dejé mensaje de voz",
+      "outcome_contact":"contacto hecho",
+      "outcome_yes":"XXX",
+      "outcome_no":"YYY",
+      "outcome_unknown":"ZZZ",
+      "outcome_skip":"omitir",
       "contactsLeft": "Quedan {{contactsRemaining}} $t(common.person, {'count': {{contactsRemaining}}}) para llamar sobre este tema."
     },
     "script": {

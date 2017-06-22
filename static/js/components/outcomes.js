@@ -15,7 +15,7 @@ module.exports = (state, prev, send) => {
   const contactsLeftText =  t("outcomes.contactsLeft", { "contactsRemaining": contactsLeft});
 
   let outcomes = clone(issue.outcomes);
-  outcomes.push({"label": "Skip", "value": null});
+  outcomes.push("skip");
 
   if (currentContact != null) {
     return html`<div class="call__outcomes">

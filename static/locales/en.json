@@ -111,10 +111,13 @@
     },
     "outcomes":{
       "enterYourCallResult":"Enter your call result to get the next call:",
-      "unavailable":"Unavailable",
-      "voicemail":"Left Voicemail",
-      "madeContact":"Made Contact",
-      "skip":"Skip",
+      "outcome_unavailable":"Unavailable",
+      "outcome_voicemail":"Left Voicemail",
+      "outcome_contact":"Made Contact",
+      "outcome_yes":"Supports",
+      "outcome_no":"Opposes",
+      "outcome_unknown":"No stance",
+      "outcome_skip":"Skip",
       "contactsLeft": "{{contactsRemaining}} more $t(common.person, {'count': {{contactsRemaining}}}) to call for this issue."
     },
     "script": {
