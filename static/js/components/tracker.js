@@ -2,7 +2,6 @@ const html = require('choo/html');
 const t = require('../utils/translation');
 
 module.exports = (state, prev, send) => {
-  console.log("trumpcare",state.ahcaCounts);
 
   function normalizeName(name) {
     // should turn something like "TX-TedCruz" into "Ted Cruz (TX)"
@@ -35,7 +34,9 @@ module.exports = (state, prev, send) => {
 
     return html`
     <div class="tracker">
+      <h2>${t("tracker.header")}</h2>
       <p>${t("tracker.intro")}</p>
+      <p>It's crucial that constituents know where their legislators stand on this - help us crowdsource our Senate Vote tally by <a href="/issue/rec2cBigI4Dl9vT4M">calling your Senator and adding their stated position on the AHCA/Trumpcare bill</a>.</p>
       <h3>${t("tracker.title")}</h3>
       <p class="tracker__required">${t("tracker.required")}</p>
       <div class="tracker__votes">

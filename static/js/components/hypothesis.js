@@ -12,7 +12,6 @@ module.exports = (state, prev, send) => {
       <header class="hypothesis__header">
         <h2 class="hypothesis__title">${t('hypothesis.title')}</h2>
         <p>${t('hypothesis.p1')}</p>
-        <p><strong>${t('hypothesis.p2')}</strong></p>
       </header>
 
       ${tracker(state,prev,send)}
