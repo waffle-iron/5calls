@@ -4,6 +4,12 @@
     text-align: center;
   }
 
+  &__required {
+    color: #989898;
+    text-align: center;
+    font-weight: bold;
+  }
+
   &__votes {
     display: block;
     position: relative;

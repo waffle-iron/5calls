@@ -109,6 +109,7 @@ exports.state = {
   activeIssues: [],
   inactiveIssues: [],
   totalCalls: 0,
+  ahcaCounts: {},
   splitDistrict: false,
 
   // manual input address
@@ -177,10 +178,17 @@ app.model({
     receiveTotals: (state, data) => {
       const totals = JSON.parse(data);
       var totalCalls = 0;
-      if (totals != null && totals.count != null) {
-        totalCalls = totals.count;
+      var ahcaCounts = {};
+      if (totals != null) {
+        if (totals.count != null) {
+          totalCalls = totals.count;
+        }
+
+        if (totals.ahcaCounts != null) {
+          ahcaCounts = totals.ahcaCounts;
+        }
       }
-      return { totalCalls: totalCalls };
+      return { totalCalls: totalCalls, ahcaCounts: ahcaCounts };
     },
     receiveIPInfoLoc: (state, data) => {
       const geo = data.loc;

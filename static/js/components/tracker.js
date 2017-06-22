@@ -1,6 +1,5 @@
 const html = require('choo/html');
 const t = require('../utils/translation');
-const isEmptyObject = require('is-empty-object')
 
 module.exports = (state, prev, send) => {
   console.log("trumpcare",state.ahcaCounts);
@@ -8,41 +7,54 @@ module.exports = (state, prev, send) => {
   function normalizeName(name) {
     // should turn something like "TX-TedCruz" into "Ted Cruz (TX)"
     var stateRegex = /([A-Z]{2})-(.*)/;
-    var nameRegex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
     var match = stateRegex.exec(name);
-    var nameMatch = nameRegex.exec(match[2]);
 
     return match[2].replace(/([A-Z])/g, ' $1')+" ("+match[1]+")";
   }
 
-  if (isEmptyObject(state.ahcaCounts)) {
-    return html`Nah`;
+  if (!state.ahcaCounts || Object.keys(state.ahcaCounts).length === 0) {
+    return html`
+    <div class="tracker">
+      <h3>${t("tracker.title")}</h3>
+      <p><strong>${t("tracker.noTracker")}</strong></p>
+    </div>
+    `;
   } else {
-    var noCount = state.ahcaCounts.vm.length;
-    var yesCount = state.ahcaCounts.contacted.length;
-    var undecidedCount = state.ahcaCounts.unavailable.length;
+    var noVotes = [];
+    if (state.ahcaCounts.no) {
+      noVotes = state.ahcaCounts.no;
+    }
+    var yesVotes = [];
+    if (state.ahcaCounts.yes) {
+      yesVotes = state.ahcaCounts.yes;
+    }
+    var unknownVotes = [];
+    if (state.ahcaCounts.unknown) {
+      unknownVotes = state.ahcaCounts.unknown;
+    }
 
     return html`
     <div class="tracker">
-      <p>Trumpcare is in the Senate and worse than ever. Id unum natum consul has, pri constituto efficiantur ut. Et harum officiis recteque vis, ut nec similique comprehensam, sed mazim denique definitiones ea. Help us keep this up-to-date by calling your representatives!</p>
-      <h3>Trumpcare Votezzz</h3>
+      <p>${t("tracker.intro")}</p>
+      <h3>${t("tracker.title")}</h3>
+      <p class="tracker__required">${t("tracker.required")}</p>
       <div class="tracker__votes">
-        <div class="tracker__votes__no" style="width:${noCount}%">No</div>
-        <div class="tracker__votes__yes" style="width:${yesCount}%">Yes</div>
+        <div class="tracker__votes__no" style="width:${noVotes.length}%">${t("tracker.no")}</div>
+        <div class="tracker__votes__yes" style="width:${yesVotes.length}%">${t("tracker.yes")}</div>
         <div class="tracker__votes__pass"></div>
       </div>
       <div class="tracker__lists">
         <ul class="tracker__lists__no">
-          <li class="header">No Votes (${noCount})</li>
-          ${state.ahcaCounts.vm.map((senator) => {return html`<li>${normalizeName(senator)}</li>`})}
+          <li class="header">${t("tracker.noVotes",{'count': noVotes.length})}</li>
+          ${noVotes.map((senator) => {return html`<li>${normalizeName(senator)}</li>`})}
         </ul>
         <ul class="tracker__lists__yes">
-          <li class="header">Yes Votes (${yesCount})</li>
-          ${state.ahcaCounts.contacted.map((senator) => {return html`<li>${normalizeName(senator)}</li>`})}
+          <li class="header">${t("tracker.yesVotes",{'count': yesVotes.length})}</li>
+          ${yesVotes.map((senator) => {return html`<li>${normalizeName(senator)}</li>`})}
         </ul>
         <ul class="tracker__lists__undecided">
-          <li class="header">Unknown (${undecidedCount})</li>
-          ${state.ahcaCounts.unavailable.map((senator) => {return html`<li>${normalizeName(senator)}</li>`})}
+          <li class="header">${t("tracker.unknownVotes",{'count': unknownVotes.length})}</li>
+          ${unknownVotes.map((senator) => {return html`<li>${normalizeName(senator)}</li>`})}
         </ul>
       </div>
     </div>
