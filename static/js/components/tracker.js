@@ -144,7 +144,7 @@ module.exports = (state) => {
     }
 
     // hack-a-doo overrides
-    var definitelyNo = ["CA-DianneFeinstein"];
+    var definitelyNo = ["CA-DianneFeinstein","UT-MikeLee","TX-TedCruz","KY-RandPaul","WI-RonJohnson"];
     definitelyNo.forEach((senator) => {
       // add to hard list
       if (!noVotes.includes(senator)) {
@@ -176,7 +176,7 @@ module.exports = (state) => {
       }
     });
 
-    var definitelyUnknown = [];
+    var definitelyUnknown = ["AK-LisaMurkowski"];
     definitelyUnknown.forEach((senator) => {
       // add to hard list
       if (!unknownVotes.includes(senator)) {
