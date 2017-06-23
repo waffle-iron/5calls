@@ -160,7 +160,7 @@ module.exports = (state) => {
       }
     });
 
-    var definitelyYes = [];
+    var definitelyYes = ["TN-LamarAlexander","NC-RichardBurr","UT-OrrinGHatch","WY-MichaelBEnzi","SD-MikeRounds","SC-TimScott","SD-JohnThune"];
     definitelyYes.forEach((senator) => {
       // add to hard list
       if (!yesVotes.includes(senator)) {
