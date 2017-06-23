@@ -118,6 +118,12 @@ module.exports = (state) => {
     if (nameMap[a].party < nameMap[b].party) {
       return 1;
     }
+    if (nameMap[a].state < nameMap[b].state) {
+      return -1;
+    }
+    if (nameMap[a].state > nameMap[b].state) {
+      return 1;
+    }
 
     return 0;
   }
