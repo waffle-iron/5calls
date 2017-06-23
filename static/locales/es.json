@@ -112,7 +112,7 @@
     "tracker": {
       "title": "Trumpcare Votes",
       "noTracker": "We'll be right back with updated vote tally counts.",
-      "required": "51 votes to pass",
+      "required": "50 Yes votes needed to pass",
       "no": "No",
       "yes": "Yes",
       "noVotes": "No Votes ({{count}})",
