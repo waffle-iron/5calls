@@ -35,6 +35,7 @@ function getDefaultState() {
     issues: [],
     locationFetchType: "browserGeolocation",
     showFieldOfficeNumbers: false,
+    selectedLanguage:"en",
     splitDistrict: false,
     totalCalls: 0,
     userStats: {
@@ -62,7 +63,6 @@ describe("applying localStorage settings to state", () => {
   describe("No localStorage values are available", () => {
     it("should have the default state", () => {
       main = require("./main");
-
       expect(main.state).to.deep.equal(expected);
     });
   });
@@ -205,8 +205,9 @@ describe("applying localStorage settings to state", () => {
   });
 
   describe("org.5calls.userlocale is set", () => {
-    it("should not alter default state", () => {
+    it("should set state.selectedLanguage to value of org.5calls.userlocale", () => {
       window.localStorage["org.5calls.userlocale"] = JSON.stringify(["es"]);
+      expected.selectedLanguage = "es";
 
       main = require("./main");
 
