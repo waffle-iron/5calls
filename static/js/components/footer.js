@@ -1,20 +1,48 @@
 const html = require('choo/html');
+const constants = require('../constants');
 const t = require('../utils/translation');
 
-module.exports = (state) => {
+module.exports = (state, prev, send) => {
 
-  function impactLink (userStats) {
+  function impactLink(userStats) {
 
     if (userStats && userStats.all) {
       if ( userStats.all.length > 0 ) {
         return html`
           <a id="impact__link" href="/impact">
-            <i class="fa fa-line-chart" aria-hidden="true"></i> ${t('footer.impact')}
+            <i class="fa fa-line-chart" aria-hidden="true"></i>${t('footer.impact')}
           </a>`;
       }
     }
 
     return null;
+  }
+
+  function language(state) {
+
+    var locales = constants.localization && constants.localization.supportedLocales;
+    
+    var displayLocale = {
+      'en': 'English',
+      'es': 'Español'
+    };
+
+    function select(e, locale) {
+      e.preventDefault();
+      e.stopPropagation();
+      send('chooseLanguage', locale);
+      return false;
+    }
+    
+    if (locales) {
+      return locales.map(function( locale ) {
+        if (locale !== state.selectedLanguage && displayLocale[locale]) {
+          return html`<a href="#${locale}" onclick=${(e) => select(e, locale)}>
+            <i class="fa fa-globe" aria-hidden="true"></i><span>${displayLocale[locale]}</span>
+          </a>`;
+        }
+      });
+    }
   }
 
   return html`
@@ -29,17 +57,18 @@ module.exports = (state) => {
       </div>
       <div class="colophon">
         <a href="https://github.com/5calls/5calls">
-          <i class="fa fa-github" aria-hidden="true"></i> ${t('footer.openSource')}
+          <i class="fa fa-github" aria-hidden="true"></i>${t('footer.openSource')}
         </a>
         <a href="https://5calls.org/privacy.html" data-no-routing>
-          <i class="fa fa-shield" aria-hidden="true"></i> ${t('footer.privacy')}
+          <i class="fa fa-shield" aria-hidden="true"></i>${t('footer.privacy')}
         </a>
         <a href="/faq">
-          <i class="fa fa-question-circle" aria-hidden="true"></i> ${t('footer.faq')}
+          <i class="fa fa-question-circle" aria-hidden="true"></i>${t('footer.faq')}
         </a>
         <a href="/about">
-          <i class="fa fa-heart" aria-hidden="true"></i> ${t('footer.about')}
+          <i class="fa fa-heart" aria-hidden="true"></i>${t('footer.about')}
         </a>
+        ${language(state)}
 
         ${impactLink(state.userStats)}
 

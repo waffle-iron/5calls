@@ -87,6 +87,7 @@ store.getAll('org.5calls.userlocale', (userLocale) => {
     cachedUserLocale = localization.getLocaleFromBrowserLanguage(navigator.language || navigator.userLanguage);
     store.add('org.5calls.userlocale', cachedUserLocale, () => {});
   }
+  window.userLocale = cachedUserLocale;
 });
 
 // get stored user stats
@@ -133,13 +134,13 @@ exports.state = {
   issueCategories: [],
 
   showFieldOfficeNumbers: false,
+  selectedLanguage: cachedUserLocale,
 
   debug: debug
 };
 
 app.model({
   state: exports.state,
-
   reducers: {
     receiveActiveIssues: (state, data) => {
       const response = JSON.parse(data);
@@ -262,6 +263,11 @@ app.model({
     toggleFieldOfficeNumbers: (state) => ({ showFieldOfficeNumbers: !state.showFieldOfficeNumbers }),
     hideFieldOfficeNumbers: () => ({ showFieldOfficeNumbers: false }),
     setCacheDate: (state, data) => ({ [data]: Date.now() }),
+    languageChanged: (state, data) => {
+      store.replace('org.5calls.userlocale', 0, data, () => {});
+      window.ga('set', 'dimension3', data);
+      return { selectedLanguage: data };
+    },
     receiveTownHallData: (state, data) => {
       let eventsObj = JSON.parse(data);
       let eventsArr = [];
@@ -295,7 +301,6 @@ app.model({
   receiveTownHallDataError: () => {
     return { localEvents: [] };
   },
-
   effects: {
     fetchTownHallData: (state, data, send, done) => {
       // Data provided from the Town Hall Project, http://townhallproject.com
@@ -509,8 +514,17 @@ app.model({
       ga('send', 'event', 'issue_flow', 'select', 'select');
 
       scrollIntoView(document.querySelector('#content'));
+    },
+
+    chooseLanguage: (state, data, send, done) => {
+      localization.change(data, function(err){
+        if (!err) {
+          send('languageChanged', data, done);
+        }
+      });
     }
-  },
+
+  }
 });
 
 app.router({ default: '/' }, [
